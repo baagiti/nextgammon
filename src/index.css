@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/*
+ * DESIGN TOKENS
+ * Raw values live on :root / [data-theme] as plain CSS custom properties.
+ * @theme inline re-exposes them as Tailwind utilities (bg-player, text-opponent, etc.)
+ * that stay runtime-switchable — swapping [data-theme] repaints everything live,
+ * no rebuild, no per-component edits.
+ */
+:root {
+  --ink: #050508;
+  --ink-2: #0a0a15;
+  --panel: #0f172a;
+  --panel-2: #020617;
+  --line: #1e293b;
+  --line-strong: #334155;
+  --text: #e0e0ff;
+  --text-muted: #8080a0;
+
+  --player: #00e5ff;
+  --opponent: #ff2d78;
+
+  --success: #34d399;
+  --danger: #f87171;
+  --warning: #fbbf24;
+
+  --point-a: #06b6d4;
+  --point-b: #a855f7;
+
+  --rarity-common: #00e5ff;
+  --rarity-rare: #3b82f6;
+  --rarity-epic: #a855f7;
+  --rarity-legendary: #fbbf24;
+
+  /* Rarity rendered as material, not just hue — a "wire" gradient in neon, real metal in kıraathane */
+  --metal-common: linear-gradient(100deg, #0891a8 0%, #5eead4 45%, #0891a8 100%);
+  --metal-rare: linear-gradient(100deg, #1d4ed8 0%, #93c5fd 45%, #1d4ed8 100%);
+  --metal-epic: linear-gradient(100deg, #7e22ce 0%, #e9d5ff 45%, #7e22ce 100%);
+  --metal-legendary: linear-gradient(100deg, #b45309 0%, #fde68a 45%, #b45309 100%);
+
+  --font-display-raw: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body-raw: 'Inter', -apple-system, sans-serif;
+  --font-mono-raw: 'JetBrains Mono', ui-monospace, monospace;
+  --tracking-display: 0.02em;
+
+  --grain: var(--grain-neon);
+  --grain-opacity: 0.05;
+  --grain-blend: overlay;
+  --grain-size: 180px;
+  --frame-accent: transparent;
+
+  /* Cyber-Istanbul skyline backdrop */
+  --sky-top: #0a0518;
+  --sky-bottom: #1a0a2e;
+  --skyline-far: #1b1030;
+  --skyline-mid: #2a1245;
+  --skyline-near: #170a22;
+  --rain-opacity: 0;
+  --sign-glow: 0.9;
+
+  /* AR fiction: the board is a hologram projected in front of the viewer's eyes, not a physical
+     object — this is the opacity of its background-fill layer only (checkers/numbers are a
+     separate layer and stay fully legible regardless). Boss fights lock the projection solid. */
+  --board-veil: 0.55;
+}
+
+[data-theme="kiraathane"] {
+  --ink: #1a1410;
+  --ink-2: #241c15;
+  --panel: #2b2118;
+  --panel-2: #170f0a;
+  --line: #4a3826;
+  --line-strong: #6b5236;
+  --text: #f0e6d2;
+  --text-muted: #a89478;
+
+  /* Warm brass (player, your tea/rakı side) against cold İznik tile blue (opponent, the Bosphorus
+     at night) — this hue split is what reads as "Istanbul", not just monochrome gold/brown. */
+  --player: #d4a24c;
+  --opponent: #1f8fa3;
+
+  --success: #6b8e4e;
+  --danger: #c9502f;
+  --warning: #c98a2c;
+
+  --point-a: #4a3826;
+  --point-b: #16323a;
+
+  --rarity-common: #b08d5f;
+  --rarity-rare: #4f8fae;
+  --rarity-epic: #2f6b5e;
+  --rarity-legendary: #d4af37;
+
+  /* Real material gradients: copper / İznik tile blue / verdigris / gold leaf */
+  --metal-common: linear-gradient(100deg, #7a4a26 0%, #c98a4e 45%, #7a4a26 100%);
+  --metal-rare: linear-gradient(100deg, #14606f 0%, #7fd4e3 45%, #14606f 100%);
+  --metal-epic: linear-gradient(100deg, #1e4a3f 0%, #6fae9c 45%, #1e4a3f 100%);
+  --metal-legendary: linear-gradient(100deg, #8a6a1a 0%, #f0d060 45%, #8a6a1a 100%);
+
+  --font-display-raw: 'Bitter', 'Georgia', serif;
+  --font-body-raw: 'Inter', -apple-system, sans-serif;
+  --font-mono-raw: 'JetBrains Mono', ui-monospace, monospace;
+  --tracking-display: 0em;
+
+  --grain: var(--grain-kiraathane);
+  --grain-opacity: 0.22;
+  --grain-blend: multiply;
+  --grain-size: 260px;
+  --frame-accent: color-mix(in oklab, var(--player) 65%, transparent);
+
+  /* Cyber-Istanbul skyline backdrop — the room is warm wood, the city outside is cold
+     Bosphorus-at-night blue, seen through rain. Warm neon signs pop against it. */
+  --sky-top: #0a141c;
+  --sky-bottom: #1a3644;
+  --skyline-far: #14262f;
+  --skyline-mid: #1c3038;
+  --skyline-near: #0d1a20;
+  --rain-opacity: 0.5;
+  --sign-glow: 0.75;
+  --board-veil: 0.6;
+}
+
+/* Protocol boss fights: the whole screen shifts to alarm/danger colors — stamped on PlatformFrame's
+   root as data-boss="protocol" for the duration of the match. Overriding --player alone recolors
+   nearly every accent, button and glow in the app (it's the dominant accent token everywhere),
+   so this one override does the "whole screen feels different" work without touching each component.
+   Comes after both [data-theme] blocks so it wins at equal specificity regardless of active theme. */
+[data-boss="protocol"] {
+  --player: #ff2b2b;
+  --board-veil: 0.94;
+  --rain-opacity: 0.75;
+}
+
+:root {
+  /* Procedural noise, generated — no image assets. Fine isotropic static for neon,
+     coarse horizontal fiber streaks for kıraathane (classic feTurbulence wood-grain recipe). */
+  --grain-neon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-kiraathane: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+
+@theme inline {
+  --font-display: var(--font-display-raw);
+  --font-sans: var(--font-body-raw);
+  --font-mono: var(--font-mono-raw);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+
+  --color-player: var(--player);
+  --color-opponent: var(--opponent);
+
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+
+  --color-point-a: var(--point-a);
+  --color-point-b: var(--point-b);
+
+  --color-rarity-common: var(--rarity-common);
+  --color-rarity-rare: var(--rarity-rare);
+  --color-rarity-epic: var(--rarity-epic);
+  --color-rarity-legendary: var(--rarity-legendary);
+}
+
+@layer utilities {
+  /* Procedural material grain — static/interference in neon, wood/felt fiber in kıraathane.
+     Apply to a `position:relative; overflow:hidden` container. */
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    background-size: var(--grain-size) var(--grain-size);
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Inner hairline accent — brass ring in kıraathane, invisible (transparent) in neon
+     since neon already reads as "digital" via its glow shadows. */
+  .frame-accent {
+    box-shadow: inset 0 0 0 1px var(--frame-accent);
+  }
+
+  /* Rain streaks for the skyline backdrop — opacity is 0 in neon, present in kıraathane. */
+  .rain-layer {
+    background-image: repeating-linear-gradient(
+      112deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(200, 220, 255, 0.5) 5px,
+      transparent 6.5px,
+      transparent 34px
+    );
+    background-size: 100% 260px;
+    opacity: var(--rain-opacity);
+    animation: rainfall 0.55s linear infinite;
+  }
+  @keyframes rainfall {
+    from { background-position: 0 0; }
+    to { background-position: -40px 260px; }
+  }
+
+  /* Neon signage flicker */
+  .neon-sign {
+    animation: signFlicker 7s ease-in-out infinite;
+  }
+  @keyframes signFlicker {
+    0%, 4%, 8%, 70%, 100% { opacity: var(--sign-glow); }
+    5%, 7% { opacity: calc(var(--sign-glow) * 0.25); }
+  }
+}
+

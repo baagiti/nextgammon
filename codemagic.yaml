@@ -1,0 +1,138 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  NEXTGAMMON — codemagic.yaml
+#  iOS App Store (TestFlight)
+#  Docs: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/
+# ══════════════════════════════════════════════════════════════════════════════
+
+workflows:
+
+  # ────────────────────────────────────────────────────────────────────────────
+  #  1. iOS — App Store (TestFlight)
+  # ────────────────────────────────────────────────────────────────────────────
+  ios-app-store:
+    name: "NEXTGAMMON iOS — App Store"
+    max_build_duration: 60  # minutes
+    instance_type: mac_mini_m2  # Codemagic cloud Mac (free tier: 500 min/month)
+
+    # ── App Store Connect API integration (Codemagic UI → Teams → Integrations
+    #    → Developer Portal → "Codemagic Admin" key, Admin role — needed for
+    #    automatic certificate/profile management) — used for automatic code
+    #    signing and the TestFlight publishing step below. ──
+    integrations:
+      app_store_connect: Codemagic Admin
+
+    environment:
+      # ── Xcode & Node Versions ──
+      xcode: latest
+      node: "22"
+
+      # ── Code Signing (auto-managed via the App Store Connect API key above) ──
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.burakakkaya.nextgammon
+
+      vars:
+        APP_NAME: "NEXTGAMMON"
+        BUNDLE_ID: "com.burakakkaya.nextgammon"
+        XCODE_PROJECT: "ios/App/App.xcodeproj"
+        XCODE_SCHEME: "App"
+
+    triggering:
+      events:
+        - tag        # auto-build when you push a git tag (e.g. v1.0.0)
+      tag_patterns:
+        - pattern: "v*"
+          include: true
+
+    scripts:
+      # 1. Install Node dependencies
+      - name: Install npm dependencies
+        script: npm ci
+
+      # 2. Build Vite web bundle
+      - name: Build web app
+        script: npm run build
+
+      # 3. Sync Capacitor web assets → iOS native project
+      - name: Capacitor sync iOS
+        script: npx cap sync ios
+
+      # 4. Set app version from git tag (e.g. v1.2.3 → 1.2.3)
+      - name: Set version from git tag
+        script: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          VERSION=${LATEST_TAG#v}
+          echo "Setting version: $VERSION"
+          agvtool new-marketing-version "$VERSION"
+          agvtool new-version -all $(($(git rev-list --count HEAD)))
+        working_directory: ios/App
+
+      # 5. Archive & export IPA for App Store
+      - name: Build IPA (App Store)
+        script: |
+          xcode-project use-profiles
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --config Release \
+            --archive-directory "$CM_BUILD_DIR"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      # Auto-publish to TestFlight on every successful build
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false   # ← set to true for direct App Store release
+
+      # Email notification on build success/failure
+      email:
+        recipients:
+          - burakakkayaa@gmail.com
+        notify:
+          success: true
+          failure: true
+
+
+  # ────────────────────────────────────────────────────────────────────────────
+  #  2. Development Build (fast, no signing, just verify it builds)
+  # ────────────────────────────────────────────────────────────────────────────
+  dev-build-check:
+    name: "NEXTGAMMON — Dev Build Check"
+    max_build_duration: 15
+    instance_type: linux_x2
+
+    environment:
+      node: "22"
+
+    triggering:
+      events:
+        - push          # run on every push to main/dev branches
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+        - pattern: dev
+          include: true
+
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+
+      - name: TypeScript lint check
+        script: npm run lint
+
+      - name: Production build
+        script: npm run build
+
+      - name: Verify dist output
+        script: |
+          if [ -f "dist/index.html" ]; then
+            echo "✅ Build successful — dist/index.html exists"
+          else
+            echo "❌ Build failed — dist/index.html not found"
+            exit 1
+          fi

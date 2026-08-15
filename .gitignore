@@ -1,0 +1,17 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# iOS
+ios/App/Pods/
+ios/App/*.xcworkspace
+ios/App/build/
+ios/App/DerivedData/
+ios/**/xcuserdata/
+ios/**/*.xcuserstate
+ios/App/App/public/
