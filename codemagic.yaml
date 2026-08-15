@@ -15,8 +15,9 @@ workflows:
     instance_type: mac_mini_m2  # Codemagic cloud Mac (free tier: 500 min/month)
 
     # ── App Store Connect API integration (Codemagic UI → Teams → Integrations
-    #    → Developer Portal → "Codemagic Admin" key, Admin role) — used for the
-    #    signing-file fetch/create step below and the TestFlight publish step. ──
+    #    → Developer Portal → "Codemagic Admin" key, Admin role — needed for
+    #    automatic certificate/profile management) — used for automatic code
+    #    signing and the TestFlight publishing step below. ──
     integrations:
       app_store_connect: Codemagic Admin
 
@@ -25,8 +26,14 @@ workflows:
       xcode: latest
       node: "22"
 
-      groups:
-        - ios_signing  # CERTIFICATE_PRIVATE_KEY_B64 (base64 PEM, see fetch-signing-files below)
+      # ── Code Signing (auto-managed via the App Store Connect API key above —
+      #    reuses the account's existing App Store distribution certificate,
+      #    which already backs several other apps; the matching "NEXTGAMMON App
+      #    Store" provisioning profile was created once by hand in the Developer
+      #    Portal so this step has something to find). ──
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.burakakkaya.nextgammon
 
       vars:
         APP_NAME: "NEXTGAMMON"
@@ -64,26 +71,10 @@ workflows:
           agvtool new-version -all $(($(git rev-list --count HEAD)))
         working_directory: ios/App
 
-      # 5. Set up keychain + fetch (or create) a matching signing certificate/profile
-      - name: Set up keychain
-        script: keychain initialize
-      - name: Fetch signing files (create if missing)
-        script: |
-          # CERTIFICATE_PRIVATE_KEY_B64 is the PEM private key, base64-encoded
-          # so it survives being pasted into a single-line UI field intact.
-          export CERTIFICATE_PRIVATE_KEY=$(echo "$CERTIFICATE_PRIVATE_KEY_B64" | base64 --decode)
-          app-store-connect fetch-signing-files "$BUNDLE_ID" \
-            --type IOS_APP_STORE \
-            --certificate-key "$CERTIFICATE_PRIVATE_KEY" \
-            --create
-      - name: Add certificates to keychain
-        script: keychain add-certificates
-      - name: Set up code signing
-        script: xcode-project use-profiles
-
-      # 6. Archive & export IPA for App Store
+      # 5. Archive & export IPA for App Store
       - name: Build IPA (App Store)
         script: |
+          xcode-project use-profiles
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
