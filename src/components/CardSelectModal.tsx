@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Card, BossProtocol } from '../types';
 import { CardIcon } from './CardIcon';
-import { Sparkles, Play, CheckCircle2, Bot, Lock, Skull, Swords } from 'lucide-react';
+import { Sparkles, Play, CheckCircle2, Bot, Lock, Skull, Swords, Home } from 'lucide-react';
 
 interface CardSelectModalProps {
   mode: 'draft' | 'equip';
@@ -15,6 +15,10 @@ interface CardSelectModalProps {
   capturedCardIds: string[];
   bossName: string;
   onConfirmSelection: (selectedCard: Card) => void;
+  // This modal is portaled straight to document.body (see App.tsx), so it sits above
+  // PlatformFrame's own persistent header — including its "return to menu" button. Give it
+  // one of its own so backing out mid-draft/equip doesn't strand the player here.
+  onGoBack?: () => void;
 }
 
 const RARITY_STYLE: Record<string, { border: string; bg: string; text: string; shadow: string }> = {
@@ -34,6 +38,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
   capturedCardIds,
   bossName,
   onConfirmSelection,
+  onGoBack,
 }) => {
   // In equip mode, a card is unselectable if it was captured by the boss OR it's the card you
   // equipped last stage. If that leaves nothing pickable (e.g. your only card was just captured),
@@ -62,6 +67,18 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 grain bg-ink/95 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-8 overflow-y-auto min-h-screen text-text">
+      {/* Return to Main Menu — this modal is portaled above PlatformFrame's own header,
+          so it needs its own way out rather than stranding the player mid-selection. */}
+      {onGoBack && (
+        <button
+          onClick={onGoBack}
+          className="fixed top-4 left-4 sm:top-6 sm:left-6 z-20 p-2 rounded-lg bg-panel border border-line hover:border-player text-text-muted hover:text-player transition-colors"
+          title="Return to Main Menu"
+        >
+          <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      )}
+
       {/* Top Bar Header */}
       <div className="relative z-10 max-w-6xl w-full mx-auto text-center pt-2">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-panel border border-player/50 text-player font-mono text-xs uppercase tracking-widest mb-3 shadow-[0_0_15px_var(--player)]/30">

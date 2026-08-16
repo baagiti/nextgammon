@@ -2,17 +2,28 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { OpponentCard, BossProtocol } from '../types';
 import { CardIcon } from './CardIcon';
-import { Skull, Swords } from 'lucide-react';
+import { Skull, Swords, Home } from 'lucide-react';
 
 interface BossIntroOverlayProps {
   opponent: OpponentCard;
   protocol: BossProtocol | null;
   onEngage: () => void;
+  // Portaled to document.body above PlatformFrame's own header — needs its own way out.
+  onGoBack?: () => void;
 }
 
-export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, protocol, onEngage }) => {
+export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, protocol, onEngage, onGoBack }) => {
   return (
     <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 overflow-y-auto">
+      {onGoBack && (
+        <button
+          onClick={onGoBack}
+          className="fixed top-4 left-4 sm:top-6 sm:left-6 z-20 p-2 rounded-lg bg-panel border border-line hover:border-player text-text-muted hover:text-player transition-colors"
+          title="Return to Main Menu"
+        >
+          <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      )}
       {/* Alarm scanline wash */}
       <div
         className="pointer-events-none absolute inset-0 opacity-20"

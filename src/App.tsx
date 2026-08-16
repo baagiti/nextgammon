@@ -1320,6 +1320,11 @@ export default function App() {
           opponent={currentOpponent}
           protocol={BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null}
           onEngage={handleEngageBoss}
+          onGoBack={() => {
+            setShowBossIntro(false);
+            setActiveBossProtocolId(null);
+            setActiveScreen('MAIN_MENU');
+          }}
         />,
         document.body
       )}
@@ -1337,6 +1342,11 @@ export default function App() {
           capturedCardIds={run?.capturedCardIds || []}
           bossName={currentOpponent?.bossName || 'CPU'}
           onConfirmSelection={handleConfirmCardSelection}
+          onGoBack={() => {
+            setShowCardSelectModal(false);
+            setActiveBossProtocolId(null);
+            setActiveScreen('MAIN_MENU');
+          }}
         />,
         document.body
       )}
