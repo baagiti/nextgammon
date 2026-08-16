@@ -170,8 +170,13 @@
 
 @layer utilities {
   /* Procedural material grain — static/interference in neon, wood/felt fiber in kıraathane.
-     Apply to a `position:relative; overflow:hidden` container. */
-  .grain {
+     Apply to a `position:relative; overflow:hidden` container.
+     :where() zeroes this rule's specificity so it only supplies a *default* position — any
+     real Tailwind positioning utility (fixed, absolute, sticky...) on the same element always
+     wins, regardless of class order or stylesheet source order. Without this, .grain's plain
+     position:relative silently overrode .fixed on elements combining both classes (e.g. every
+     full-screen modal that also used .grain), since both live in the same @layer utilities. */
+  :where(.grain) {
     position: relative;
   }
   .grain::after {

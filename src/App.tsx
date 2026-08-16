@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   GameSettings,
   MetaData,
@@ -1287,33 +1288,45 @@ export default function App() {
         </div>
       )}
 
+      </PlatformFrame>
+
+      {/* All full-screen overlays below are portaled straight to document.body — on the native
+          iOS WKWebView (Capacitor/TestFlight), position:fixed on elements nested inside
+          PlatformFrame's flex/overflow-hidden tree wasn't resolving against the real viewport,
+          so these rendered in normal document flow (stacked under the main menu) instead of
+          covering the screen. Rendering them as siblings of <body> sidesteps that entirely. */}
+
       {/* MARKED CHECKER SELECTION MODAL */}
-      <MarkedCheckerModal
-        isOpen={showMarkedModal}
-        type={markedModalType}
-        board={board}
-        onSelectPoint={handleSelectMarkedPoint}
-        currentSelectedPoint={
-          markedModalType === 'black_ice'
-            ? playerBlackIcePoint
-            : markedModalType === 'deadweight'
-            ? playerDeadweightPoint
-            : playerCourierPoint
-        }
-      />
+      {createPortal(
+        <MarkedCheckerModal
+          isOpen={showMarkedModal}
+          type={markedModalType}
+          board={board}
+          onSelectPoint={handleSelectMarkedPoint}
+          currentSelectedPoint={
+            markedModalType === 'black_ice'
+              ? playerBlackIcePoint
+              : markedModalType === 'deadweight'
+              ? playerDeadweightPoint
+              : playerCourierPoint
+          }
+        />,
+        document.body
+      )}
 
       {/* BOSS INTRO: protocol bosses declare their rule-break in a speech bubble before you equip */}
-      {showBossIntro && currentOpponent && (
+      {showBossIntro && currentOpponent && createPortal(
         <BossIntroOverlay
           opponent={currentOpponent}
           protocol={BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null}
           onEngage={handleEngageBoss}
-        />
+        />,
+        document.body
       )}
 
       {/* CARD SELECTION MODAL BEFORE MATCH — quick match keeps the old "draft 1 of 3" flow;
           a campaign run equips from your full collection instead. */}
-      {showCardSelectModal && (run ? true : !!draftCpuChoice) && (
+      {showCardSelectModal && (run ? true : !!draftCpuChoice) && createPortal(
         <CardSelectModal
           mode={run ? 'equip' : 'draft'}
           draftPool={draftPlayerChoices}
@@ -1324,31 +1337,34 @@ export default function App() {
           capturedCardIds={run?.capturedCardIds || []}
           bossName={currentOpponent?.bossName || 'CPU'}
           onConfirmSelection={handleConfirmCardSelection}
-        />
+        />,
+        document.body
       )}
 
       {/* CARD DETAIL / INSPECTION MODAL */}
-      {inspectedCard && (
+      {inspectedCard && createPortal(
         <CardDetailModal
           card={inspectedCard.card}
           ownerLabel={inspectedCard.ownerLabel}
           onClose={() => setInspectedCard(null)}
-        />
+        />,
+        document.body
       )}
 
       {/* 4. DRAFT REWARD MODAL */}
-      {activeScreen === 'DRAFT' && run && (
+      {activeScreen === 'DRAFT' && run && createPortal(
         <DraftModal
           choices={draftChoices}
           rerollsLeft={run.rerolls}
           onSelectCard={handleSelectDraftCard}
           onReroll={handleRerollDraft}
           onSkip={handleSkipDraft}
-        />
+        />,
+        document.body
       )}
 
       {/* 5. SHOP MODAL */}
-      {activeScreen === 'SHOP' && run && (
+      {activeScreen === 'SHOP' && run && createPortal(
         <ShopModal
           run={run}
           onBuyCard={(card) => {
@@ -1383,11 +1399,12 @@ export default function App() {
             }
           }}
           onClose={() => setActiveScreen('MAP')}
-        />
+        />,
+        document.body
       )}
 
       {/* 6. PERMANENT META LAB MODAL */}
-      {activeScreen === 'META_LAB' && (
+      {activeScreen === 'META_LAB' && createPortal(
         <MetaLabModal
           meta={meta}
           onPurchase={(upgradeId) => {
@@ -1396,9 +1413,9 @@ export default function App() {
             setMeta(updated);
           }}
           onClose={() => setActiveScreen(run ? 'MAP' : 'MAIN_MENU')}
-        />
+        />,
+        document.body
       )}
-      </PlatformFrame>
     </>
   );
 }
