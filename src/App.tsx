@@ -30,7 +30,7 @@ import {
 } from './game/backgammonEngine';
 import { soundFx } from './game/soundEngine';
 import confetti from 'canvas-confetti';
-import cyberpunkBeat from './assets/audio/cyberpunk-beat.mp3';
+import cyberpunkBeat from './assets/audio/home-theme.mp3';
 import gameplayAmbient from './assets/audio/gameplay-ambient.mp3';
 
 import { PlatformFrame } from './components/PlatformFrame';
@@ -220,13 +220,16 @@ export default function App() {
     soundFx.setVolume(settings.sfxVolume);
   }, [settings.soundEnabled, settings.sfxVolume]);
 
-  // Looping background music: plays on the main menu and the pre-match card draft screen only.
+  // Looping home-screen theme: plays continuously and uninterrupted from the moment the app
+  // opens through every pre-match screen — main menu, campaign map, boss intro, draft/equip —
+  // for both the quick 1v1 flow and the run flow. Only the live match itself (and its own
+  // gameplay ambient bed below) cuts it off.
   const bgMusicRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const audio = bgMusicRef.current;
     if (!audio) return;
     audio.volume = 0.08 * settings.sfxVolume;
-    const shouldPlay = settings.soundEnabled && (activeScreen === 'MAIN_MENU' || showCardSelectModal);
+    const shouldPlay = settings.soundEnabled && activeScreen !== 'MATCH';
     if (shouldPlay) {
       audio.play().catch(() => {
         // Browser blocked autoplay until a user gesture — retry on the next click.
@@ -239,7 +242,7 @@ export default function App() {
     } else {
       audio.pause();
     }
-  }, [activeScreen, showCardSelectModal, settings.soundEnabled, settings.sfxVolume]);
+  }, [activeScreen, settings.soundEnabled, settings.sfxVolume]);
 
   // Looping ambient city sound bed: plays only during live gameplay (the match board itself).
   const gameplayAmbientRef = useRef<HTMLAudioElement | null>(null);
