@@ -317,9 +317,20 @@ export default function App() {
       return;
     }
 
-    // QUICK MATCH: always GLITCH-9, shared 3-card pool for both sides — unchanged from before.
+    // Reaching here with no active run means this was called from a stale reference — fall
+    // through to a quick match rather than silently doing nothing.
+    handleStartQuickMatch();
+  };
+
+  // QUICK MATCH: always GLITCH-9, a random 3-card pool shared by both sides. Deliberately
+  // independent of `run` — this must behave the same whether or not a campaign is in progress,
+  // since "START 1v1 MATCH" on the main menu is reachable at any time (including mid-run, now
+  // that there's a way back to the main menu without abandoning the run).
+  const handleStartQuickMatch = () => {
+    soundFx.playClick();
     const opponent = getOpponentForStage(1);
     setCurrentOpponent(opponent);
+    setActiveBossProtocolId(null);
 
     const shuffled = [...PLAYER_CARDS].filter((c) => !c.exclusiveToBoss).sort(() => Math.random() - 0.5);
     const pool = shuffled.slice(0, 3);
@@ -1085,7 +1096,7 @@ export default function App() {
       setActiveScreen('MAP');
       return;
     }
-    handleStartMatch();
+    handleStartQuickMatch();
   };
 
   // Select card from Draft Modal
@@ -1198,7 +1209,7 @@ export default function App() {
               {run ? 'RESUME RUN' : 'START RUN'}
             </button>
             <button
-              onClick={handleStartMatch}
+              onClick={handleStartQuickMatch}
               className="w-full py-4 rounded-xl bg-gradient-to-r from-player via-success to-success text-ink font-black text-base uppercase tracking-wider shadow-[0_0_30px_var(--player)]/70 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Play className="w-5 h-5 fill-current" />
