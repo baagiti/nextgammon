@@ -32,6 +32,11 @@ import { soundFx } from './game/soundEngine';
 import confetti from 'canvas-confetti';
 import cyberpunkBeat from './assets/audio/home-theme.mp3';
 import gameplayAmbient from './assets/audio/gameplay-ambient.mp3';
+import gameplayAmbient2 from './assets/audio/gameplay-ambient-2.mp3';
+import bossAmbient from './assets/audio/boss-ambient.mp3';
+// Non-boss gameplay picks one of these at random per match (see handleConfirmCardSelection).
+// Protocol boss matches always use the single dedicated boss track instead.
+const NORMAL_GAMEPLAY_TRACKS = [gameplayAmbient, gameplayAmbient2];
 
 import { PlatformFrame } from './components/PlatformFrame';
 import { ViewStage } from './components/CyberSkyline';
@@ -214,6 +219,10 @@ export default function App() {
   // Post-match draft choices state
   const [draftChoices, setDraftChoices] = useState<Card[]>([]);
 
+  // Which normal-gameplay ambient track is live for the current match — picked once at
+  // handleConfirmCardSelection, not re-rolled by unrelated effect dependencies (volume, etc).
+  const [activeGameplayTrack, setActiveGameplayTrack] = useState<string>(gameplayAmbient);
+
   // Sound settings sync
   useEffect(() => {
     soundFx.setEnabled(settings.soundEnabled);
@@ -254,18 +263,19 @@ export default function App() {
     audio.volume = (activeBossProtocolId ? 0.12 : 0.3) * settings.sfxVolume;
     const shouldPlay = settings.soundEnabled && activeScreen === 'MATCH' && !showCardSelectModal;
     if (shouldPlay) {
-      if (audio.paused) {
-        audio.play().catch(() => {
-          const retryOnGesture = () => {
-            audio.play().catch(() => {});
-          };
-          window.addEventListener('pointerdown', retryOnGesture, { once: true });
-        });
-      }
+      // Called unconditionally (not gated on audio.paused) — a changed `src` needs a fresh
+      // .play() call to actually start the new track; calling it while already playing the
+      // same track is a harmless no-op.
+      audio.play().catch(() => {
+        const retryOnGesture = () => {
+          audio.play().catch(() => {});
+        };
+        window.addEventListener('pointerdown', retryOnGesture, { once: true });
+      });
     } else {
       audio.pause();
     }
-  }, [activeScreen, showCardSelectModal, settings.soundEnabled, settings.sfxVolume, activeBossProtocolId]);
+  }, [activeScreen, showCardSelectModal, settings.soundEnabled, settings.sfxVolume, activeBossProtocolId, activeGameplayTrack]);
 
   // Start a new run
   const handleStartRun = () => {
@@ -359,6 +369,12 @@ export default function App() {
     const protocol = stage?.protocolId ? BOSS_PROTOCOLS.find((p) => p.id === stage.protocolId) : undefined;
     // MIRROR CORE plays a live copy of whatever the player just equipped.
     const cpuCard = protocol?.id === 'mirror_core' ? selectedPlayerCard : draftCpuChoice || (run ? null : PLAYER_CARDS[1]);
+
+    // Non-boss matches pick one of the normal ambient tracks at random for this match;
+    // protocol boss matches always get the single dedicated boss track.
+    setActiveGameplayTrack(
+      protocol ? bossAmbient : NORMAL_GAMEPLAY_TRACKS[Math.floor(Math.random() * NORMAL_GAMEPLAY_TRACKS.length)]
+    );
 
     setActivePlayerCard(selectedPlayerCard);
     setActiveCpuCard(cpuCard);
@@ -1174,7 +1190,7 @@ export default function App() {
   return (
     <>
       <audio ref={bgMusicRef} src={cyberpunkBeat} loop preload="auto" />
-      <audio ref={gameplayAmbientRef} src={gameplayAmbient} loop preload="auto" />
+      <audio ref={gameplayAmbientRef} src={activeGameplayTrack} loop preload="auto" />
       <PlatformFrame
       settings={settings}
       onUpdateSettings={(newSet) => setSettings((s) => ({ ...s, ...newSet }))}
