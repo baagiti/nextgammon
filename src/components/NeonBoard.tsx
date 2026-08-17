@@ -946,7 +946,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       {/* Match Victory / Defeat Overlay — a thin HUD readout, not a solid panel: the AR
           projection stays see-through here too, so the street shows through behind it. */}
       {isMatchOver && (
-        <div className="absolute inset-0 z-50 bg-ink/10 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 animate-fade-in overflow-hidden">
+        <div className="absolute inset-0 z-50 bg-ink/10 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-4 sm:p-6 animate-fade-in overflow-y-auto">
           {/* Outcome-tinted scanline wash, echoing the boss-intro alarm treatment */}
           <div
             className="pointer-events-none absolute inset-0 opacity-20"
@@ -970,7 +970,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.35 }}
-            className="relative w-full max-w-sm px-6 py-8 flex flex-col items-center"
+            className="relative w-full max-w-sm px-6 py-4 sm:py-6 my-auto flex flex-col items-center"
           >
             {/* HUD corner brackets */}
             <span className={`absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
@@ -986,14 +986,14 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                     : ['0 0 25px 3px rgba(255,45,120,0.5)', '0 0 45px 8px rgba(255,45,120,0.85)', '0 0 25px 3px rgba(255,45,120,0.5)'],
               }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              className={`w-20 h-20 rounded-2xl border-2 flex items-center justify-center mb-4 ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 flex items-center justify-center mb-2 ${
                 winner === 'player' ? 'bg-player/15 border-player' : 'bg-opponent/15 border-opponent'
               }`}
             >
-              {winner === 'player' ? <Trophy className="w-10 h-10 text-player" /> : <ServerCrash className="w-10 h-10 text-opponent" />}
+              {winner === 'player' ? <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-player" /> : <ServerCrash className="w-7 h-7 sm:w-8 sm:h-8 text-opponent" />}
             </motion.div>
 
-            <h2 className="title-glitch-in font-display text-3xl sm:text-4xl font-black tracking-widest mb-2 uppercase">
+            <h2 className="title-glitch-in font-display text-2xl sm:text-3xl font-black tracking-widest mb-1 uppercase">
               {winner === 'player' ? (
                 <span className="text-player drop-shadow-[0_2px_12px_var(--player)]">MATCH VICTORY</span>
               ) : (
@@ -1001,7 +1001,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               )}
             </h2>
 
-            <p className="text-sm text-text max-w-md mb-6 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            <p className="text-xs sm:text-sm text-text max-w-md mb-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
               {winner === 'player'
                 ? isRunMatch
                   ? 'You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.'
@@ -1012,7 +1012,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             </p>
 
             {totalChipsEarned > 0 && (
-              <div className="w-full max-w-[220px] mb-6 rounded-lg border border-line bg-panel/70 px-3 py-2 font-mono text-[10px] sm:text-[11px]">
+              <div className="w-full max-w-[220px] mb-3 rounded-lg border border-line bg-panel/70 px-3 py-1.5 font-mono text-[10px] sm:text-[11px]">
                 <div className="flex items-center gap-1.5 mb-1.5 text-text-muted uppercase tracking-wider text-[9px]">
                   <Coins className="w-3 h-3 text-player" />
                   Neon Chips earned
