@@ -224,5 +224,18 @@
     0%, 4%, 8%, 70%, 100% { opacity: var(--sign-glow); }
     5%, 7% { opacity: calc(var(--sign-glow) * 0.25); }
   }
+
+  /* One-shot glitch reveal for the match-result title — a signal locking in, not a decal fading in */
+  .title-glitch-in {
+    animation: titleGlitch 0.5s steps(2, end) 1;
+  }
+  @keyframes titleGlitch {
+    0% { clip-path: inset(0 0 90% 0); transform: translate(-3px, 0); }
+    15% { clip-path: inset(15% 0 55% 0); transform: translate(3px, 0); }
+    30% { clip-path: inset(55% 0 5% 0); transform: translate(-2px, 0); }
+    45% { clip-path: inset(25% 0 35% 0); transform: translate(2px, 0); }
+    60% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+    100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+  }
 }
 

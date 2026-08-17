@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { BoardState, PlayerId, Card, OpponentCard, GameSettings, BossProtocol } from '../types';
 import { ValidMoveResult, isHomeBoardReady } from '../game/backgammonEngine';
 import { soundFx } from '../game/soundEngine';
-import { Dices, RotateCcw, RotateCw, AlertCircle, Sparkles, Shield, ChevronRight, ArrowUpRight, CheckCircle2, Snowflake, Anchor, Navigation, Eye, EyeOff, Zap } from 'lucide-react';
+import { Dices, RotateCcw, RotateCw, AlertCircle, Sparkles, Shield, ChevronRight, ArrowUpRight, CheckCircle2, Snowflake, Anchor, Navigation, Eye, EyeOff, Zap, Trophy, ServerCrash } from 'lucide-react';
 import { ViewStage } from './CyberSkyline';
 import { CardIcon } from './CardIcon';
 
@@ -49,6 +49,7 @@ interface NeonBoardProps {
   mutationFlashVariant?: 'card' | 'protocol';
   viewStage?: ViewStage;
   onCycleViewStage?: () => void;
+  isRunMatch?: boolean;
 }
 
 export const NeonBoard: React.FC<NeonBoardProps> = ({
@@ -93,6 +94,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   mutationFlashVariant = 'card',
   viewStage = 'table',
   onCycleViewStage,
+  isRunMatch = false,
 }) => {
   const [selectedPoint, setSelectedPoint] = useState<number | 'bar' | null>(null);
   const isLookingAround = viewStage !== 'table';
@@ -920,32 +922,83 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       {/* Match Victory / Defeat Overlay — a thin HUD readout, not a solid panel: the AR
           projection stays see-through here too, so the street shows through behind it. */}
       {isMatchOver && (
-        <div className="absolute inset-0 z-50 bg-ink/10 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 animate-fade-in">
-          <div className="w-20 h-20 rounded-2xl bg-player/15 border-2 border-player flex items-center justify-center mb-4 shadow-[0_0_40px_var(--player)]">
-            <Sparkles className="w-10 h-10 text-player" />
-          </div>
+        <div className="absolute inset-0 z-50 bg-ink/10 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 animate-fade-in overflow-hidden">
+          {/* Outcome-tinted scanline wash, echoing the boss-intro alarm treatment */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-20"
+            style={{
+              background: `repeating-linear-gradient(0deg, ${
+                winner === 'player' ? 'rgba(0,229,255,0.18)' : 'rgba(255,45,120,0.18)'
+              } 0px, transparent 1.5px, transparent 3.5px)`,
+            }}
+          />
+          {/* Radial outcome glow burst behind the panel */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: `radial-gradient(circle at 50% 42%, color-mix(in oklab, var(--${
+                winner === 'player' ? 'player' : 'opponent'
+              }) 20%, transparent) 0%, transparent 60%)`,
+            }}
+          />
 
-          <h2 className="font-display text-3xl sm:text-4xl font-black tracking-widest text-text mb-2 uppercase">
-            {winner === 'player' ? (
-              <span className="text-player drop-shadow-[0_2px_12px_var(--player)]">MATCH VICTORY!</span>
-            ) : (
-              <span className="text-opponent drop-shadow-[0_2px_12px_var(--opponent)]">SYSTEM DEFEAT</span>
-            )}
-          </h2>
-
-          <p className="text-sm text-text max-w-md mb-6 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-            {winner === 'player'
-              ? 'You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.'
-              : 'Your backgammon core was compromised by the AI boss. Convert your progress into Cyber-Data!'}
-          </p>
-
-          <button
-            onClick={onNextMatch}
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-player to-success text-ink font-black text-sm uppercase tracking-wider shadow-[0_0_30px_var(--player)]/70 hover:scale-105 transition-all flex items-center gap-2"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35 }}
+            className="relative w-full max-w-sm px-6 py-8 flex flex-col items-center"
           >
-            CONTINUE
-            <ChevronRight className="w-5 h-5" />
-          </button>
+            {/* HUD corner brackets */}
+            <span className={`absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
+            <span className={`absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 rounded-tr-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
+            <span className={`absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 rounded-bl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
+            <span className={`absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
+
+            <motion.div
+              animate={{
+                boxShadow:
+                  winner === 'player'
+                    ? ['0 0 25px 3px rgba(0,229,255,0.5)', '0 0 45px 8px rgba(0,229,255,0.85)', '0 0 25px 3px rgba(0,229,255,0.5)']
+                    : ['0 0 25px 3px rgba(255,45,120,0.5)', '0 0 45px 8px rgba(255,45,120,0.85)', '0 0 25px 3px rgba(255,45,120,0.5)'],
+              }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+              className={`w-20 h-20 rounded-2xl border-2 flex items-center justify-center mb-4 ${
+                winner === 'player' ? 'bg-player/15 border-player' : 'bg-opponent/15 border-opponent'
+              }`}
+            >
+              {winner === 'player' ? <Trophy className="w-10 h-10 text-player" /> : <ServerCrash className="w-10 h-10 text-opponent" />}
+            </motion.div>
+
+            <h2 className="title-glitch-in font-display text-3xl sm:text-4xl font-black tracking-widest mb-2 uppercase">
+              {winner === 'player' ? (
+                <span className="text-player drop-shadow-[0_2px_12px_var(--player)]">MATCH VICTORY</span>
+              ) : (
+                <span className="text-opponent drop-shadow-[0_2px_12px_var(--opponent)]">SYSTEM DEFEAT</span>
+              )}
+            </h2>
+
+            <p className="text-sm text-text max-w-md mb-6 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+              {winner === 'player'
+                ? isRunMatch
+                  ? 'You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.'
+                  : 'You dismantled the CPU opponent grid! Run it back for another round.'
+                : isRunMatch
+                ? 'Your backgammon core was compromised by the AI boss. Convert your progress into Cyber-Data!'
+                : 'Your backgammon core was compromised by the CPU. Run it back for a rematch.'}
+            </p>
+
+            <button
+              onClick={onNextMatch}
+              className={`px-8 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all flex items-center gap-2 hover:scale-105 active:scale-95 ${
+                winner === 'player'
+                  ? 'bg-gradient-to-r from-player to-success text-ink shadow-[0_0_30px_var(--player)]/70'
+                  : 'bg-gradient-to-r from-opponent to-danger text-ink shadow-[0_0_30px_var(--opponent)]/70'
+              }`}
+            >
+              CONTINUE
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </motion.div>
         </div>
       )}
     </motion.div>

@@ -1305,6 +1305,7 @@ export default function App() {
             onCycleViewStage={cycleViewStage}
             isMatchOver={isMatchOver}
             winner={matchWinner}
+            isRunMatch={!!run}
             onNextMatch={handleContinueAfterMatch}
             onPassTurn={handlePassTurn}
             canDiscardDie={canDiscardDie}
