@@ -237,7 +237,7 @@ export default function App() {
   useEffect(() => {
     const audio = bgMusicRef.current;
     if (!audio) return;
-    audio.volume = 0.08 * settings.sfxVolume;
+    audio.volume = 0.16 * settings.sfxVolume;
     const shouldPlay = settings.soundEnabled && activeScreen !== 'MATCH';
     if (shouldPlay) {
       audio.play().catch(() => {
@@ -260,7 +260,7 @@ export default function App() {
     if (!audio) return;
     // The city sits under the game by default; a protocol boss fight ducks it further — the
     // street recedes, the AR projection locks in, and the fight goes quiet and close.
-    audio.volume = (activeBossProtocolId ? 0.12 : 0.3) * settings.sfxVolume;
+    audio.volume = (activeBossProtocolId ? 0.24 : 0.6) * settings.sfxVolume;
     const shouldPlay = settings.soundEnabled && activeScreen === 'MATCH' && !showCardSelectModal;
     if (shouldPlay) {
       // Called unconditionally (not gated on audio.paused) — a changed `src` needs a fresh
