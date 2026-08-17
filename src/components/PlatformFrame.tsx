@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameSettings } from '../types';
-import { Smartphone, Monitor, Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Palette, Home } from 'lucide-react';
+import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Palette, Home } from 'lucide-react';
 import { PortraitGuard } from './PortraitGuard';
 import { CyberSkyline, ViewStage } from './CyberSkyline';
 
@@ -122,66 +122,25 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
               title="Volume"
             />
           </div>
-
-          {/* Platform View Mode Toggle: Desktop vs Mobile Frame */}
-          <div className="hidden sm:flex items-center bg-ink rounded-lg p-0.5 border border-line">
-            <button
-              onClick={() => onUpdateSettings({ viewMode: 'desktop' })}
-              className={`p-1 rounded text-xs font-bold transition-all ${
-                settings.viewMode === 'desktop' ? 'bg-player text-ink shadow-[0_0_12px_var(--player)]/40' : 'text-text-muted hover:text-text'
-              }`}
-              title="Full Width Desktop Mode"
-            >
-              <Monitor className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              onClick={() => onUpdateSettings({ viewMode: 'ios' })}
-              className={`p-1 rounded text-xs font-bold transition-all ${
-                settings.viewMode === 'ios' ? 'bg-player text-ink shadow-[0_0_12px_var(--player)]/40' : 'text-text-muted hover:text-text'
-              }`}
-              title="Mobile Landscape Frame"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-            </button>
-          </div>
         </div>
       </header>
 
-      {/* Main Container Wrapper (Handles iOS Landscape device frame vs Fullscreen Desktop) */}
+      {/* Main Container Wrapper — always full-screen; the app targets iPad/desktop only, no
+          mobile frame mockup. Offset right only for the live board so the AR street scene stays
+          visible on its left; every other screen (including the menu) is centered. */}
       <main className="flex-1 min-h-0 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-4 relative overflow-hidden">
-        {settings.viewMode === 'ios' ? (
-          /* iOS Mobile LANDSCAPE Frame Mockup */
-          <div className="relative w-full max-w-[860px] h-[480px] bg-ink border-[10px] border-panel rounded-[36px] shadow-[0_0_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col my-auto">
-            {/* iOS Left Camera/Speaker Notch in Landscape */}
-            <div className="w-4 h-24 bg-panel rounded-r-xl absolute left-0 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center justify-center gap-2">
-              <div className="w-1 h-8 bg-line rounded-full" />
-            </div>
-
-            {/* Content Container */}
-            <div className="flex-1 min-h-0 pl-5 pr-2 py-2 overflow-hidden flex flex-col justify-between">
-              {children}
-            </div>
-
-            {/* iOS Bottom Home Bar */}
-            <div className="w-28 h-1 bg-line-strong rounded-full mx-auto my-1 shrink-0" />
-          </div>
-        ) : (
-          /* Full Desktop Steam Mode — offset right only for the live board so the AR street
-             scene stays visible on its left; every other screen (including the menu) is centered. */
-          <div
-            className={`w-full max-w-[900px] max-h-full flex flex-col justify-center overflow-hidden ${
-              offsetForBoard ? 'ml-[22%] mr-2 sm:ml-[26%] sm:mr-4' : 'mx-auto'
-            }`}
-          >
-            {children}
-          </div>
-        )}
+        <div
+          className={`w-full max-w-[900px] max-h-full flex flex-col justify-center overflow-hidden ${
+            offsetForBoard ? 'ml-[22%] mr-2 sm:ml-[26%] sm:mr-4' : 'mx-auto'
+          }`}
+        >
+          {children}
+        </div>
       </main>
 
       {/* Footer bar styled per theme */}
       <footer className="h-7 bg-black border-t border-line flex items-center px-4 justify-between text-[9px] uppercase tracking-[0.2em] opacity-60 font-bold text-text-muted shrink-0">
-        <span>Build v0.9.12-ALPHA (MOBILE_LANDSCAPE_READY)</span>
+        <span>Build v0.9.12-ALPHA (IPAD_READY)</span>
         <span className="text-player">© 2026 NEON_ROGUE_STUDIOS</span>
       </footer>
 
