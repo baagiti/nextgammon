@@ -4,6 +4,31 @@ import { STARTER_CARD_ID } from './campaignData';
 
 const META_STORAGE_KEY = 'NEXTGAMMON_META_PROGRESSION_V1';
 
+function defaultMetaData(): MetaData {
+  return {
+    neonChips: 150, // Starting bonus Neon Chips so user can inspect meta lab immediately!
+    unlockedUpgrades: {},
+    totalGamesPlayed: 0,
+    totalWins: 0,
+    highestStage: 1,
+    unlockedCards: PLAYER_CARDS.filter((c) => c.unlockedByDefault).map((c) => c.id),
+    selectedDiceSkin: 'neon_cyan',
+    totalMatchesPlayed: 0,
+    totalMatchesWon: 0,
+    totalHits: 0,
+    totalGammonWins: 0,
+    totalQuickMatchWins: 0,
+    totalRunsCompleted: 0,
+    totalProtocolsCleared: 0,
+    totalLifetimeChips: 0,
+    maxConsecutiveLossesEver: 0,
+    totalComebackWins: 0,
+    totalFlawlessRunCompletions: 0,
+    cardsPlayedQuickMatch: [],
+    unlockedAchievements: [],
+  };
+}
+
 export function loadMetaData(): MetaData {
   try {
     const dataStr = localStorage.getItem(META_STORAGE_KEY);
@@ -15,22 +40,16 @@ export function loadMetaData(): MetaData {
         parsed.neonChips = parsed.cyberData;
         delete parsed.cyberData;
       }
-      return parsed;
+      // Merge onto the defaults so any field added after a player's save was written (e.g. the
+      // whole achievements/lifetime-stats block) comes back as a safe zero/empty value instead
+      // of undefined -> NaN or a missing array crashing achievement checks.
+      return { ...defaultMetaData(), ...parsed };
     }
   } catch (e) {
     console.error('Failed to load meta data', e);
   }
 
-  // Default initial MetaData
-  return {
-    neonChips: 150, // Starting bonus Neon Chips so user can inspect meta lab immediately!
-    unlockedUpgrades: {},
-    totalGamesPlayed: 0,
-    totalWins: 0,
-    highestStage: 1,
-    unlockedCards: PLAYER_CARDS.filter((c) => c.unlockedByDefault).map((c) => c.id),
-    selectedDiceSkin: 'neon_cyan',
-  };
+  return defaultMetaData();
 }
 
 export function saveMetaData(meta: MetaData): void {

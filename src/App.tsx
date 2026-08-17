@@ -18,6 +18,7 @@ import {
   purchaseMetaUpgrade,
 } from './game/runManager';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID } from './game/campaignData';
+import { evaluateAchievements } from './game/achievements';
 import {
   createInitialBoard,
   rollDice,
@@ -90,6 +91,22 @@ export default function App() {
 
   const [meta, setMeta] = useState<MetaData>(loadMetaData);
   const [run, setRun] = useState<RunState | null>(null);
+
+  // Single chokepoint for any meta-stat change: merges the partial update onto the current meta,
+  // checks it against the achievement conditions, and persists in one shot. Using this everywhere
+  // a stat changes (instead of ad-hoc setMeta/saveMetaData calls) means achievements can never be
+  // missed just because a call site forgot to check them.
+  const applyMetaUpdate = (partial: Partial<MetaData>): MetaData => {
+    const merged: MetaData = { ...meta, ...partial };
+    const newlyUnlocked = evaluateAchievements(merged);
+    const finalMeta: MetaData =
+      newlyUnlocked.length > 0
+        ? { ...merged, unlockedAchievements: [...merged.unlockedAchievements, ...newlyUnlocked] }
+        : merged;
+    setMeta(finalMeta);
+    saveMetaData(finalMeta);
+    return finalMeta;
+  };
 
   // Active View Screen: 'MAIN_MENU' | 'MAP' | 'MATCH' | 'DRAFT' | 'SHOP' | 'META_LAB'
   const [activeScreen, setActiveScreen] = useState<string>('MAIN_MENU');
@@ -411,6 +428,12 @@ export default function App() {
     setTurnHistory([]);
     setMatchHitCount(0);
 
+    const quickMatchCardUpdate =
+      !run && !meta.cardsPlayedQuickMatch.includes(selectedPlayerCard.id)
+        ? { cardsPlayedQuickMatch: [...meta.cardsPlayedQuickMatch, selectedPlayerCard.id] }
+        : {};
+    applyMetaUpdate({ totalMatchesPlayed: meta.totalMatchesPlayed + 1, ...quickMatchCardUpdate });
+
     // Reset card marked points
     setPlayerBlackIcePoint(null);
     setCpuBlackIcePoint(null);
@@ -662,9 +685,7 @@ export default function App() {
       setFirstHitInTurn(false);
       setShakeToken((t) => t + 1);
       setMatchHitCount((c) => c + 1);
-      const chipsMeta: MetaData = { ...meta, neonChips: meta.neonChips + 10 };
-      setMeta(chipsMeta);
-      saveMetaData(chipsMeta);
+      applyMetaUpdate({ neonChips: meta.neonChips + 10, totalHits: meta.totalHits + 1, totalLifetimeChips: meta.totalLifetimeChips + 10 });
     } else if (move.to === 'off') {
       soundFx.playBearOff();
       fireBearOffConfetti();
@@ -1087,9 +1108,13 @@ export default function App() {
     // whatever run is (or isn't) in progress, since it's tracked on `meta`, not on `run`.
     if (!run) {
       if (winnerId === 'player') {
-        const updatedMeta: MetaData = { ...meta, neonChips: meta.neonChips + 100 };
-        setMeta(updatedMeta);
-        saveMetaData(updatedMeta);
+        applyMetaUpdate({
+          neonChips: meta.neonChips + 100,
+          totalLifetimeChips: meta.totalLifetimeChips + 100,
+          totalMatchesWon: meta.totalMatchesWon + 1,
+          totalQuickMatchWins: meta.totalQuickMatchWins + 1,
+          totalGammonWins: meta.totalGammonWins + (wasMars ? 1 : 0),
+        });
       }
       return;
     }
@@ -1101,6 +1126,9 @@ export default function App() {
       // hostage) and adds this stage's fixed reward.
       const rewardCard = PLAYER_CARDS.find((c) => c.id === stage.rewardCardId);
       const newDeck = rewardCard && !run.deck.some((c) => c.id === rewardCard.id) ? [...run.deck, rewardCard] : run.deck;
+      const wasComeback = run.capturedCardIds.length > 0;
+      const clearedFinalStage = run.stage === run.maxStages;
+      const flawlessSoFar = run.losses === 0;
 
       const updatedRun: RunState = {
         ...run,
@@ -1114,13 +1142,18 @@ export default function App() {
       };
       setRun(updatedRun);
 
-      const updatedMeta: MetaData = {
-        ...meta,
+      applyMetaUpdate({
         neonChips: meta.neonChips + 1000,
+        totalLifetimeChips: meta.totalLifetimeChips + 1000,
         highestStage: Math.max(meta.highestStage, run.stage),
-      };
-      setMeta(updatedMeta);
-      saveMetaData(updatedMeta);
+        totalWins: meta.totalWins + 1,
+        totalMatchesWon: meta.totalMatchesWon + 1,
+        totalGammonWins: meta.totalGammonWins + (wasMars ? 1 : 0),
+        totalComebackWins: meta.totalComebackWins + (wasComeback ? 1 : 0),
+        totalProtocolsCleared: meta.totalProtocolsCleared + (stage.kind === 'protocol' ? 1 : 0),
+        totalRunsCompleted: meta.totalRunsCompleted + (clearedFinalStage ? 1 : 0),
+        totalFlawlessRunCompletions: meta.totalFlawlessRunCompletions + (clearedFinalStage && flawlessSoFar ? 1 : 0),
+      });
     } else {
       // Losing lets you retry the same stage indefinitely — the run never resets. Only a mars
       // captures the equipped card, and only up to 2 in a row (no further loss on the 3rd+ defeat).
@@ -1136,6 +1169,8 @@ export default function App() {
         losses: run.losses + 1,
       };
       setRun(updatedRun);
+
+      applyMetaUpdate({ maxConsecutiveLossesEver: Math.max(meta.maxConsecutiveLossesEver, updatedRun.consecutiveLosses) });
     }
   };
 

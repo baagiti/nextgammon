@@ -140,9 +140,25 @@ export interface RunState {
 export interface MetaData {
   neonChips: number; // Permanent currency shared between 1v1 and run mode — earned by hitting checkers and winning matches
   unlockedUpgrades: Record<string, number>; // upgradeId -> level
-  totalGamesPlayed: number;
-  totalWins: number;
+  totalGamesPlayed: number; // runs started (legacy name — kept for the existing Cyber Lab footer stat)
+  totalWins: number; // run-mode stage wins
   highestStage: number;
   unlockedCards: string[];
   selectedDiceSkin: string;
+
+  // Lifetime stats — feed the achievement system in game/achievements.ts. Never decrease, even
+  // when the thing they're derived from (e.g. neonChips) can be spent down.
+  totalMatchesPlayed: number;
+  totalMatchesWon: number;
+  totalHits: number;
+  totalGammonWins: number;
+  totalQuickMatchWins: number;
+  totalRunsCompleted: number;
+  totalProtocolsCleared: number;
+  totalLifetimeChips: number;
+  maxConsecutiveLossesEver: number;
+  totalComebackWins: number; // won a run-mode match despite already having a captured card
+  totalFlawlessRunCompletions: number; // completed all 44 stages of a run with zero losses along the way
+  cardsPlayedQuickMatch: string[]; // distinct card ids equipped in 1v1 quick matches
+  unlockedAchievements: string[];
 }
