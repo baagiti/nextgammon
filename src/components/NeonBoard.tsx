@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { BoardState, PlayerId, Card, OpponentCard, GameSettings, BossProtocol } from '../types';
 import { ValidMoveResult, isHomeBoardReady } from '../game/backgammonEngine';
 import { soundFx } from '../game/soundEngine';
-import { Dices, RotateCcw, RotateCw, AlertCircle, Sparkles, Shield, ChevronRight, ArrowUpRight, CheckCircle2, Snowflake, Anchor, Navigation, Eye, EyeOff, Zap, Trophy, ServerCrash } from 'lucide-react';
+import { Dices, RotateCcw, RotateCw, AlertCircle, Sparkles, Shield, ChevronRight, ArrowUpRight, CheckCircle2, Snowflake, Anchor, Navigation, Eye, EyeOff, Zap, Trophy, ServerCrash, Coins } from 'lucide-react';
 import { ViewStage } from './CyberSkyline';
 import { CardIcon } from './CardIcon';
 
@@ -50,6 +50,7 @@ interface NeonBoardProps {
   viewStage?: ViewStage;
   onCycleViewStage?: () => void;
   isRunMatch?: boolean;
+  matchHitCount?: number;
 }
 
 export const NeonBoard: React.FC<NeonBoardProps> = ({
@@ -95,6 +96,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   viewStage = 'table',
   onCycleViewStage,
   isRunMatch = false,
+  matchHitCount = 0,
 }) => {
   const [selectedPoint, setSelectedPoint] = useState<number | 'bar' | null>(null);
   const isLookingAround = viewStage !== 'table';
@@ -104,6 +106,12 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
   const isClockwise = boardDirection === 'clockwise';
   const isPlayerHomeReady = isHomeBoardReady(board, 'player');
+
+  // Neon Chips earned this match, for the post-match breakdown — hits pay out on win or loss,
+  // the match-result bonus only pays out on a win (1v1: 100, run mode: 1000).
+  const hitChipsEarned = matchHitCount * 10;
+  const resultChipsEarned = winner === 'player' ? (isRunMatch ? 1000 : 100) : 0;
+  const totalChipsEarned = hitChipsEarned + resultChipsEarned;
 
   // Bear-off GATING cards block bear-off entirely rather than firing on one move — a persistent
   // badge (instead of a one-off flash) so the player always knows why bear-off is locked.
@@ -986,6 +994,31 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                 ? 'Your backgammon core was compromised by the AI boss. Regroup and retry the stage.'
                 : 'Your backgammon core was compromised by the CPU. Run it back for a rematch.'}
             </p>
+
+            {totalChipsEarned > 0 && (
+              <div className="w-full max-w-[220px] mb-6 rounded-lg border border-line bg-panel/70 px-3 py-2 font-mono text-[10px] sm:text-[11px]">
+                <div className="flex items-center gap-1.5 mb-1.5 text-text-muted uppercase tracking-wider text-[9px]">
+                  <Coins className="w-3 h-3 text-player" />
+                  Neon Chips earned
+                </div>
+                {hitChipsEarned > 0 && (
+                  <div className="flex items-center justify-between text-text-muted">
+                    <span>{matchHitCount}&times; Opponent hit</span>
+                    <span className="text-text">+{hitChipsEarned}</span>
+                  </div>
+                )}
+                {resultChipsEarned > 0 && (
+                  <div className="flex items-center justify-between text-text-muted">
+                    <span>Match won</span>
+                    <span className="text-text">+{resultChipsEarned}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-line font-bold">
+                  <span className="text-text-muted">Total</span>
+                  <span className="text-player">+{totalChipsEarned}</span>
+                </div>
+              </div>
+            )}
 
             <button
               onClick={onNextMatch}

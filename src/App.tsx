@@ -212,6 +212,9 @@ export default function App() {
 
   const [isMatchOver, setIsMatchOver] = useState<boolean>(false);
   const [matchWinner, setMatchWinner] = useState<PlayerId | null>(null);
+  // Count of opponent checkers the player has hit this match, for the post-match Neon Chips
+  // earned breakdown — reset at match start (handleConfirmCardSelection), incremented on each hit.
+  const [matchHitCount, setMatchHitCount] = useState<number>(0);
 
   // History stack for current player turn (enables Undo Move & Reset Turn)
   const [turnHistory, setTurnHistory] = useState<{ board: BoardState; dice: number[] }[]>([]);
@@ -406,6 +409,7 @@ export default function App() {
     setDice([]);
     setIsDoubles(false);
     setTurnHistory([]);
+    setMatchHitCount(0);
 
     // Reset card marked points
     setPlayerBlackIcePoint(null);
@@ -657,6 +661,7 @@ export default function App() {
       soundFx.playHitBlot();
       setFirstHitInTurn(false);
       setShakeToken((t) => t + 1);
+      setMatchHitCount((c) => c + 1);
       const chipsMeta: MetaData = { ...meta, neonChips: meta.neonChips + 10 };
       setMeta(chipsMeta);
       saveMetaData(chipsMeta);
@@ -1312,6 +1317,7 @@ export default function App() {
             isMatchOver={isMatchOver}
             winner={matchWinner}
             isRunMatch={!!run}
+            matchHitCount={matchHitCount}
             onNextMatch={handleContinueAfterMatch}
             onPassTurn={handlePassTurn}
             canDiscardDie={canDiscardDie}
