@@ -8,7 +8,14 @@ export function loadMetaData(): MetaData {
   try {
     const dataStr = localStorage.getItem(META_STORAGE_KEY);
     if (dataStr) {
-      return JSON.parse(dataStr);
+      const parsed = JSON.parse(dataStr);
+      // Migrate pre-rename saves: the currency field was called `cyberData` before it became
+      // Neon Chips. Without this, existing players' balance reads as undefined -> NaN forever.
+      if (parsed.neonChips === undefined && typeof parsed.cyberData === 'number') {
+        parsed.neonChips = parsed.cyberData;
+        delete parsed.cyberData;
+      }
+      return parsed;
     }
   } catch (e) {
     console.error('Failed to load meta data', e);
@@ -16,7 +23,7 @@ export function loadMetaData(): MetaData {
 
   // Default initial MetaData
   return {
-    cyberData: 150, // Starting bonus Cyber-Data so user can inspect meta lab immediately!
+    neonChips: 150, // Starting bonus Neon Chips so user can inspect meta lab immediately!
     unlockedUpgrades: {},
     totalGamesPlayed: 0,
     totalWins: 0,
@@ -101,11 +108,11 @@ export function purchaseMetaUpgrade(meta: MetaData, upgradeId: string): MetaData
   if (currentLevel >= upgrade.maxLevel) return meta;
 
   const cost = upgrade.cost * (currentLevel + 1);
-  if (meta.cyberData < cost) return meta;
+  if (meta.neonChips < cost) return meta;
 
   const newMeta: MetaData = {
     ...meta,
-    cyberData: meta.cyberData - cost,
+    neonChips: meta.neonChips - cost,
     unlockedUpgrades: {
       ...meta.unlockedUpgrades,
       [upgradeId]: currentLevel + 1,

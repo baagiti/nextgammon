@@ -983,7 +983,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                   ? 'You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.'
                   : 'You dismantled the CPU opponent grid! Run it back for another round.'
                 : isRunMatch
-                ? 'Your backgammon core was compromised by the AI boss. Convert your progress into Cyber-Data!'
+                ? 'Your backgammon core was compromised by the AI boss. Regroup and retry the stage.'
                 : 'Your backgammon core was compromised by the CPU. Run it back for a rematch.'}
             </p>
 

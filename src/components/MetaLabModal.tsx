@@ -38,7 +38,7 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, on
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300 font-black text-sm shadow-md">
               <Sparkles className="w-5 h-5 text-cyan-400 animate-spin" />
-              <span>{meta.cyberData} CYBER-DATA</span>
+              <span>{meta.neonChips} NEON CHIPS</span>
             </div>
 
             <button
@@ -56,7 +56,7 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, on
             const currentLevel = meta.unlockedUpgrades[upgrade.id] || 0;
             const isMaxed = currentLevel >= upgrade.maxLevel;
             const nextCost = upgrade.cost * (currentLevel + 1);
-            const canAfford = meta.cyberData >= nextCost && !isMaxed;
+            const canAfford = meta.neonChips >= nextCost && !isMaxed;
             const IconComp = ICON_MAP[upgrade.icon] || Zap;
 
             return (
@@ -110,7 +110,7 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, on
                   ) : (
                     <>
                       <Sparkles className="w-3.5 h-3.5" />
-                      {nextCost} DATA
+                      {nextCost} CHIPS
                     </>
                   )}
                 </button>

@@ -138,7 +138,7 @@ export interface RunState {
 }
 
 export interface MetaData {
-  cyberData: number; // Permanent currency earned across runs
+  neonChips: number; // Permanent currency shared between 1v1 and run mode — earned by hitting checkers and winning matches
   unlockedUpgrades: Record<string, number>; // upgradeId -> level
   totalGamesPlayed: number;
   totalWins: number;

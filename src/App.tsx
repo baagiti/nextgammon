@@ -657,6 +657,9 @@ export default function App() {
       soundFx.playHitBlot();
       setFirstHitInTurn(false);
       setShakeToken((t) => t + 1);
+      const chipsMeta: MetaData = { ...meta, neonChips: meta.neonChips + 10 };
+      setMeta(chipsMeta);
+      saveMetaData(chipsMeta);
     } else if (move.to === 'off') {
       soundFx.playBearOff();
       fireBearOffConfetti();
@@ -1075,7 +1078,16 @@ export default function App() {
   // Handle Match End: campaign win/loss/card-capture bookkeeping. `wasMars` = the loser bore off
   // zero checkers (a gammon) — only a mars loss can cost the player their equipped card.
   const handleMatchEnd = (winnerId: PlayerId, wasMars: boolean) => {
-    if (!run) return;
+    // Quick 1v1 matches aren't part of a run — just the flat Neon Chips win bonus, shared with
+    // whatever run is (or isn't) in progress, since it's tracked on `meta`, not on `run`.
+    if (!run) {
+      if (winnerId === 'player') {
+        const updatedMeta: MetaData = { ...meta, neonChips: meta.neonChips + 100 };
+        setMeta(updatedMeta);
+        saveMetaData(updatedMeta);
+      }
+      return;
+    }
     const stage = CAMPAIGN_STAGES[run.stage - 1];
     if (!stage) return;
 
@@ -1099,7 +1111,7 @@ export default function App() {
 
       const updatedMeta: MetaData = {
         ...meta,
-        cyberData: meta.cyberData + (25 + run.stage * 15),
+        neonChips: meta.neonChips + 1000,
         highestStage: Math.max(meta.highestStage, run.stage),
       };
       setMeta(updatedMeta);
@@ -1107,6 +1119,7 @@ export default function App() {
     } else {
       // Losing lets you retry the same stage indefinitely — the run never resets. Only a mars
       // captures the equipped card, and only up to 2 in a row (no further loss on the 3rd+ defeat).
+      // No chip reward on a loss — only wins (and in-match hits) pay out.
       const alreadyCaptured = activePlayerCard ? run.capturedCardIds.includes(activePlayerCard.id) : false;
       const shouldCapture = wasMars && !!activePlayerCard && run.capturedCardIds.length < 2 && !alreadyCaptured;
       const newCaptured = shouldCapture ? [...run.capturedCardIds, activePlayerCard!.id] : run.capturedCardIds;
@@ -1118,13 +1131,6 @@ export default function App() {
         losses: run.losses + 1,
       };
       setRun(updatedRun);
-
-      const updatedMeta: MetaData = {
-        ...meta,
-        cyberData: meta.cyberData + (10 + run.stage * 10),
-      };
-      setMeta(updatedMeta);
-      saveMetaData(updatedMeta);
     }
   };
 
@@ -1217,7 +1223,7 @@ export default function App() {
       onUpdateSettings={(newSet) => setSettings((s) => ({ ...s, ...newSet }))}
       onOpenMetaLab={() => setActiveScreen('META_LAB')}
       onGoToMenu={() => setActiveScreen('MAIN_MENU')}
-      cyberData={meta.cyberData}
+      neonChips={meta.neonChips}
       viewStage={viewStage}
       screen={activeScreen === 'MAIN_MENU' ? 'menu' : 'game'}
       offsetForBoard={activeScreen === 'MATCH'}

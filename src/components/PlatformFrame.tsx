@@ -9,7 +9,7 @@ interface PlatformFrameProps {
   onUpdateSettings: (newSettings: Partial<GameSettings>) => void;
   onOpenMetaLab: () => void;
   onGoToMenu?: () => void;
-  cyberData: number;
+  neonChips: number;
   viewStage?: ViewStage;
   screen?: 'menu' | 'game';
   // Only the live match board needs to sit off-center to leave the AR street scene visible on
@@ -24,7 +24,7 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
   onUpdateSettings,
   onOpenMetaLab,
   onGoToMenu,
-  cyberData,
+  neonChips,
   viewStage = 'table',
   screen = 'game',
   offsetForBoard = false,
@@ -75,7 +75,7 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
           >
             <Cpu className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-player group-hover:rotate-45 transition-transform" />
             <span className="text-[9px] bg-panel text-success px-1 py-0.5 rounded font-mono font-bold border border-line">
-              {cyberData}
+              {neonChips}
             </span>
           </button>
 
