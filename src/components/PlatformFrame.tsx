@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameSettings } from '../types';
-import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Palette, Home } from 'lucide-react';
+import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Home } from 'lucide-react';
 import { PortraitGuard } from './PortraitGuard';
 import { CyberSkyline, ViewStage } from './CyberSkyline';
 
@@ -79,19 +79,6 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
             </span>
           </button>
 
-          {/* Board Theme (Skin) Toggle */}
-          <button
-            onClick={() =>
-              onUpdateSettings({
-                boardTheme: settings.boardTheme === 'kiraathane' ? 'neon' : 'kiraathane',
-              })
-            }
-            className="p-1 sm:p-1.5 rounded-lg bg-panel border border-line hover:border-player text-text transition-colors"
-            title={`Board Skin: ${settings.boardTheme === 'kiraathane' ? 'Kıraathane 2088' : 'Neon Rogue'} (click to switch)`}
-          >
-            <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-player" />
-          </button>
-
           {/* Audio Toggle + Volume Bar */}
           <div className="flex items-center gap-1 sm:gap-1.5 pl-1 pr-1.5 sm:pr-2 py-1 rounded-lg bg-panel border border-line">
             <button
@@ -139,9 +126,8 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
       </main>
 
       {/* Footer bar styled per theme */}
-      <footer className="h-7 bg-black border-t border-line flex items-center px-4 justify-between text-[9px] uppercase tracking-[0.2em] opacity-60 font-bold text-text-muted shrink-0">
-        <span>Build v0.9.12-ALPHA (IPAD_READY)</span>
-        <span className="text-player">© 2026 NEON_ROGUE_STUDIOS</span>
+      <footer className="h-7 bg-black border-t border-line flex items-center px-4 justify-end text-[9px] uppercase tracking-[0.2em] opacity-60 font-bold text-text-muted shrink-0">
+        <span className="text-player">© 2026 APPS BY BAA</span>
       </footer>
 
       {/* Optional CRT Scanlines Layer Overlay */}

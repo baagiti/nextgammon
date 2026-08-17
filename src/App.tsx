@@ -19,6 +19,7 @@ import {
 } from './game/runManager';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID } from './game/campaignData';
 import { evaluateAchievements } from './game/achievements';
+import { AchievementToast } from './components/AchievementToast';
 import {
   createInitialBoard,
   rollDice,
@@ -92,6 +93,11 @@ export default function App() {
   const [meta, setMeta] = useState<MetaData>(loadMetaData);
   const [run, setRun] = useState<RunState | null>(null);
 
+  // Achievement-unlock toast queue: newly-unlocked ids land here (possibly several at once, e.g.
+  // clearing the whole campaign), and are popped one at a time into activeAchievementToast.
+  const [achievementQueue, setAchievementQueue] = useState<string[]>([]);
+  const [activeAchievementToast, setActiveAchievementToast] = useState<string | null>(null);
+
   // Single chokepoint for any meta-stat change: merges the partial update onto the current meta,
   // checks it against the achievement conditions, and persists in one shot. Using this everywhere
   // a stat changes (instead of ad-hoc setMeta/saveMetaData calls) means achievements can never be
@@ -105,8 +111,27 @@ export default function App() {
         : merged;
     setMeta(finalMeta);
     saveMetaData(finalMeta);
+    if (newlyUnlocked.length > 0) {
+      setAchievementQueue((q) => [...q, ...newlyUnlocked]);
+    }
     return finalMeta;
   };
+
+  // Advance the achievement toast queue: show the next one only once the current one has cleared.
+  useEffect(() => {
+    if (activeAchievementToast || achievementQueue.length === 0) return;
+    const [next, ...rest] = achievementQueue;
+    setActiveAchievementToast(next);
+    setAchievementQueue(rest);
+    soundFx.playCardReveal();
+  }, [achievementQueue, activeAchievementToast]);
+
+  useEffect(() => {
+    if (!activeAchievementToast) return;
+    const timer = setTimeout(() => setActiveAchievementToast(null), 3800);
+    return () => clearTimeout(timer);
+  }, [activeAchievementToast]);
+
 
   // Active View Screen: 'MAIN_MENU' | 'MAP' | 'MATCH' | 'DRAFT' | 'SHOP' | 'META_LAB'
   const [activeScreen, setActiveScreen] = useState<string>('MAIN_MENU');
@@ -1279,7 +1304,10 @@ export default function App() {
             </div>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-6xl font-black tracking-widest text-text uppercase mb-2 drop-shadow-[0_0_25px_var(--player)]/60">
+          <h1
+            className="text-4xl sm:text-6xl font-black tracking-widest text-text uppercase mb-2 drop-shadow-[0_0_25px_var(--player)]/60"
+            style={{ fontFamily: "'Bitter', Georgia, serif" }}
+          >
             NEXTGAMMON
           </h1>
           <p className="text-sm sm:text-base text-player font-bold uppercase tracking-wider mb-8">
@@ -1525,6 +1553,8 @@ export default function App() {
         />,
         document.body
       )}
+
+      {createPortal(<AchievementToast achievementId={activeAchievementToast} />, document.body)}
     </>
   );
 }
