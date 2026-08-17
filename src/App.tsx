@@ -40,6 +40,8 @@ import bossAmbient from './assets/audio/boss-ambient.mp3';
 // Protocol boss matches always use the single dedicated boss track instead.
 const NORMAL_GAMEPLAY_TRACKS = [gameplayAmbient, gameplayAmbient2];
 
+const REROLL_DIE_COST = 8000;
+
 import { PlatformFrame } from './components/PlatformFrame';
 import { ViewStage } from './components/CyberSkyline';
 import { OpponentHeader } from './components/OpponentHeader';
@@ -48,9 +50,9 @@ import { CardWidget } from './components/CardWidget';
 import { DraftModal } from './components/DraftModal';
 import { ShopModal } from './components/ShopModal';
 import { MetaLabModal } from './components/MetaLabModal';
-import { RunMapModal } from './components/RunMapModal';
+import { RunMapModal, BUYBACK_CARD_COST, SKIP_STAGE_COST } from './components/RunMapModal';
 
-import { CardSelectModal } from './components/CardSelectModal';
+import { CardSelectModal, COLD_STORAGE_COST } from './components/CardSelectModal';
 import { BossIntroOverlay } from './components/BossIntroOverlay';
 import { CardDetailModal } from './components/CardDetailModal';
 import { MarkedCheckerModal, SelectionType } from './components/MarkedCheckerModal';
@@ -236,6 +238,10 @@ export default function App() {
   const [cpuCourierPoint, setCpuCourierPoint] = useState<number | null>(null);
 
   const [canColdRebootReroll, setCanColdRebootReroll] = useState<boolean>(false);
+  const [hasPaidRerollThisTurn, setHasPaidRerollThisTurn] = useState<boolean>(false);
+  // Cold Storage: paid for on the equip screen (see handleActivateColdStorage), consumed by
+  // handleMatchEnd's loss branch to skip mars-capture — cleared after any match end either way.
+  const [coldStorageActive, setColdStorageActive] = useState<boolean>(false);
 
   const [showMarkedModal, setShowMarkedModal] = useState<boolean>(false);
   const [markedModalType, setMarkedModalType] = useState<SelectionType>('black_ice');
@@ -549,6 +555,7 @@ export default function App() {
     setDice(rollResult.dice);
     setIsDoubles(rollResult.isDoubles);
     setCanColdRebootReroll(!!rollResult.canColdRebootReroll);
+    setHasPaidRerollThisTurn(false);
     setTurnHistory([]); // Reset turn history on fresh roll
     setTurnHadBearOff(false);
     setTurnMoveCount(0);
@@ -595,6 +602,22 @@ export default function App() {
     const coldRebootNote = `🔄 COLD REBOOT: Dice rerolled! (Old Sum: ${oldSum} -> New Dice: [${rerollResult.dice.join(', ')}])`;
     setCardNotes((prev) => [...prev, coldRebootNote]);
     triggerMutationFlash([coldRebootNote]);
+  };
+
+  // Paid die reroll: 8,000 Neon Chips to reroll the first remaining die, once per roll. Unlike
+  // Cold Reboot (a card effect, rerolls the whole roll), this only touches one die and is always
+  // available as long as the player can afford it — no card required.
+  const handlePaidDieReroll = () => {
+    if (dice.length === 0 || hasPaidRerollThisTurn || meta.neonChips < REROLL_DIE_COST) return;
+    soundFx.playDiceRoll();
+    const oldDie = dice[0];
+    const newDie = Math.floor(Math.random() * 6) + 1;
+    const newDice = [...dice];
+    newDice[0] = newDie;
+    setDice(newDice);
+    setHasPaidRerollThisTurn(true);
+    applyMetaUpdate({ neonChips: meta.neonChips - REROLL_DIE_COST });
+    setCardNotes((prev) => [...prev, `🎲 PAID REROLL: Spent ${REROLL_DIE_COST.toLocaleString()} chips (die ${oldDie} -> ${newDie})`]);
   };
 
   // Get active valid moves for player
@@ -1179,12 +1202,14 @@ export default function App() {
         totalRunsCompleted: meta.totalRunsCompleted + (clearedFinalStage ? 1 : 0),
         totalFlawlessRunCompletions: meta.totalFlawlessRunCompletions + (clearedFinalStage && flawlessSoFar ? 1 : 0),
       });
+      setColdStorageActive(false);
     } else {
       // Losing lets you retry the same stage indefinitely — the run never resets. Only a mars
-      // captures the equipped card, and only up to 2 in a row (no further loss on the 3rd+ defeat).
+      // captures the equipped card, and only up to 2 in a row (no further loss on the 3rd+ defeat)
+      // — unless Cold Storage was paid for this stage, which blocks capture entirely.
       // No chip reward on a loss — only wins (and in-match hits) pay out.
       const alreadyCaptured = activePlayerCard ? run.capturedCardIds.includes(activePlayerCard.id) : false;
-      const shouldCapture = wasMars && !!activePlayerCard && run.capturedCardIds.length < 2 && !alreadyCaptured;
+      const shouldCapture = wasMars && !!activePlayerCard && run.capturedCardIds.length < 2 && !alreadyCaptured && !coldStorageActive;
       const newCaptured = shouldCapture ? [...run.capturedCardIds, activePlayerCard!.id] : run.capturedCardIds;
 
       const updatedRun: RunState = {
@@ -1196,7 +1221,51 @@ export default function App() {
       setRun(updatedRun);
 
       applyMetaUpdate({ maxConsecutiveLossesEver: Math.max(meta.maxConsecutiveLossesEver, updatedRun.consecutiveLosses) });
+      setColdStorageActive(false);
     }
+  };
+
+  // Pay to protect the equipped card from mars-capture for the upcoming stage only — charged
+  // immediately on confirm (see CardSelectModal), consumed and cleared in handleMatchEnd.
+  const handleActivateColdStorage = () => {
+    if (meta.neonChips < COLD_STORAGE_COST) return;
+    applyMetaUpdate({ neonChips: meta.neonChips - COLD_STORAGE_COST });
+    setColdStorageActive(true);
+  };
+
+  // Pay to spring a captured card loose immediately, instead of waiting to clear the stage.
+  const handleBuyBackCard = (cardId: string) => {
+    if (!run || meta.neonChips < BUYBACK_CARD_COST) return;
+    soundFx.playClick();
+    setRun({ ...run, capturedCardIds: run.capturedCardIds.filter((id) => id !== cardId) });
+    applyMetaUpdate({ neonChips: meta.neonChips - BUYBACK_CARD_COST });
+  };
+
+  // Pay to instantly clear the current stage without playing it — card bosses only, protocol
+  // stages always have to be fought. Mirrors the normal win rewards (deck, captured cards
+  // returned, stage advance) but grants no match-result stats since no match was actually played.
+  const handleSkipStage = () => {
+    if (!run || meta.neonChips < SKIP_STAGE_COST) return;
+    const stage = CAMPAIGN_STAGES[run.stage - 1];
+    if (!stage || stage.kind !== 'card') return;
+    soundFx.playClick();
+
+    const rewardCard = PLAYER_CARDS.find((c) => c.id === stage.rewardCardId);
+    const newDeck = rewardCard && !run.deck.some((c) => c.id === rewardCard.id) ? [...run.deck, rewardCard] : run.deck;
+
+    setRun({
+      ...run,
+      stage: run.stage + 1,
+      deck: newDeck,
+      capturedCardIds: [],
+      consecutiveLosses: 0,
+      opponentsDefeated: [...run.opponentsDefeated, stage.bossName],
+    });
+
+    applyMetaUpdate({
+      neonChips: meta.neonChips - SKIP_STAGE_COST,
+      highestStage: Math.max(meta.highestStage, run.stage),
+    });
   };
 
   // Continue after match screen: the campaign has no post-match draft anymore (rewards are fixed
@@ -1336,7 +1405,13 @@ export default function App() {
       {/* 1B. ROGUELIKE RUN MAP */}
       {activeScreen === 'MAP' && run && (
         <div className="w-full h-full my-auto overflow-y-auto">
-          <RunMapModal run={run} onEnterMatch={handleStartMatch} />
+          <RunMapModal
+            run={run}
+            onEnterMatch={handleStartMatch}
+            neonChips={meta.neonChips}
+            onBuyBackCard={handleBuyBackCard}
+            onSkipStage={handleSkipStage}
+          />
         </div>
       )}
 
@@ -1411,6 +1486,9 @@ export default function App() {
             onSelectMarkedPointDirectly={handleSelectMarkedPoint}
             canColdRebootReroll={canColdRebootReroll}
             onColdRebootReroll={handlePlayerColdRebootReroll}
+            canPaidReroll={dice.length > 0 && turn === 'player' && !isMatchOver && !hasPaidRerollThisTurn && meta.neonChips >= REROLL_DIE_COST}
+            rerollDieCost={REROLL_DIE_COST}
+            onPaidDieReroll={handlePaidDieReroll}
           />
         </div>
       )}
@@ -1469,6 +1547,8 @@ export default function App() {
           capturedCardIds={run?.capturedCardIds || []}
           bossName={currentOpponent?.bossName || 'CPU'}
           onConfirmSelection={handleConfirmCardSelection}
+          neonChips={meta.neonChips}
+          onActivateColdStorage={handleActivateColdStorage}
           onGoBack={() => {
             setShowCardSelectModal(false);
             setActiveBossProtocolId(null);

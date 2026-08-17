@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Card, BossProtocol } from '../types';
 import { CardIcon } from './CardIcon';
-import { Sparkles, Play, CheckCircle2, Bot, Lock, Skull, Swords, Home } from 'lucide-react';
+import { Sparkles, Play, CheckCircle2, Bot, Lock, Skull, Swords, Home, ShieldPlus, Coins } from 'lucide-react';
+
+export const COLD_STORAGE_COST = 5000;
 
 interface CardSelectModalProps {
   mode: 'draft' | 'equip';
@@ -19,6 +21,10 @@ interface CardSelectModalProps {
   // PlatformFrame's own persistent header — including its "return to menu" button. Give it
   // one of its own so backing out mid-draft/equip doesn't strand the player here.
   onGoBack?: () => void;
+  // Cold Storage: pay to protect the equipped card from mars-capture this stage only (equip
+  // mode / run matches only). Charged and activated only once the player actually confirms.
+  neonChips?: number;
+  onActivateColdStorage?: () => void;
 }
 
 const RARITY_STYLE: Record<string, { border: string; bg: string; text: string; shadow: string }> = {
@@ -39,7 +45,11 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
   bossName,
   onConfirmSelection,
   onGoBack,
+  neonChips = 0,
+  onActivateColdStorage,
 }) => {
+  const [coldStorageChecked, setColdStorageChecked] = useState(false);
+  const canAffordColdStorage = neonChips >= COLD_STORAGE_COST;
   // In equip mode, a card is unselectable if it was captured by the boss OR it's the card you
   // equipped last stage. If that leaves nothing pickable (e.g. your only card was just captured),
   // relax the "not last stage" rule first, then relax "not captured" — never leave the player stuck.
@@ -58,6 +68,9 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
 
   const handleStart = () => {
     if (selectedCard) {
+      if (mode === 'equip' && coldStorageChecked && canAffordColdStorage) {
+        onActivateColdStorage?.();
+      }
       onConfirmSelection(selectedCard);
     }
   };
@@ -241,6 +254,34 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
 
       {/* Bottom Start Action Button */}
       <div className="relative z-10 max-w-xl w-full mx-auto text-center pb-4 pt-2">
+        {mode === 'equip' && (
+          <label
+            className={`mb-3 flex items-center gap-3 rounded-xl border p-3 text-left transition-all ${
+              canAffordColdStorage
+                ? 'border-line-strong bg-panel-2 cursor-pointer hover:border-player/60'
+                : 'border-line bg-panel-2/60 opacity-60 cursor-not-allowed'
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={coldStorageChecked}
+              disabled={!canAffordColdStorage}
+              onChange={(e) => setColdStorageChecked(e.target.checked)}
+              className="w-4 h-4 accent-player shrink-0"
+            />
+            <ShieldPlus className="w-5 h-5 text-player shrink-0" />
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-black text-text uppercase tracking-wide">Cold Storage</div>
+              <div className="text-[11px] text-text-muted leading-snug">
+                Protect this card from mars-capture this stage only.
+              </div>
+            </div>
+            <span className="shrink-0 flex items-center gap-1 font-mono text-[10px] font-bold text-player">
+              <Coins className="w-3.5 h-3.5" />
+              {COLD_STORAGE_COST.toLocaleString()}
+            </span>
+          </label>
+        )}
         <button
           onClick={handleStart}
           disabled={!selectedCard}

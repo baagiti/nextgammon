@@ -51,6 +51,9 @@ interface NeonBoardProps {
   onCycleViewStage?: () => void;
   isRunMatch?: boolean;
   matchHitCount?: number;
+  canPaidReroll?: boolean;
+  rerollDieCost?: number;
+  onPaidDieReroll?: () => void;
 }
 
 export const NeonBoard: React.FC<NeonBoardProps> = ({
@@ -97,6 +100,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   onCycleViewStage,
   isRunMatch = false,
   matchHitCount = 0,
+  canPaidReroll = false,
+  rerollDieCost = 8000,
+  onPaidDieReroll,
 }) => {
   const [selectedPoint, setSelectedPoint] = useState<number | 'bar' | null>(null);
   const isLookingAround = viewStage !== 'table';
@@ -863,6 +869,16 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             </AnimatePresence>
           ) : (
             <span className="text-[10px] text-text-muted italic">No Dice</span>
+          )}
+          {canPaidReroll && (
+            <button
+              onClick={onPaidDieReroll}
+              title="Spend Neon Chips to reroll one die"
+              className="px-2 py-1.5 rounded-lg bg-panel border border-player/50 hover:bg-line text-player font-bold text-[9px] sm:text-[10px] uppercase tracking-wider transition-all flex items-center gap-1 shadow-md active:scale-95"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reroll — {rerollDieCost.toLocaleString()}
+            </button>
           )}
         </div>
 
