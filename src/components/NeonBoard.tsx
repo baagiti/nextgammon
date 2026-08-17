@@ -448,7 +448,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
     >
       {/* MUTATION ACTIVATED: fires whenever an equipped card actually changed dice/movement this turn */}
       <AnimatePresence>
-        {showMutationFlash && mutationFlashText && !isLookingAround && (
+        {showMutationFlash && mutationFlashText && !isLookingAround && !isMatchOver && (
           <motion.div
             key={mutationFlashToken}
             initial={{ opacity: 0, scale: 0.85, y: -12 }}
@@ -485,7 +485,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
       {/* Bear-off gating badges: persistent (not a one-off flash) since these BLOCK bear-off rather
           than fire on a move — the player should always be able to see why it's locked. */}
-      {!isLookingAround && (playerGatingLabel || cpuGatingLabel) && (
+      {!isLookingAround && !isMatchOver && (playerGatingLabel || cpuGatingLabel) && (
         <div className="relative z-20 mb-1 flex flex-wrap gap-1">
           {playerGatingLabel && (
             <div className="px-2 py-0.5 rounded-lg bg-opponent/15 border border-opponent text-opponent font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wide flex items-center gap-1">
@@ -503,6 +503,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       )}
 
       {/* Direction & Status Bar */}
+      {!isMatchOver && (
       <div className="relative z-20 mb-1.5 flex flex-wrap items-center justify-between gap-1 text-xs">
         {onUpdateSettings && !isLookingAround && (
           <button
@@ -541,9 +542,10 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           </button>
         )}
       </div>
+      )}
 
       {/* Pending Selection Banner for Cards */}
-      {pendingCardSelectionType && !isLookingAround && (
+      {pendingCardSelectionType && !isLookingAround && !isMatchOver && (
         <div className={`mb-2 bg-gradient-to-r border-2 rounded-xl p-2 flex items-center justify-between text-xs shadow-lg animate-pulse ${
           pendingCardSelectionType === 'deadweight'
             ? 'from-opponent/25 via-panel to-opponent/25 border-opponent text-opponent shadow-[0_0_20px_var(--opponent)]/40'
@@ -748,7 +750,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       )}
 
       {/* Active Match Mutations Display */}
-      {(playerActiveCard || cpuActiveCard || bossProtocol) && !isLookingAround && (
+      {(playerActiveCard || cpuActiveCard || bossProtocol) && !isLookingAround && !isMatchOver && (
         <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {playerActiveCard && (
             <div
@@ -808,7 +810,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       )}
 
       {/* Card Trigger & Event Notes Bar */}
-      {cardNotes.length > 0 && !isLookingAround && (
+      {cardNotes.length > 0 && !isLookingAround && !isMatchOver && (
         <div className="mt-1.5 bg-panel/90 border border-player/40 rounded-lg p-1.5 px-2 flex items-center gap-1.5 text-[10px] sm:text-xs text-player shadow-md animate-pulse">
           <Sparkles className="w-3.5 h-3.5 text-player shrink-0" />
           <div className="flex-1 overflow-hidden line-clamp-1 font-mono">
@@ -818,7 +820,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       )}
 
       {/* Bottom Controls Bar: Roll Dice, Undo, Pass Turn, Turn Indicator */}
-      {!isLookingAround && (
+      {!isLookingAround && !isMatchOver && (
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2 bg-panel/90 border border-line rounded-xl p-2 sm:p-2.5">
         {/* Turn Status */}
         <div className="flex items-center gap-1.5">
