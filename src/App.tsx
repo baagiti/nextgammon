@@ -255,6 +255,25 @@ export default function App() {
 
   // Looping ambient city sound bed: plays only during live gameplay (the match board itself).
   const gameplayAmbientRef = useRef<HTMLAudioElement | null>(null);
+  // The source tracks are mixed quiet — the <audio> element's native volume ceiling (1.0) isn't
+  // loud enough on speakers even at max. Routing through a Web Audio GainNode lets us amplify
+  // past that ceiling. Created once per audio element (a MediaElementSourceNode can only be
+  // attached a single time, ever).
+  const gameplayGainRef = useRef<GainNode | null>(null);
+  const gameplayAudioCtxRef = useRef<AudioContext | null>(null);
+  useEffect(() => {
+    const audio = gameplayAmbientRef.current;
+    if (!audio || gameplayAudioCtxRef.current) return;
+    const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx: AudioContext = new AudioCtxClass();
+    const source = ctx.createMediaElementSource(audio);
+    const gain = ctx.createGain();
+    gain.gain.value = 2.5;
+    source.connect(gain);
+    gain.connect(ctx.destination);
+    gameplayAudioCtxRef.current = ctx;
+    gameplayGainRef.current = gain;
+  }, []);
   useEffect(() => {
     const audio = gameplayAmbientRef.current;
     if (!audio) return;
@@ -263,11 +282,13 @@ export default function App() {
     audio.volume = (activeBossProtocolId ? 0.4 : 1) * settings.sfxVolume;
     const shouldPlay = settings.soundEnabled && activeScreen === 'MATCH' && !showCardSelectModal;
     if (shouldPlay) {
+      gameplayAudioCtxRef.current?.resume();
       // Called unconditionally (not gated on audio.paused) — a changed `src` needs a fresh
       // .play() call to actually start the new track; calling it while already playing the
       // same track is a harmless no-op.
       audio.play().catch(() => {
         const retryOnGesture = () => {
+          gameplayAudioCtxRef.current?.resume();
           audio.play().catch(() => {});
         };
         window.addEventListener('pointerdown', retryOnGesture, { once: true });
