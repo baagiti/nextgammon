@@ -946,7 +946,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       {/* Match Victory / Defeat Overlay — a thin HUD readout, not a solid panel: the AR
           projection stays see-through here too, so the street shows through behind it. */}
       {isMatchOver && (
-        <div className="absolute inset-0 z-50 bg-ink/10 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-4 sm:p-6 animate-fade-in overflow-y-auto">
+        <div className="absolute inset-0 z-50 bg-ink/70 flex flex-col items-center justify-center text-center p-4 sm:p-6 overflow-y-auto">
           {/* Outcome-tinted scanline wash, echoing the boss-intro alarm treatment */}
           <div
             className="pointer-events-none absolute inset-0 opacity-20"
@@ -956,48 +956,29 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               } 0px, transparent 1.5px, transparent 3.5px)`,
             }}
           />
-          {/* Radial outcome glow burst behind the panel */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background: `radial-gradient(circle at 50% 42%, color-mix(in oklab, var(--${
-                winner === 'player' ? 'player' : 'opponent'
-              }) 20%, transparent) 0%, transparent 60%)`,
-            }}
-          />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.35 }}
-            className="relative w-full max-w-sm px-6 py-4 sm:py-6 my-auto flex flex-col items-center"
-          >
+          <div className="relative w-full max-w-sm px-6 py-4 sm:py-6 my-auto flex flex-col items-center">
             {/* HUD corner brackets */}
             <span className={`absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 rounded-tr-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 rounded-bl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
 
-            <motion.div
-              animate={{
-                boxShadow:
-                  winner === 'player'
-                    ? ['0 0 25px 3px rgba(0,229,255,0.5)', '0 0 45px 8px rgba(0,229,255,0.85)', '0 0 25px 3px rgba(0,229,255,0.5)']
-                    : ['0 0 25px 3px rgba(255,45,120,0.5)', '0 0 45px 8px rgba(255,45,120,0.85)', '0 0 25px 3px rgba(255,45,120,0.5)'],
-              }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            <div
               className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 flex items-center justify-center mb-2 ${
-                winner === 'player' ? 'bg-player/15 border-player' : 'bg-opponent/15 border-opponent'
+                winner === 'player'
+                  ? 'bg-player/15 border-player shadow-[0_0_35px_5px_rgba(0,229,255,0.65)]'
+                  : 'bg-opponent/15 border-opponent shadow-[0_0_35px_5px_rgba(255,45,120,0.65)]'
               }`}
             >
               {winner === 'player' ? <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-player" /> : <ServerCrash className="w-7 h-7 sm:w-8 sm:h-8 text-opponent" />}
-            </motion.div>
+            </div>
 
-            <h2 className="title-glitch-in font-display text-2xl sm:text-3xl font-black tracking-widest mb-1 uppercase">
+            <h2 className="font-display text-2xl sm:text-3xl font-black tracking-widest mb-1 uppercase">
               {winner === 'player' ? (
-                <span className="text-player drop-shadow-[0_2px_12px_var(--player)]">MATCH VICTORY</span>
+                <span className="text-player drop-shadow-[0_2px_12px_rgba(0,229,255,0.8)]">MATCH VICTORY</span>
               ) : (
-                <span className="text-opponent drop-shadow-[0_2px_12px_var(--opponent)]">SYSTEM DEFEAT</span>
+                <span className="text-opponent drop-shadow-[0_2px_12px_rgba(255,45,120,0.8)]">SYSTEM DEFEAT</span>
               )}
             </h2>
 
@@ -1038,16 +1019,16 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
             <button
               onClick={onNextMatch}
-              className={`px-8 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all flex items-center gap-2 hover:scale-105 active:scale-95 ${
+              className={`px-8 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all flex items-center gap-2 active:scale-95 ${
                 winner === 'player'
-                  ? 'bg-gradient-to-r from-player to-success text-ink shadow-[0_0_30px_var(--player)]/70'
-                  : 'bg-gradient-to-r from-opponent to-danger text-ink shadow-[0_0_30px_var(--opponent)]/70'
+                  ? 'bg-gradient-to-r from-player to-success text-ink shadow-[0_0_30px_rgba(0,229,255,0.7)]'
+                  : 'bg-gradient-to-r from-opponent to-danger text-ink shadow-[0_0_30px_rgba(255,45,120,0.7)]'
               }`}
             >
               CONTINUE
               <ChevronRight className="w-5 h-5" />
             </button>
-          </motion.div>
+          </div>
         </div>
       )}
     </motion.div>
