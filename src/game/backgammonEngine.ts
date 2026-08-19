@@ -335,16 +335,12 @@ export function getValidMoves(
     }
   }
 
-  // SABOTAGE CARD CHECK 1B: TERMINATION PROTOCOL (Omega Core exclusive) — heavy stacks (3+ on a
-  // single home point) have to be broken down before bear-off is allowed. Eased from the original
-  // 2+ threshold, which triggered on completely ordinary bear-off distributions and made it feel
-  // unbeatable even for a legendary, final-boss-only card.
-  let terminationProtocolActive = false;
-  if (isOpponentCardActive('card_termination_protocol')) {
-    const homeSlice = player === 'player' ? board.points.slice(0, 6) : board.points.slice(18, 24);
-    const hasStackedHomePoint = homeSlice.some((pt) => pt.filter((c) => c.color === player).length >= 3);
-    if (hasStackedHomePoint) terminationProtocolActive = true;
-  }
+  // SABOTAGE CARD CHECK 1B: TERMINATION PROTOCOL (Omega Core exclusive) — OMEGA CORE's own blots
+  // can never be hit, full stop. Same underlying rule as the campaign's FORTIFIED protocol, just
+  // as an unconditional, always-on card effect rather than a boss-fight-only rule. Never touches
+  // the victim's own checkers, moves, or bear-off — it only removes one offensive option (hitting
+  // this specific opponent's blot), so — like FORTIFIED — it structurally cannot lock a match.
+  const terminationProtocolActive = isOpponentCardActive('card_termination_protocol');
 
   // SABOTAGE CARD CHECK 2: EXACT LOCK
   const exactLockActive = isOpponentCardActive('card_exact_lock');
@@ -375,7 +371,8 @@ export function getValidMoves(
         const destPoint = player === 'player' ? 24 - die : die - 1;
         if (destPoint >= 0 && destPoint < 24) {
           const opponentCheckers = board.points[destPoint].filter((c) => c.color === opponentColor);
-          if (opponentCheckers.length <= 1 && !(isFortifiedVsPlayer && opponentCheckers.length === 1)) {
+          const blockedByTermination = terminationProtocolActive && opponentCheckers.length === 1;
+          if (opponentCheckers.length <= 1 && !(isFortifiedVsPlayer && opponentCheckers.length === 1) && !blockedByTermination) {
             validMoves.push({ from: 'bar', to: destPoint, dieUsed: die, isBatchEntry: true });
           }
         }
@@ -403,6 +400,10 @@ export function getValidMoves(
         if (isFortifiedVsPlayer && opponentCheckers.length === 1) {
           canLand = false;
         }
+        // TERMINATION PROTOCOL: OMEGA CORE's blots can never be hit, bar re-entry included.
+        if (terminationProtocolActive && opponentCheckers.length === 1) {
+          canLand = false;
+        }
 
         if (canLand) {
           validMoves.push({ from: 'bar', to: destPoint, dieUsed: die });
@@ -423,7 +424,7 @@ export function getValidMoves(
 
   // 2. Normal On-Board Movements
   const rawCanBearOff = isHomeBoardReady(board, player);
-  const effectiveCanBearOff = rawCanBearOff && !homeSecurityActive && !terminationProtocolActive;
+  const effectiveCanBearOff = rawCanBearOff && !homeSecurityActive;
 
   for (let p = 0; p < 24; p++) {
     const checkersOnPoint = board.points[p].filter((c) => c.color === player);
@@ -533,7 +534,10 @@ export function getValidMoves(
         if (ctx.bossProtocolId === 'firewall' && player === 'player' && destPoint >= 18 && destPoint <= 23) {
           canLand = false;
         }
-
+        // TERMINATION PROTOCOL: OMEGA CORE's blots can never be hit.
+        if (terminationProtocolActive && opponentCheckers.length === 1) {
+          canLand = false;
+        }
         if (canLand) {
           validMoves.push({ from: p, to: destPoint, dieUsed: die });
         }

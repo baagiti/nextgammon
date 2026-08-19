@@ -552,7 +552,7 @@ export const PLAYER_CARDS: Card[] = [
     id: 'card_termination_protocol',
     name: 'TERMINATION PROTOCOL',
     tagline: 'Full Lockdown',
-    description: 'The opponent cannot bear off any checker while one of their home points still has 3+ checkers stacked on it — heavy stacks have to be broken down first.',
+    description: 'OMEGA CORE\'s own blots can never be hit — its exposed checkers cannot be broken.',
     category: 'sabotage',
     rarity: 'legendary',
     type: 'bar',

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useAnimationControls } from 'motion/react';
 import { BoardState, PlayerId, Card, OpponentCard, GameSettings, BossProtocol } from '../types';
 import { ValidMoveResult, isHomeBoardReady } from '../game/backgammonEngine';
@@ -943,10 +944,15 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       </div>
       )}
 
-      {/* Match Victory / Defeat Overlay — a thin HUD readout, not a solid panel: the AR
-          projection stays see-through here too, so the street shows through behind it. */}
-      {isMatchOver && (
-        <div className="absolute inset-0 z-50 bg-ink/70 flex flex-col items-center justify-center text-center p-4 sm:p-6 overflow-y-auto">
+      {/* Match Victory / Defeat Overlay — portaled straight to document.body (like every other
+          full-screen modal in this app) rather than positioned within this component's own tree.
+          The outer motion.div above carries a shake animation (animate={shakeControls}), and any
+          transform on an ancestor makes it the containing block for descendant fixed/absolute
+          elements too — so even `position: fixed` here could still end up pinned to that
+          shrinking, animation-affected ancestor instead of the real viewport. Portaling out
+          removes the ancestor relationship entirely, which is the only fully reliable fix. */}
+      {isMatchOver && createPortal(
+        <div className="fixed inset-0 z-50 bg-ink/70 flex flex-col items-center justify-center text-center p-4 sm:p-6 overflow-y-auto">
           {/* Outcome-tinted scanline wash, echoing the boss-intro alarm treatment */}
           <div
             className="pointer-events-none absolute inset-0 opacity-20"
@@ -1029,7 +1035,8 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </motion.div>
   );
