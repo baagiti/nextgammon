@@ -335,12 +335,14 @@ export function getValidMoves(
     }
   }
 
-  // SABOTAGE CARD CHECK 1B: TERMINATION PROTOCOL (Omega Core exclusive) — every home point must be
-  // broken down to a single checker or empty before bear-off is allowed. No stacked shortcuts.
+  // SABOTAGE CARD CHECK 1B: TERMINATION PROTOCOL (Omega Core exclusive) — heavy stacks (3+ on a
+  // single home point) have to be broken down before bear-off is allowed. Eased from the original
+  // 2+ threshold, which triggered on completely ordinary bear-off distributions and made it feel
+  // unbeatable even for a legendary, final-boss-only card.
   let terminationProtocolActive = false;
   if (isOpponentCardActive('card_termination_protocol')) {
     const homeSlice = player === 'player' ? board.points.slice(0, 6) : board.points.slice(18, 24);
-    const hasStackedHomePoint = homeSlice.some((pt) => pt.filter((c) => c.color === player).length >= 2);
+    const hasStackedHomePoint = homeSlice.some((pt) => pt.filter((c) => c.color === player).length >= 3);
     if (hasStackedHomePoint) terminationProtocolActive = true;
   }
 

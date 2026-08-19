@@ -552,13 +552,16 @@ export const PLAYER_CARDS: Card[] = [
     id: 'card_termination_protocol',
     name: 'TERMINATION PROTOCOL',
     tagline: 'Full Lockdown',
-    description: 'The opponent cannot bear off any checker while one of their home points still has 2+ checkers stacked on it — every point must be broken down to a single checker or empty first.',
+    description: 'The opponent cannot bear off any checker while one of their home points still has 3+ checkers stacked on it — heavy stacks have to be broken down first.',
     category: 'sabotage',
     rarity: 'legendary',
     type: 'bar',
     trigger: 'PASSIVE',
     iconName: 'Skull',
     effectKey: 'TERMINATION_PROTOCOL',
+    // OMEGA CORE's signature card — the final boss only. Never appears in the shared 1v1
+    // quick-match draft pool (see handleStartQuickMatch), so it can be this punishing.
+    exclusiveToBoss: 'boss_omega_core',
   }
 ];
 
