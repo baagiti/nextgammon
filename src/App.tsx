@@ -24,11 +24,11 @@ import {
   rollDice,
   getValidMoves,
   executeMove,
-  getBestCpuMove,
   shouldCpuColdReboot,
   calculatePipCount,
   ValidMoveResult,
 } from './game/backgammonEngine';
+import { getBestCpuMove } from './game/cpuAI';
 import { soundFx } from './game/soundEngine';
 import confetti from 'canvas-confetti';
 import cyberpunkBeat from './assets/audio/home-theme.mp3';
