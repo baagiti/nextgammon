@@ -219,15 +219,6 @@ export default function App() {
   // Active View Screen: 'MAIN_MENU' | 'MAP' | 'MATCH' | 'DRAFT' | 'SHOP' | 'META_LAB'
   const [activeScreen, setActiveScreen] = useState<string>('MAIN_MENU');
 
-  // Main-menu banner ad — shown only there, and only for players who haven't bought Run Mode.
-  useEffect(() => {
-    if (activeScreen === 'MAIN_MENU' && runModeUnlocked === false) {
-      showBanner();
-    } else {
-      hideBanner();
-    }
-  }, [activeScreen, runModeUnlocked]);
-
   // Match State
   const [board, setBoard] = useState<BoardState>(createInitialBoard());
   const [turn, setTurn] = useState<PlayerId>('player');
@@ -350,6 +341,26 @@ export default function App() {
 
   // Card Zoom / Inspection modal state
   const [inspectedCard, setInspectedCard] = useState<{ card: Card; ownerLabel: string } | null>(null);
+
+  // Main-menu banner ad — only for players who haven't bought Run Mode, and only on the bare main
+  // menu. `activeScreen` alone isn't enough: the card-draft/boss-intro/paywall/inspect overlays are
+  // all portaled on top of whatever `activeScreen` already is (see the comment above the portal
+  // block further down) without ever changing it away from 'MAIN_MENU', so each one is checked
+  // explicitly here too — otherwise the banner stays pinned on top of them, covering their buttons.
+  useEffect(() => {
+    const isBareMainMenu =
+      activeScreen === 'MAIN_MENU' &&
+      !showCardSelectModal &&
+      !showBossIntro &&
+      !showPaywall &&
+      !inspectedCard &&
+      !showMarkedModal;
+    if (isBareMainMenu && runModeUnlocked === false) {
+      showBanner();
+    } else {
+      hideBanner();
+    }
+  }, [activeScreen, runModeUnlocked, showCardSelectModal, showBossIntro, showPaywall, inspectedCard, showMarkedModal]);
 
   const [isMatchOver, setIsMatchOver] = useState<boolean>(false);
   const [matchWinner, setMatchWinner] = useState<PlayerId | null>(null);
