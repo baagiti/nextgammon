@@ -1,0 +1,56 @@
+{
+  "card_overclock": { "name": "OVERCLOCK", "tagline": "Zar Geometrisi", "description": "Çiftsiz zar atışlarında düşük zarı +1 artırır (En fazla 6)." },
+  "card_synchronize": { "name": "SYNCHRONIZE", "tagline": "Zar Geometrisi", "description": "Çiftsiz zarlar ardışıksa düşük zar +1 artar (örn. 5-4 → 5-5). Sadece 2 hamle oynanır." },
+  "card_convergence": { "name": "CONVERGENCE", "tagline": "Zar Geometrisi", "description": "Çiftsiz zarlar arasında en az 3 fark varsa düşük zar +2, yüksek zar −1 olur (örn. 6-1 → 5-3)." },
+  "card_cold_reboot": { "name": "COLD REBOOT", "tagline": "Zar Geometrisi", "description": "Ham zar toplamı 5 veya altındaysa, isteğe bağlı olarak iki zarı bir kez yeniden atabilirsin." },
+  "card_double_tuner": { "name": "DOUBLE TUNER", "tagline": "Zar Geometrisi", "description": "Doğal çift x-x geldiğinde, 4 aynı değeri [x−1, x, x, x+1] ile değiştirir." },
+  "card_doubles_engine": { "name": "DOUBLES ENGINE", "tagline": "Zar Geometrisi", "description": "Doğal çiftlerde, zar değerini 4 yerine 5 kez kullanmana izin verir." },
+  "card_compression_field": { "name": "COMPRESSION FIELD", "tagline": "Zar Geometrisi", "description": "Rakibin çiftsiz zarları arasında en az 3 fark varsa, yüksek zar −2, düşük zar +1 olur (örn. 6-1 → 4-2)." },
+  "card_overvoltage_trip": { "name": "OVERVOLTAGE TRIP", "tagline": "Zar Geometrisi", "description": "Rakibin çiftsiz zar toplamı 10 veya üzeriyse, rakibin zarlarını otomatik olarak yeniden attırır." },
+  "card_double_fault": { "name": "DOUBLE FAULT", "tagline": "Zar Geometrisi", "description": "Rakip doğal çift attığında, 4 yerine sadece 3 hamle hakkı verir." },
+  "card_six_tax": { "name": "SIX TAX", "tagline": "Zar Geometrisi", "description": "Rakip çiftsiz bir atışta 6 attığında, diğer zarı −1 olur (En az 1)." },
+
+  "card_mirror_reflex": { "name": "MIRROR REFLEX", "tagline": "Açık Taş ve Vuruş", "description": "Senin açık taşın kırıldığında, kıran rakip taşı da bar'a gönderilir." },
+  "card_shatter_blot": { "name": "SHATTER BLOT", "tagline": "Açık Taş ve Vuruş", "description": "Rakibin açık taşını kırdığında, hemen ilerisindeki komşu açık rakip taşı da bar'a gönderilir." },
+  "card_double_tap": { "name": "DOUBLE TAP", "tagline": "Açık Taş ve Vuruş", "description": "Bir turda yaptığın ilk kırıştan sonra, kullanılmamış herhangi bir zar +1 olur (En fazla 6)." },
+  "card_open_circuit": { "name": "OPEN CIRCUIT", "tagline": "Açık Taş ve Vuruş", "description": "Turunu en az bir açık taşla bitirirsen, bir sonraki çiftsiz atışında düşük zarın +1 olur." },
+  "card_second_wind": { "name": "SECOND WIND", "tagline": "Açık Taş ve Vuruş", "description": "Açık taşlarından biri kırıldığında, bir sonraki turunda düşük zarın +1 olur (En fazla 6)." },
+  "card_deflection": { "name": "DEFLECTION", "tagline": "Açık Taş ve Vuruş", "description": "Açık taşın kırıldığında, bar'a gitmek yerine mümkünse 1 nokta geriye çekilir." },
+  "card_compulsory_hit": { "name": "COMPULSORY HIT", "tagline": "Açık Taş ve Vuruş", "description": "Rakibin kırış içeren geçerli bir hamle dizisi varsa, en az bir kırış yapmak ZORUNDADIR." },
+  "card_blood_tax": { "name": "BLOOD TAX", "tagline": "Açık Taş ve Vuruş", "description": "Rakip bir turda ilk kırışını yaptıktan sonra, bir sonraki zarı −1 olur (En az 1)." },
+  "card_double_fracture": { "name": "DOUBLE FRACTURE", "tagline": "Açık Taş ve Vuruş", "description": "Rakip çift atışı sırasında kırış yaptığında, kalan zar hamlelerinden 1 tanesi yok edilir." },
+  "card_backlash": { "name": "BACKLASH", "tagline": "Açık Taş ve Vuruş", "description": "Rakip bir turda ilk kırışını yaptıktan sonra, kıran taş mümkünse 1 nokta geriye çekilir." },
+  "card_blood_magnet": { "name": "BLOOD MAGNET", "tagline": "Açık Taş ve Vuruş", "description": "Rakip turuna en az bir açık taşla başlar ve geçerli hamlesi varsa, ilk hamlesi bir açık taşı oynamak ZORUNDADIR." },
+  "card_cowards_tax": { "name": "COWARD'S TAX", "tagline": "Açık Taş ve Vuruş", "description": "Rakibin turunda en az bir geçerli kırış fırsatı olup da kırmamayı seçerse, bir sonraki turunda düşük zarı −1 olur." },
+
+  "card_magnetic_link": { "name": "MAGNETIC LINK", "tagline": "Kapılar ve Kontrol", "description": "Bir hamle kendi açık taşının tam 1 nokta gerisinde biterse, otomatik olarak +1 ilerleyip nokta/kapı oluşturur." },
+  "card_repulsor": { "name": "REPULSOR", "tagline": "Kapılar ve Kontrol", "description": "Rakip kendi açık taşının üzerine gelip yeni bir nokta oluşturmaya çalışırsa, inen taş +1 ileri itilir ve nokta oluşumu engellenir." },
+
+  "card_counterstrike": { "name": "COUNTERSTRIKE", "tagline": "Bar ve Giriş", "description": "Bar'dan girerken bir rakip açık taşını kırarsan, kullanılmamış herhangi bir zar +1 olur (En fazla 6)." },
+  "card_launchpad": { "name": "LAUNCHPAD", "tagline": "Bar ve Giriş", "description": "Bar'dan kendi açık taşının üzerine girip nokta oluşturduğunda, kullanılmamış herhangi bir zar +1 olur (En fazla 6)." },
+  "card_failsafe": { "name": "FAILSAFE", "tagline": "Bar ve Giriş", "description": "Bir tur boyunca bar'dan hiçbir taş sokamazsan, bir sonraki turunda düşük zarın +1 olur." },
+  "card_batch_upload": { "name": "BATCH UPLOAD", "tagline": "Bar ve Giriş", "description": "Turuna bar'da tam 2 taşla başlar ve geçerli girişli çiftsiz bir zar atarsan, iki taş da 1 zarla birlikte girer." },
+  "card_bypass_protocol": { "name": "BYPASS PROTOCOL", "tagline": "Bar ve Giriş", "description": "Bar'da taşın olup zarların onları sokamıyorsa, bar önceliği askıya alınır ve tahtadaki taşlarını oynayabilirsin." },
+  "card_bar_static": { "name": "BAR STATIC", "tagline": "Bar ve Giriş", "description": "Rakip turuna bar'da 2 veya daha fazla taşla başlarsa, girişler çözülmeden önce yüksek zarı −1 olur." },
+
+  "card_black_ice": { "name": "BLACK ICE", "tagline": "Tahta Anomalisi", "description": "Bir rakip taşı, maç başında belirlenen buzlu noktada hamlesini bitirirse, anında bar'a gönderilir." },
+
+  "card_packet_drop": { "name": "PACKET DROP", "tagline": "Hareket ve Ölü Atışlar", "description": "Çiftsiz bir atışta 1 zarı oynadıktan sonra, kalan zarı iptal edip turunu bitirebilirsin." },
+  "card_lost_packet": { "name": "LOST PACKET", "tagline": "Hareket ve Ölü Atışlar", "description": "Rakip zarlarından birini oynayamayıp turunu erken bitirirse, bir sonraki turunda düşük zarı −1 olur." },
+  "card_echo_jam": { "name": "ECHO JAM", "tagline": "Hareket ve Ölü Atışlar", "description": "Rakip çiftsiz bir turda iki zarını da aynı taş üzerinde kullanırsa, ikinci zar −1 olur (En az 1)." },
+  "card_forced_commit": { "name": "FORCED COMMIT", "tagline": "Hareket ve Ölü Atışlar", "description": "Rakip ilk zarını bir taşta oynar ve ikinci zar da aynı taşta oynanabiliyorsa, aynı taşta oynamak ZORUNDADIR." },
+
+  "card_redundancy": { "name": "REDUNDANCY", "tagline": "Ev ve Taş Çıkarma", "description": "Tüm taşların ev bölgende olduğunda ve bir zar hiç oynanamıyorsa, oynanabilir zar iki kez kullanılabilir." },
+  "card_home_security": { "name": "HOME SECURITY", "tagline": "Ev ve Taş Çıkarma", "description": "Rakibin ev bölgesinde en az bir açık taşı varsa, taş çıkaramaz." },
+  "card_final_check": { "name": "FINAL CHECK", "tagline": "Ev ve Taş Çıkarma", "description": "Rakip son kalan taşını fazla zarla (taşkın) çıkaramaz. Tam isabetli bir zar gerekir." },
+  "card_exact_lock": { "name": "EXACT LOCK", "tagline": "Ev ve Taş Çıkarma", "description": "Rakip hiçbir taşını fazla zarla çıkaramaz. Taşlar yalnızca tam eşleşen zarla çıkarılabilir." },
+
+  "card_tailwind": { "name": "TAILWIND", "tagline": "Yarış ve Pip", "description": "Her turda en geride kalan taşını ilk hareket ettirdiğinde, kullanılan zar +1 olur (En fazla 6)." },
+  "card_trailing_drag": { "name": "TRAILING DRAG", "tagline": "Yarış ve Pip", "description": "Rakip her turda en geride kalan taşını ilk hareket ettirdiğinde, kullanılan zar −1 olur (En az 1)." },
+
+  "card_courier": { "name": "COURIER", "tagline": "İşaretli Taşlar", "description": "Maç başında belirlenen Courier taşın her hareket ettiğinde +1 zar mesafesi kazanır (En fazla 6)." },
+  "card_deadweight": { "name": "DEADWEIGHT", "tagline": "İşaretli Taşlar", "description": "Maç başında belirlenen rakip Deadweight taşı her hareket ettiğinde −1 zar mesafesi kaybeder (En az 1)." },
+
+  "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Kütle Çekim Kuyusu", "description": "Rakip her taş çıkardığında, bir sonraki atışının düşük zarı −1 olur (En az 1) — kaçışa yaklaştıkça yerçekimi güçlenir." },
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Tam Kilitlenme", "description": "OMEGA CORE'un kendi açık taşları asla kırılamaz — açıktaki taşları asla bozulamaz." }
+}

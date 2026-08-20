@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 import { ACHIEVEMENTS } from '../game/achievements';
+import { useAchievementText } from '../hooks/useLocalizedText';
 import { Swords, Skull, Coins, Zap, Layers, Cpu, ShieldCheck, Trophy, Sparkles, RotateCcw, HeartPulse, Award } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -25,7 +27,9 @@ interface AchievementToastProps {
 // (multiple achievements can unlock in the same instant, e.g. clearing the whole campaign) and
 // just hands this component whichever id is currently showing.
 export const AchievementToast: React.FC<AchievementToastProps> = ({ achievementId }) => {
+  const { t } = useTranslation('ui');
   const achievement = achievementId ? ACHIEVEMENTS.find((a) => a.id === achievementId) : null;
+  const { name: achievementName } = useAchievementText(achievement ?? { id: '', name: '', description: '' });
   const IconComp = (achievement && ICON_MAP[achievement.icon]) || Award;
 
   return (
@@ -49,10 +53,10 @@ export const AchievementToast: React.FC<AchievementToastProps> = ({ achievementI
             </motion.div>
             <div className="min-w-0">
               <div className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.15em] text-player/80 font-bold">
-                Achievement Unlocked
+                {t('toasts.achievementUnlocked')}
               </div>
               <div className="font-display text-[11px] sm:text-xs font-black text-text uppercase tracking-wide truncate">
-                {achievement.name}
+                {achievementName}
               </div>
             </div>
           </motion.div>

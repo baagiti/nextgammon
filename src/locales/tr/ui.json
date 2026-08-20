@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "Dil"
+  },
+  "common": {
+    "returnToMenu": "Ana Menüye Dön",
+    "toggleAudio": "Sesi Aç/Kapat",
+    "volume": "Ses Düzeyi"
+  },
+  "paywall": {
+    "title": "Koşu Modunun Kilidini Aç",
+    "tagline": "Tam kapsamlı siber tavla kampanyası.",
+    "features": {
+      "campaign": {
+        "title": "44 Aşamalık Kampanya",
+        "description": "Boot Sector'dan Singularity'ye, 7 perde boyunca savaş."
+      },
+      "cards": {
+        "title": "Toplanacak 45 Mutasyon Kartı",
+        "description": "Her boss bir kartı korur — onu yenersen kart senin olur. Mars yersen boss kartını geri çalabilir."
+      },
+      "protocols": {
+        "title": "7 Protokol Boss",
+        "description": "Kuralları çiğneyen bosslar her perdeyi kapatır, tavlanın kendisini sana karşı çevirir."
+      },
+      "adFree": {
+        "title": "%100 Reklamsız",
+        "description": "Bu satın alma, NEXTGAMMON'daki tüm reklamları kalıcı olarak kaldırır."
+      }
+    },
+    "description": "44 aşamalık tam kampanya — her boss, toplanacak her kart — üstelik reklamsız bir deneyim, hepsi tek seferlik 3 dolarlık bir açma işleminde. 1v1 Hızlı Maç her zaman ücretsiz kalır.",
+    "buyButton": "3 Dolara Aç",
+    "restoreButton": "Satın Alımı Geri Yükle",
+    "errorCancelled": "Satın alma iptal edildi.",
+    "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar dene."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} Neon Chip",
+    "buyChipsDescription": "Neon Chip bakiyene anında ekleme. İstediğin kadar tekrar satın alabilirsin.",
+    "buyChipsButton": "Satın Al — 1$",
+    "buyChipsSuccess": "+100.000 Neon Chip eklendi!",
+    "buyChipsErrorCancelled": "Satın alma iptal edildi.",
+    "buyChipsErrorGeneric": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    "title": "Siber Laboratuvar",
+    "subtitleSpend": "Neon Chip ile satın alınabilecek her şey ve nerede harcanacağı.",
+    "neonChips": "{{n}} Neon Chip",
+    "gamesPlayed": "Oynanan Maç: {{n}}",
+    "runWins": "Koşu Galibiyeti: {{n}}",
+    "highestStage": "En Yüksek Aşama: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "Ele Geçirilen Kartı Geri Satın Al",
+        "description": "Boss'un senden ele geçirdiği bir kartı, aşamayı temizlemeden geri kazan.",
+        "location": "Koşu Haritası"
+      },
+      "skipStage": {
+        "name": "Aşamayı Atla",
+        "description": "Bir kart-boss aşamasını anında temizle ve ödül kartını kazan. Protokol boss aşamaları atlanamaz.",
+        "location": "Koşu Haritası"
+      },
+      "rerollDie": {
+        "name": "Zar Yeniden At",
+        "description": "Turunda bir zarı, attıktan sonra bir kez yeniden atabilirsin.",
+        "location": "Maç İçinde"
+      },
+      "coldStorage": {
+        "name": "Soğuk Depo",
+        "description": "Kuşandığın kartı sadece bu aşamada mars-yakalamadan korur.",
+        "location": "Kuşanma Ekranı"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "Gizli Kart",
+    "hiddenCardHint": "Belirli bir maç koşulunda tetiklenir!",
+    "depleted": "Tükendi",
+    "trigger": "Tetikle",
+    "triggerLabel": "Tetikleyici:"
+  },
+  "portraitGuard": {
+    "badge": "Zorunlu Yatay Mod",
+    "title": "Lütfen Cihazını Çevir",
+    "description": "NEXTGAMMON, tüm 24 tahta noktasını, kartları ve zarları düzgün gösterebilmek için yatay (landscape) ekran görünümü gerektirir. Lütfen telefonunu yan çevir!",
+    "tip": "İpucu: Telefonunun ayarlarında dikey ekran kilidinin kapalı olduğundan emin ol.",
+    "bypass": "Yine de Yatay Modu Önizle"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — Rakibin Ağır Taşını Seç",
+    "deadweightSubtitle": "Bir rakip taşını −1 hareket mesafesiyle cezalandırmak için seç! Ceza, bu taş hareket ettikçe devam eder.",
+    "deadweightFilter": "Rakip (CPU) Taşları",
+    "courierTitle": "Courier — Hızlandırılacak Taşını Seç",
+    "courierSubtitle": "Her hareket ettiğinde +1 mesafe hız artışı kazanması için kendi taşlarından birini seç!",
+    "courierFilter": "Kendi Taşların",
+    "blackIceTitle": "Black Ice — Buzlu Tuzak Noktası Seç",
+    "blackIceSubtitle": "Black Ice ile kaplamak için bir tahta noktası seç (1-24). Buraya inen herhangi bir rakip taşı doğrudan bar'a kayar!",
+    "blackIceFilter": "Tüm Tahta Noktaları",
+    "pointRange": "{{label}} (Nokta 1 - 24)",
+    "clickToDesignate": "Belirlemek İçin Tıkla",
+    "pointTitle": "Nokta #{{n}} ({{count}} Taş)",
+    "you": "Sen",
+    "cpu": "CPU",
+    "empty": "Boş",
+    "selectOnBoardHint": "Noktaları doğrudan tahta üzerinden de seçebilirsin.",
+    "randomSelection": "🎲 Rastgele Seçim"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "Mutasyon Kartı",
+    "augment": "Güçlendirme (+)",
+    "sabotage": "Sabotaj (−)",
+    "effectAndMechanics": "Etki ve Mekanik:",
+    "closeDetails": "Detayları Kapat"
+  },
+  "bossIntro": {
+    "encounter": "Protokol Boss Karşılaşması",
+    "engage": "Savaşa Gir"
+  },
+  "neonBoard": {
+    "badgeIce": "Buz",
+    "badgeCpuIce": "CPU Buz",
+    "badgeSluggish": "Hantal",
+    "badgeCourier": "Kurye",
+    "off": "Çıktı",
+    "borne": "Çıkarıldı",
+    "you": "Sen",
+    "tray": "Tepsi",
+    "bar": "Bar",
+    "ownerLabelPlayer": "Oyuncu Kartı",
+    "ownerLabelCpu": "CPU Kartı",
+    "protocolActivated": "Protokol Etkinleşti",
+    "mutationActivated": "Mutasyon Etkinleşti",
+    "youGating": "Sen: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "Tıkla: Taş Çıkarma / Tahta Yönünü Değiştir (Saat Yönü / Saat Yönü Tersi)",
+    "bearOffClockwise": "Taş Çıkarma: Saat Yönü (Sol)",
+    "bearOffCounterCw": "Taş Çıkarma: Saat Yönü Tersi (Sağ)",
+    "lookAroundTitleTable": "Arkana yaslan ve sokağa bak",
+    "lookAroundTitlePeek": "Tamamen yukarı bak — tam sokak görünümü",
+    "lookAroundTitlePanorama": "Masaya dön",
+    "lookAround": "Etrafa Bak",
+    "lookFurther": "Daha İleri Bak",
+    "backToTable": "Masaya Dön",
+    "deadweightActive": "Deadweight Aktif:",
+    "courierActive": "Courier Aktif:",
+    "blackIceActive": "Black Ice Aktif:",
+    "clickPointOrMenu": "Noktaya tıkla ya da menüden seç",
+    "selectPoint": "Nokta Seç",
+    "coldRebootActive": "Cold Reboot Aktif",
+    "lowRollHint": "Düşük zar toplamı ≤ 5 ({{dice}}). Yeniden atmak için tıkla!",
+    "reroll": "Yeniden At",
+    "bearOffModeActive": "Taş Çıkarma Modu Aktif! Taşlara ya da tepsiye dokun.",
+    "yourTurn": "Sıra Sende",
+    "cpuTurnEllipsis": "CPU Sırası...",
+    "noDice": "Zar Yok",
+    "paidRerollTitle": "Bir zarı yeniden atmak için Neon Chip harca",
+    "rerollCost": "Yeniden At — {{cost}}",
+    "undo": "Geri Al",
+    "undoTitle": "Son oynanan taşı geri al",
+    "reset": "Sıfırla",
+    "resetTitle": "Turu başlangıç konumuna sıfırla",
+    "roll": "Zar At",
+    "pass": "Pas",
+    "discardDieTitle": "Packet Drop: Kalan zarı iptal et ve turunu erken bitir",
+    "discardDie": "Zarı İptal Et",
+    "matchVictory": "Maç Zaferi",
+    "systemDefeat": "Sistem Yenilgisi",
+    "victoryDescRun": "CPU rakibinin şebekesini dağıttın! Yeni bir kart avantajı taslağı yap ve bir sonraki düğüme ilerle.",
+    "victoryDescQuick": "CPU rakibinin şebekesini dağıttın! Bir tur daha oyna.",
+    "defeatDescRun": "Tavla çekirdeğin yapay zeka boss tarafından ele geçirildi. Toparlan ve aşamayı tekrar dene.",
+    "defeatDescQuick": "Tavla çekirdeğin CPU tarafından ele geçirildi. Rövanş için tekrar oyna.",
+    "chipsEarned": "Kazanılan Neon Chip",
+    "opponentHitTimes": "{{count}}× Rakip vuruldu",
+    "matchWon": "Maç kazanıldı",
+    "total": "Toplam",
+    "continue": "Devam Et",
+    "playerCard": "Oyuncu Kartı:",
+    "protocol": "Protokol:",
+    "cpuCard": "CPU Kartı:",
+    "mirror": "{{name}} Yansıma:",
+    "clickToExpand": "Kart Detaylarını Göster"
+  },
+  "opponentHeader": {
+    "cyberCpu": "1v1 Siber CPU",
+    "level": "SVY ★★★",
+    "you": "Sen",
+    "cpu": "CPU",
+    "lead": "+{{n}} Önde",
+    "trailing": "-{{n}} Önde",
+    "even": "Eşit",
+    "pipRace": "Pip Yarışı",
+    "protocolActive": "Protokol Aktif",
+    "cpuCard": "CPU Kartı",
+    "mirrorSuffix": "{{name}} Yansıma:",
+    "clickToExpand": "Kart Detaylarını Göster"
+  },
+  "cardSelect": {
+    "campaignLoadout": "Kampanya Kuşanımı",
+    "draftBadge": "1v1 Maç Mutasyon Taslağı",
+    "equipTitle": "1 Kart Kuşan",
+    "draftTitle": "3 Karttan 1'ini Seç",
+    "equipIntro": "{{bossName}}, {{cardName}} kartını oynuyor. Karşılık vermek için kendi koleksiyonundan bir kart seç.",
+    "draftIntro": "Bu rastgele 3 kartlık taslak havuzundan, hem sen hem de rakibin {{bossName}} birer kart seçiyor. Seçilen mutasyonlar maç boyunca aktif kalır!",
+    "capturedByBoss": "Boss Tarafından Ele Geçirildi",
+    "usedLastStage": "Son Aşamada Kullanıldı",
+    "cpuChoseThisCard": "CPU Bu Kartı Seçti",
+    "augment": "Güçlendirme (+ Kendine)",
+    "sabotage": "Sabotaj (− Rakibe)",
+    "mutationCardFallback": "Mutasyon Kartı",
+    "unavailable": "Kullanılamaz",
+    "yourSelection": "✓ Seçimin",
+    "clickToSelect": "Seçmek İçin Tıkla",
+    "coldStorage": "Soğuk Depo",
+    "coldStorageHint": "Bu kartı sadece bu aşamada mars-yakalamadan korur.",
+    "equipAndEngage": "Kuşan ve Savaş",
+    "startMatch": "Seçilen Kartla Maça Başla"
+  },
+  "toasts": {
+    "achievementUnlocked": "Başarım Açıldı"
+  },
+  "mainMenu": {
+    "tagline": "Mutasyon Kartlı Siber Tavla",
+    "resumeRun": "Koşuya Devam Et",
+    "startRun": "Koşu Başlat",
+    "start1v1": "1v1 Maç Başlat"
+  },
+  "runMap": {
+    "campaignLabel": "Nextgammon Kampanyası",
+    "stageOf": "Aşama {{stage}} / {{total}}",
+    "cardsWon": "{{won}} / {{total}} kart kazanıldı",
+    "bossHoldsCard": "Boss taşını elinde tutuyor:",
+    "bossHoldsCards": "Boss taşlarını elinde tutuyor:",
+    "recoverHint": "— geri almak için bu aşamayı temizle, ya da şimdi satın al.",
+    "recoverHintPlural": "— geri almak için bu aşamayı temizle, ya da şimdi satın al.",
+    "buyBack": "{{name}} satın al — {{cost}}",
+    "act": "Perde {{n}}: {{name}}",
+    "actShort": "Perde {{n}}",
+    "battleOpponent": "Rakiple Savaş",
+    "skip": "Atla — {{cost}}",
+    "skipTitle": "Bu aşamayı anında atla ve ödül kartını kazan — protokol boss aşamaları atlanamaz.",
+    "campaignComplete": "Kampanya Tamamlandı",
+    "campaignCompleteHint": "Her boss yenildi. Her kart geri kazanıldı."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}

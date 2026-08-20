@@ -7,6 +7,8 @@ import { soundFx } from '../game/soundEngine';
 import { Dices, RotateCcw, RotateCw, AlertCircle, Sparkles, Shield, ChevronRight, ArrowUpRight, CheckCircle2, Snowflake, Anchor, Navigation, Eye, EyeOff, Zap, Trophy, ServerCrash, Coins } from 'lucide-react';
 import { ViewStage } from './CyberSkyline';
 import { CardIcon } from './CardIcon';
+import { useTranslation } from 'react-i18next';
+import { useCardText, useProtocolText } from '../hooks/useLocalizedText';
 
 interface NeonBoardProps {
   board: BoardState;
@@ -105,6 +107,16 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   rerollDieCost = 8000,
   onPaidDieReroll,
 }) => {
+  const { t } = useTranslation('ui');
+  const { name: playerActiveCardName, description: playerActiveCardDescription } = useCardText(
+    playerActiveCard ?? { id: '', name: '', tagline: '', description: '' }
+  );
+  const { name: cpuActiveCardName, description: cpuActiveCardDescription } = useCardText(
+    cpuActiveCard ?? { id: '', name: '', tagline: '', description: '' }
+  );
+  const { name: bossProtocolName, description: bossProtocolDescription } = useProtocolText(
+    bossProtocol ?? { id: '', name: '', description: '', taunt: '' }
+  );
   const [selectedPoint, setSelectedPoint] = useState<number | 'bar' | null>(null);
   const isLookingAround = viewStage !== 'table';
   const isPanorama = viewStage === 'panorama';
@@ -356,7 +368,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               }`}
             >
               <Snowflake className="w-2.5 h-2.5" />
-              <span>{isPlayerBlackIce ? 'BUZ' : 'CPU BUZ'}</span>
+              <span>{isPlayerBlackIce ? t('neonBoard.badgeIce') : t('neonBoard.badgeCpuIce')}</span>
             </div>
           )}
 
@@ -370,7 +382,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               }`}
             >
               <Anchor className="w-2.5 h-2.5" />
-              <span>{isPlayerDeadweight ? 'HANTAL' : 'HANTAL'}</span>
+              <span>{t('neonBoard.badgeSluggish')}</span>
             </div>
           )}
 
@@ -384,7 +396,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               }`}
             >
               <Navigation className="w-2.5 h-2.5" />
-              <span>{isPlayerCourier ? 'KURYE' : 'KURYE'}</span>
+              <span>{t('neonBoard.badgeCourier')}</span>
             </div>
           )}
         </div>
@@ -446,14 +458,14 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
         >
           <span>{board.off.player}</span>
           <span className="text-[7px] sm:text-[8px] text-success uppercase font-mono hidden sm:inline">
-            {validBearOffMoves.length > 0 ? 'OFF' : 'BORNE'}
+            {validBearOffMoves.length > 0 ? t('neonBoard.off') : t('neonBoard.borne')}
           </span>
         </div>
-        <span className="text-[8px] sm:text-[9px] text-player font-black mt-0.5">YOU</span>
+        <span className="text-[8px] sm:text-[9px] text-player font-black mt-0.5">{t('neonBoard.you')}</span>
       </div>
 
       <span className="text-[7px] sm:text-[8px] font-extrabold uppercase tracking-wider text-text-muted hidden xs:block">
-        TRAY
+        {t('neonBoard.tray')}
       </span>
     </div>
   );
@@ -489,7 +501,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                {mutationFlashVariant === 'protocol' ? 'PROTOCOL ACTIVATED' : 'MUTATION ACTIVATED'}
+                {mutationFlashVariant === 'protocol' ? t('neonBoard.protocolActivated') : t('neonBoard.mutationActivated')}
                 <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
               <div className="mt-1 text-[10px] sm:text-xs text-text font-mono leading-snug">
@@ -507,13 +519,13 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           {playerGatingLabel && (
             <div className="px-2 py-0.5 rounded-lg bg-opponent/15 border border-opponent text-opponent font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wide flex items-center gap-1">
               <Shield className="w-3 h-3 shrink-0" />
-              YOU: {playerGatingLabel}
+              {t('neonBoard.youGating', { label: playerGatingLabel })}
             </div>
           )}
           {cpuGatingLabel && (
             <div className="px-2 py-0.5 rounded-lg bg-player/15 border border-player text-player font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wide flex items-center gap-1">
               <Shield className="w-3 h-3 shrink-0" />
-              CPU: {cpuGatingLabel}
+              {t('neonBoard.cpuGating', { label: cpuGatingLabel })}
             </div>
           )}
         </div>
@@ -530,10 +542,10 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               })
             }
             className="px-2 py-0.5 rounded-lg bg-panel border border-line hover:border-player text-text-muted hover:text-player font-mono text-[9px] uppercase font-bold flex items-center gap-1 transition-all shadow-sm"
-            title="Click: Change Bear Off / Board Direction (Clockwise / Counter-Clockwise)"
+            title={t('neonBoard.changeDirectionTitle')}
           >
             <RotateCw className={`w-3 h-3 text-player transition-transform ${isClockwise ? 'rotate-180' : ''}`} />
-            <span>{isClockwise ? 'BEAR-OFF: CLOCKWISE (LEFT)' : 'BEAR-OFF: COUNTER-CW (RIGHT)'}</span>
+            <span>{isClockwise ? t('neonBoard.bearOffClockwise') : t('neonBoard.bearOffCounterCw')}</span>
           </button>
         )}
         {onCycleViewStage && (
@@ -546,15 +558,15 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             }`}
             title={
               viewStage === 'table'
-                ? 'Lean back and look up the street'
+                ? t('neonBoard.lookAroundTitleTable')
                 : viewStage === 'peek'
-                ? 'Look all the way up — full street view'
-                : 'Back to the table'
+                ? t('neonBoard.lookAroundTitlePeek')
+                : t('neonBoard.lookAroundTitlePanorama')
             }
           >
             {isLookingAround ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
             <span>
-              {viewStage === 'table' ? 'LOOK AROUND' : viewStage === 'peek' ? 'LOOK FURTHER' : 'BACK TO TABLE'}
+              {viewStage === 'table' ? t('neonBoard.lookAround') : viewStage === 'peek' ? t('neonBoard.lookFurther') : t('neonBoard.backToTable')}
             </span>
           </button>
         )}
@@ -576,12 +588,12 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             {pendingCardSelectionType === 'black_ice' && <Snowflake className="w-4 h-4 text-player animate-spin-slow shrink-0" />}
             <div>
               <span className="font-extrabold uppercase tracking-wider text-[11px]">
-                {pendingCardSelectionType === 'deadweight' && 'DEADWEIGHT ACTIVE: '}
-                {pendingCardSelectionType === 'courier' && 'COURIER ACTIVE: '}
-                {pendingCardSelectionType === 'black_ice' && 'BLACK ICE ACTIVE: '}
+                {pendingCardSelectionType === 'deadweight' && t('neonBoard.deadweightActive') + ' '}
+                {pendingCardSelectionType === 'courier' && t('neonBoard.courierActive') + ' '}
+                {pendingCardSelectionType === 'black_ice' && t('neonBoard.blackIceActive') + ' '}
               </span>
               <span className="text-[10px] opacity-90 hidden xs:inline">
-                Click point or choose from menu
+                {t('neonBoard.clickPointOrMenu')}
               </span>
             </div>
           </div>
@@ -590,7 +602,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               onClick={onOpenMarkedModal}
               className="px-2.5 py-1 bg-white text-slate-950 font-black rounded-lg text-[10px] hover:bg-slate-200 transition-all shadow-md shrink-0 ml-2"
             >
-              SELECT POINT
+              {t('neonBoard.selectPoint')}
             </button>
           )}
         </div>
@@ -603,10 +615,10 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             <RotateCcw className="w-4 h-4 text-player animate-spin-slow shrink-0" />
             <div>
               <span className="font-extrabold uppercase tracking-wider text-player text-[11px] block">
-                COLD REBOOT ACTIVE
+                {t('neonBoard.coldRebootActive')}
               </span>
               <span className="text-[10px] opacity-90 hidden sm:inline">
-                Low roll sum ≤ 5 ({dice.join(' + ')}). Click to reroll once!
+                {t('neonBoard.lowRollHint', { dice: dice.join(' + ') })}
               </span>
             </div>
           </div>
@@ -616,7 +628,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               className="px-2.5 py-1 rounded-lg bg-player hover:brightness-110 text-ink font-black text-[10px] uppercase tracking-wider transition-all shadow-[0_0_12px_var(--player)] active:scale-95 flex items-center gap-1 shrink-0"
             >
               <RotateCcw className="w-3 h-3" />
-              <span>REROLL</span>
+              <span>{t('neonBoard.reroll')}</span>
             </button>
           )}
         </div>
@@ -628,7 +640,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
             <span className="font-bold uppercase tracking-wider text-[10px]">
-              BEAR OFF MODE ACTIVE! Tap checkers or Bear Off tray.
+              {t('neonBoard.bearOffModeActive')}
             </span>
           </div>
         </div>
@@ -694,7 +706,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
           {/* BAR SECTION (CENTER COLUMN) */}
           <div className="w-9 xs:w-11 sm:w-14 md:w-16 bg-panel-2 border-x-2 border-line flex flex-col items-center justify-between p-1 z-20">
-            <span className="text-[8px] sm:text-[9px] font-black uppercase text-text-muted tracking-widest hidden xs:block">BAR</span>
+            <span className="text-[8px] sm:text-[9px] font-black uppercase text-text-muted tracking-widest hidden xs:block">{t('neonBoard.bar')}</span>
 
             {/* Player Bar Checkers */}
             {board.bar.player > 0 && (
@@ -715,7 +727,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               </div>
             )}
 
-            <span className="text-[8px] sm:text-[9px] font-black uppercase text-text-muted tracking-widest hidden xs:block">BAR</span>
+            <span className="text-[8px] sm:text-[9px] font-black uppercase text-text-muted tracking-widest hidden xs:block">{t('neonBoard.bar')}</span>
           </div>
 
           {/* Right Quadrant */}
@@ -771,17 +783,17 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
         <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {playerActiveCard && (
             <div
-              onClick={() => onCardClick && onCardClick(playerActiveCard, 'PLAYER CARD')}
+              onClick={() => onCardClick && onCardClick(playerActiveCard, t('neonBoard.ownerLabelPlayer'))}
               className="bg-player/10 border border-player/40 hover:border-player hover:bg-player/15 rounded-lg p-1.5 px-2 flex items-center gap-1.5 text-[11px] cursor-pointer transition-all shadow-sm"
-              title="Click to Expand Card Details"
+              title={t('neonBoard.clickToExpand')}
             >
               <Sparkles className="w-3.5 h-3.5 text-player shrink-0" />
               <div className="line-clamp-1">
                 <span className="font-mono text-[9px] text-player uppercase font-bold mr-1">
-                  PLAYER CARD:
+                  {t('neonBoard.playerCard')}
                 </span>
-                <span className="font-black text-text">{playerActiveCard.name}</span>
-                <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({playerActiveCard.description})</span>
+                <span className="font-black text-text">{playerActiveCardName}</span>
+                <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({playerActiveCardDescription})</span>
               </div>
             </div>
           )}
@@ -790,35 +802,35 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           {bossProtocol && !cpuActiveCard ? (
             <div
               className="bg-danger/10 border border-danger/50 rounded-lg p-1.5 px-2 flex items-center gap-1.5 text-[11px] shadow-sm animate-pulse"
-              title={bossProtocol.description}
+              title={bossProtocolDescription}
             >
               <CardIcon name={bossProtocol.iconName} className="w-3.5 h-3.5 text-danger shrink-0" />
               <div className="line-clamp-1">
                 <span className="font-mono text-[9px] text-danger uppercase font-bold mr-1">
-                  PROTOCOL:
+                  {t('neonBoard.protocol')}
                 </span>
-                <span className="font-black text-text">{bossProtocol.name}</span>
-                <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({bossProtocol.description})</span>
+                <span className="font-black text-text">{bossProtocolName}</span>
+                <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({bossProtocolDescription})</span>
               </div>
             </div>
           ) : (
             cpuActiveCard && (
               <div
-                onClick={() => onCardClick && onCardClick(cpuActiveCard, 'CPU CARD')}
+                onClick={() => onCardClick && onCardClick(cpuActiveCard, t('neonBoard.ownerLabelCpu'))}
                 className={`rounded-lg p-1.5 px-2 flex items-center gap-1.5 text-[11px] cursor-pointer transition-all shadow-sm ${
                   bossProtocol
                     ? 'bg-danger/10 border border-danger/50 hover:border-danger hover:bg-danger/15'
                     : 'bg-opponent/10 border border-opponent/40 hover:border-opponent hover:bg-opponent/15'
                 }`}
-                title="Click to Expand Card Details"
+                title={t('neonBoard.clickToExpand')}
               >
                 <Sparkles className={`w-3.5 h-3.5 shrink-0 ${bossProtocol ? 'text-danger' : 'text-opponent'}`} />
                 <div className="line-clamp-1">
                   <span className={`font-mono text-[9px] uppercase font-bold mr-1 ${bossProtocol ? 'text-danger' : 'text-opponent'}`}>
-                    {bossProtocol ? `${bossProtocol.name} MIRROR:` : 'CPU CARD:'}
+                    {bossProtocol ? t('neonBoard.mirror', { name: bossProtocolName }) : t('neonBoard.cpuCard')}
                   </span>
-                  <span className="font-black text-text">{cpuActiveCard.name}</span>
-                  <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({cpuActiveCard.description})</span>
+                  <span className="font-black text-text">{cpuActiveCardName}</span>
+                  <span className="text-text-muted ml-1 text-[10px] hidden md:inline">({cpuActiveCardDescription})</span>
                 </div>
               </div>
             )
@@ -847,7 +859,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             }`}
           />
           <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-text">
-            {turn === 'player' ? 'YOUR TURN' : 'CPU TURN...'}
+            {turn === 'player' ? t('neonBoard.yourTurn') : t('neonBoard.cpuTurnEllipsis')}
           </span>
         </div>
 
@@ -869,16 +881,16 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               ))}
             </AnimatePresence>
           ) : (
-            <span className="text-[10px] text-text-muted italic">No Dice</span>
+            <span className="text-[10px] text-text-muted italic">{t('neonBoard.noDice')}</span>
           )}
           {canPaidReroll && (
             <button
               onClick={onPaidDieReroll}
-              title="Spend Neon Chips to reroll one die"
+              title={t('neonBoard.paidRerollTitle')}
               className="px-2 py-1.5 rounded-lg bg-panel border border-player/50 hover:bg-line text-player font-bold text-[9px] sm:text-[10px] uppercase tracking-wider transition-all flex items-center gap-1 shadow-md active:scale-95"
             >
               <RotateCcw className="w-3 h-3" />
-              Reroll — {rerollDieCost.toLocaleString()}
+              {t('neonBoard.rerollCost', { cost: rerollDieCost.toLocaleString() })}
             </button>
           )}
         </div>
@@ -891,18 +903,18 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               <button
                 onClick={onUndoMove}
                 className="px-2.5 py-1.5 rounded-lg bg-panel border border-player/50 hover:bg-line text-player font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all flex items-center gap-1 shadow-md active:scale-95"
-                title="Undo last moved checker"
+                title={t('neonBoard.undoTitle')}
               >
                 <RotateCcw className="w-3 h-3" />
-                <span>UNDO</span>
+                <span>{t('neonBoard.undo')}</span>
               </button>
 
               <button
                 onClick={onUndoTurn}
                 className="px-2 py-1.5 rounded-lg bg-panel-2 border border-line hover:border-player text-text-muted hover:text-text font-bold text-[9px] uppercase tracking-wider transition-all"
-                title="Reset turn to start position"
+                title={t('neonBoard.resetTitle')}
               >
-                RESET
+                {t('neonBoard.reset')}
               </button>
             </div>
           )}
@@ -916,7 +928,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-xl bg-gradient-to-r from-player to-success text-ink font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_20px_var(--player)]/60 hover:brightness-125 transition-all flex items-center gap-1.5 active:scale-95"
             >
               <Dices className="w-4 h-4" />
-              ROLL
+              {t('neonBoard.roll')}
             </button>
           )}
 
@@ -926,18 +938,18 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               className="px-3 py-1.5 rounded-xl bg-danger/15 border border-danger text-danger font-bold text-xs uppercase tracking-wider hover:bg-danger/25 transition-all flex items-center gap-1"
             >
               <AlertCircle className="w-3.5 h-3.5" />
-              PASS
+              {t('neonBoard.pass')}
             </button>
           )}
 
           {canDiscardDie && onDiscardDie && (
             <button
               onClick={onDiscardDie}
-              title="PACKET DROP: Discard the remaining die and end your turn early"
+              title={t('neonBoard.discardDieTitle')}
               className="px-3 py-1.5 rounded-xl bg-warning/15 border border-warning text-warning font-bold text-xs uppercase tracking-wider hover:bg-warning/25 transition-all flex items-center gap-1"
             >
               <AlertCircle className="w-3.5 h-3.5" />
-              DISCARD DIE
+              {t('neonBoard.discardDie')}
             </button>
           )}
         </div>
@@ -982,42 +994,42 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
             <h2 className="font-display text-2xl sm:text-3xl font-black tracking-widest mb-1 uppercase">
               {winner === 'player' ? (
-                <span className="text-player drop-shadow-[0_2px_12px_rgba(0,229,255,0.8)]">MATCH VICTORY</span>
+                <span className="text-player drop-shadow-[0_2px_12px_rgba(0,229,255,0.8)]">{t('neonBoard.matchVictory')}</span>
               ) : (
-                <span className="text-opponent drop-shadow-[0_2px_12px_rgba(255,45,120,0.8)]">SYSTEM DEFEAT</span>
+                <span className="text-opponent drop-shadow-[0_2px_12px_rgba(255,45,120,0.8)]">{t('neonBoard.systemDefeat')}</span>
               )}
             </h2>
 
             <p className="text-xs sm:text-sm text-text max-w-md mb-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
               {winner === 'player'
                 ? isRunMatch
-                  ? 'You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.'
-                  : 'You dismantled the CPU opponent grid! Run it back for another round.'
+                  ? t('neonBoard.victoryDescRun')
+                  : t('neonBoard.victoryDescQuick')
                 : isRunMatch
-                ? 'Your backgammon core was compromised by the AI boss. Regroup and retry the stage.'
-                : 'Your backgammon core was compromised by the CPU. Run it back for a rematch.'}
+                ? t('neonBoard.defeatDescRun')
+                : t('neonBoard.defeatDescQuick')}
             </p>
 
             {totalChipsEarned > 0 && (
               <div className="w-full max-w-[220px] mb-3 rounded-lg border border-line bg-panel/70 px-3 py-1.5 font-mono text-[10px] sm:text-[11px]">
                 <div className="flex items-center gap-1.5 mb-1.5 text-text-muted uppercase tracking-wider text-[9px]">
                   <Coins className="w-3 h-3 text-player" />
-                  Neon Chips earned
+                  {t('neonBoard.chipsEarned')}
                 </div>
                 {hitChipsEarned > 0 && (
                   <div className="flex items-center justify-between text-text-muted">
-                    <span>{matchHitCount}&times; Opponent hit</span>
+                    <span>{t('neonBoard.opponentHitTimes', { count: matchHitCount })}</span>
                     <span className="text-text">+{hitChipsEarned}</span>
                   </div>
                 )}
                 {resultChipsEarned > 0 && (
                   <div className="flex items-center justify-between text-text-muted">
-                    <span>Match won</span>
+                    <span>{t('neonBoard.matchWon')}</span>
                     <span className="text-text">+{resultChipsEarned}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-line font-bold">
-                  <span className="text-text-muted">Total</span>
+                  <span className="text-text-muted">{t('neonBoard.total')}</span>
                   <span className="text-player">+{totalChipsEarned}</span>
                 </div>
               </div>
@@ -1031,7 +1043,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                   : 'bg-gradient-to-r from-opponent to-danger text-ink shadow-[0_0_30px_rgba(255,45,120,0.7)]'
               }`}
             >
-              CONTINUE
+              {t('neonBoard.continue')}
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GameSettings } from '../types';
-import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Home } from 'lucide-react';
+import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Home, Globe } from 'lucide-react';
 import { PortraitGuard } from './PortraitGuard';
 import { CyberSkyline, ViewStage } from './CyberSkyline';
+import { SUPPORTED_LANGUAGES, RTL_LANGUAGES, SupportedLanguage } from '../i18n/config';
 
 interface PlatformFrameProps {
   settings: GameSettings;
@@ -31,6 +33,16 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
   bossProtocolActive = false,
   children,
 }) => {
+  const { t, i18n } = useTranslation('ui');
+  const currentLang = (i18n.resolvedLanguage || 'en') as SupportedLanguage;
+
+  // Flip document direction for RTL languages (Arabic) — affects the whole app shell, not just
+  // this component, so it belongs on <html>/<body> rather than something scoped to this subtree.
+  useEffect(() => {
+    document.documentElement.dir = RTL_LANGUAGES.includes(currentLang) ? 'rtl' : 'ltr';
+    document.documentElement.lang = currentLang;
+  }, [currentLang]);
+
   return (
     <div
       data-theme={settings.boardTheme}
@@ -62,7 +74,7 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
             <button
               onClick={onGoToMenu}
               className="p-1 sm:p-1.5 rounded-lg bg-panel border border-line hover:border-player text-text hover:text-player transition-colors"
-              title="Return to Main Menu"
+              title={t('common.returnToMenu')}
             >
               <Home className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
@@ -79,6 +91,22 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
             </span>
           </button>
 
+          {/* Language Switcher */}
+          <div className="flex items-center gap-1 pl-1 pr-1 py-1 rounded-lg bg-panel border border-line" title={t('settings.language')}>
+            <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-text-muted shrink-0" />
+            <select
+              value={currentLang}
+              onChange={(e) => i18n.changeLanguage(e.target.value)}
+              className="bg-transparent text-text text-[9px] sm:text-[10px] font-bold uppercase tracking-wide outline-none cursor-pointer"
+            >
+              {SUPPORTED_LANGUAGES.map((lng) => (
+                <option key={lng} value={lng} className="bg-panel text-text">
+                  {t(`languageNames.${lng}`)}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Audio Toggle + Volume Bar */}
           <div className="flex items-center gap-1 sm:gap-1.5 pl-1 pr-1.5 sm:pr-2 py-1 rounded-lg bg-panel border border-line">
             <button
@@ -90,7 +118,7 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
                 }
               }}
               className="p-0.5 text-text hover:text-player transition-colors shrink-0"
-              title="Toggle Audio"
+              title={t('common.toggleAudio')}
             >
               {settings.soundEnabled && settings.sfxVolume > 0 ? <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-player" /> : <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-text-muted" />}
             </button>
@@ -106,7 +134,7 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
               }}
               className="w-10 sm:w-16 h-1 cursor-pointer"
               style={{ accentColor: 'var(--player)' }}
-              title="Volume"
+              title={t('common.volume')}
             />
           </div>
         </div>

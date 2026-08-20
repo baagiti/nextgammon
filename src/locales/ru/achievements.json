@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "Впервые побейте шашку соперника." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "Нанесите 50 ударов по шашкам соперника за всё время игры." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "Нанесите 200 ударов по шашкам соперника за всё время игры." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "Поставьте сопернику марс — выиграйте матч, в котором CPU не снимет ни одной шашки." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "Заработайте свои первые Neon Chips." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "Заработайте 10 000 Neon Chips за всё время игры." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "Заработайте 100 000 Neon Chips за всё время игры." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "Заработайте 1 000 000 Neon Chips за всё время игры." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "Выиграйте свой первый быстрый матч 1 на 1." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "Выиграйте 10 быстрых матчей 1 на 1." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "Выиграйте 100 быстрых матчей 1 на 1." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "Экипируйте каждую доступную для драфта карту хотя бы раз в быстрых матчах 1 на 1." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "Пройдите свой первый этап кампании." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "Победите BOLLARD и завершите Акт 1: Boot Sector." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "Победите GHOSTGATE и завершите Акт 2: Street Level." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "Победите SENTINEL WALL и завершите Акт 3: The Grid." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "Победите MIRROR CORE и завершите Акт 4: Deep Net." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "Победите SIEGE ENGINE и завершите Акт 5: Black Market." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "Победите NULL SECTOR и завершите Акт 6: Core Breach." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "Победите OMEGA CORE и завершите Акт 7: Singularity." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "Завершите всю кампанию из 44 этапов." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "Завершите кампанию, не проиграв ни одного этапа." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "Откройте 25 из 45 карт." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "Откройте все 45 карт." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "Повторите один и тот же этап 10 раз подряд, не бросив забег." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "Выиграйте этап в режиме забега после того, как босс уже захватил одну из ваших карт." }
+}

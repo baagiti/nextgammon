@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "Schlage zum ersten Mal einen gegnerischen Stein." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "Schlage insgesamt 50 gegnerische Steine (Lebenszeit-Gesamt)." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "Schlage insgesamt 200 gegnerische Steine (Lebenszeit-Gesamt)." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "Mars den Gegner — gewinne ein Match, bei dem die CPU keinen einzigen Stein auswürfelt." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "Verdiene deine ersten Neon Chips." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "Verdiene insgesamt 10.000 Neon Chips (Lebenszeit-Gesamt)." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "Verdiene insgesamt 100.000 Neon Chips (Lebenszeit-Gesamt)." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "Verdiene insgesamt 1.000.000 Neon Chips (Lebenszeit-Gesamt)." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "Gewinne dein erstes 1-gegen-1-Schnellmatch." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "Gewinne 10 1-gegen-1-Schnellmatches." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "Gewinne 100 1-gegen-1-Schnellmatches." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "Setze jede wählbare Karte mindestens einmal in 1-gegen-1-Schnellmatches ein." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "Schließe deine erste Kampagnen-Stufe ab." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "Besiege BOLLARD und schließe Akt 1: Boot Sector ab." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "Besiege GHOSTGATE und schließe Akt 2: Street Level ab." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "Besiege SENTINEL WALL und schließe Akt 3: The Grid ab." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "Besiege MIRROR CORE und schließe Akt 4: Deep Net ab." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "Besiege SIEGE ENGINE und schließe Akt 5: Black Market ab." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "Besiege NULL SECTOR und schließe Akt 6: Core Breach ab." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "Besiege OMEGA CORE und schließe Akt 7: Singularity ab." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "Schließe die gesamte 44-stufige Kampagne ab." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "Schließe die Kampagne ab, ohne unterwegs auch nur eine einzige Stufe zu verlieren." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "Schalte 25 der 45 Karten frei." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "Schalte alle 45 Karten frei." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "Versuche dieselbe Stufe 10 Mal in Folge erneut, ohne den Run abzubrechen." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "Gewinne eine Run-Stufe, nachdem ein Boss bereits eine deiner Karten erobert hat." }
+}

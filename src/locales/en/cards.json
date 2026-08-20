@@ -1,0 +1,56 @@
+{
+  "card_overclock": { "name": "OVERCLOCK", "tagline": "Dice Geometry", "description": "Increases the lower die by +1 on non-natural double rolls (Max 6)." },
+  "card_synchronize": { "name": "SYNCHRONIZE", "tagline": "Dice Geometry", "description": "If non-double dice are consecutive, lower die increases by +1 (e.g., 5-4 → 5-5). Only 2 moves played." },
+  "card_convergence": { "name": "CONVERGENCE", "tagline": "Dice Geometry", "description": "If non-double dice differ by at least 3, lower die gets +2 and higher die gets −1 (e.g., 6-1 → 5-3)." },
+  "card_cold_reboot": { "name": "COLD REBOOT", "tagline": "Dice Geometry", "description": "If raw dice sum is 5 or lower, optionally reroll both dice once." },
+  "card_double_tuner": { "name": "DOUBLE TUNER", "tagline": "Dice Geometry", "description": "On natural double x-x, replaces 4 identical values with [x−1, x, x, x+1]." },
+  "card_doubles_engine": { "name": "DOUBLES ENGINE", "tagline": "Dice Geometry", "description": "On natural doubles, allows using the die value 5 times instead of 4." },
+  "card_compression_field": { "name": "COMPRESSION FIELD", "tagline": "Dice Geometry", "description": "If opponent non-double dice differ by at least 3, higher die gets −2, lower die gets +1 (e.g., 6-1 → 4-2)." },
+  "card_overvoltage_trip": { "name": "OVERVOLTAGE TRIP", "tagline": "Dice Geometry", "description": "If opponent non-double dice sum is 10 or higher, forces opponent dice to automatically reroll." },
+  "card_double_fault": { "name": "DOUBLE FAULT", "tagline": "Dice Geometry", "description": "When opponent rolls a natural double, grants them only 3 moves instead of 4." },
+  "card_six_tax": { "name": "SIX TAX", "tagline": "Dice Geometry", "description": "When opponent rolls a 6 on a non-double roll, their other die gets −1 (Min 1)." },
+
+  "card_mirror_reflex": { "name": "MIRROR REFLEX", "tagline": "Blot & Hit", "description": "When your blot is hit, the hitting opponent checker is also sent to the Bar." },
+  "card_shatter_blot": { "name": "SHATTER BLOT", "tagline": "Blot & Hit", "description": "When you hit an opponent blot, an adjacent opponent blot directly ahead also gets sent to the Bar." },
+  "card_double_tap": { "name": "DOUBLE TAP", "tagline": "Blot & Hit", "description": "After your first hit in a turn, any unused die gets +1 (Max 6)." },
+  "card_open_circuit": { "name": "OPEN CIRCUIT", "tagline": "Blot & Hit", "description": "If you end your turn with at least one open blot, your lower die gets +1 on your next non-double roll." },
+  "card_second_wind": { "name": "SECOND WIND", "tagline": "Blot & Hit", "description": "When one of your blots is hit, your lower die gets +1 on your next turn (Max 6)." },
+  "card_deflection": { "name": "DEFLECTION", "tagline": "Blot & Hit", "description": "When your blot is hit, instead of going to the Bar, it retreats 1 point backward if possible." },
+  "card_compulsory_hit": { "name": "COMPULSORY HIT", "tagline": "Blot & Hit", "description": "If opponent has any legal move sequence containing a hit, they MUST perform at least one hit." },
+  "card_blood_tax": { "name": "BLOOD TAX", "tagline": "Blot & Hit", "description": "After opponent makes their first hit in a turn, their next die gets −1 (Min 1)." },
+  "card_double_fracture": { "name": "DOUBLE FRACTURE", "tagline": "Blot & Hit", "description": "When opponent makes a hit during a double roll, 1 remaining die move is destroyed." },
+  "card_backlash": { "name": "BACKLASH", "tagline": "Blot & Hit", "description": "After opponent makes their first hit in a turn, the hitting checker retreats 1 point backward if possible." },
+  "card_blood_magnet": { "name": "BLOOD MAGNET", "tagline": "Blot & Hit", "description": "If opponent starts their turn with at least one blot and has valid moves, their first move MUST move a blot." },
+  "card_cowards_tax": { "name": "COWARD'S TAX", "tagline": "Blot & Hit", "description": "If opponent has at least one legal hit opportunity during their turn but chooses not to hit, their lower die gets −1 on their next turn." },
+
+  "card_magnetic_link": { "name": "MAGNETIC LINK", "tagline": "Gates & Control", "description": "If a move ends exactly 1 point behind your own blot, it automatically advances +1 to form a point/gate." },
+  "card_repulsor": { "name": "REPULSOR", "tagline": "Gates & Control", "description": "If opponent moves onto their own blot to form a new point, the landing checker is pushed +1 forward, preventing point creation." },
+
+  "card_counterstrike": { "name": "COUNTERSTRIKE", "tagline": "Bar & Re-entry", "description": "When re-entering from the Bar and hitting an opponent blot, any unused die gets +1 (Max 6)." },
+  "card_launchpad": { "name": "LAUNCHPAD", "tagline": "Bar & Re-entry", "description": "When re-entering from the Bar onto your own blot to form a point, any unused die gets +1 (Max 6)." },
+  "card_failsafe": { "name": "FAILSAFE", "tagline": "Bar & Re-entry", "description": "If you cannot re-enter any checker from the Bar for an entire turn, your lower die gets +1 on your next turn." },
+  "card_batch_upload": { "name": "BATCH UPLOAD", "tagline": "Bar & Re-entry", "description": "If you start your turn with exactly 2 checkers on the Bar and roll a non-double with valid entry, both checkers re-enter together using 1 die." },
+  "card_bypass_protocol": { "name": "BYPASS PROTOCOL", "tagline": "Bar & Re-entry", "description": "If you have checkers on the Bar but your dice cannot re-enter them, Bar priority is suspended and you may move checkers on the board." },
+  "card_bar_static": { "name": "BAR STATIC", "tagline": "Bar & Re-entry", "description": "If opponent starts their turn with 2 or more checkers on the Bar, their higher die gets −1 before resolving entries." },
+
+  "card_black_ice": { "name": "BLACK ICE", "tagline": "Board Anomaly", "description": "If an opponent checker ends its move on the icy point designated at match start, it is instantly sent to the Bar." },
+
+  "card_packet_drop": { "name": "PACKET DROP", "tagline": "Movement & Dead Rolls", "description": "After playing 1 die on a non-double roll, you may discard the remaining die and end your turn." },
+  "card_lost_packet": { "name": "LOST PACKET", "tagline": "Movement & Dead Rolls", "description": "If opponent cannot play one of their dice and ends turn early, their lower die gets −1 on their next turn." },
+  "card_echo_jam": { "name": "ECHO JAM", "tagline": "Movement & Dead Rolls", "description": "If opponent uses both dice on the same checker on a non-double turn, the second die gets −1 (Min 1)." },
+  "card_forced_commit": { "name": "FORCED COMMIT", "tagline": "Movement & Dead Rolls", "description": "If opponent plays their first die on a checker and the second die can also be played on the same checker, they MUST play it on the same checker." },
+
+  "card_redundancy": { "name": "REDUNDANCY", "tagline": "Home & Bear Off", "description": "When all checkers are in your home board and one die cannot be played at all, the playable die can be used twice." },
+  "card_home_security": { "name": "HOME SECURITY", "tagline": "Home & Bear Off", "description": "If opponent has at least one open blot in their home board, they cannot bear off checkers." },
+  "card_final_check": { "name": "FINAL CHECK", "tagline": "Home & Bear Off", "description": "Opponent cannot bear off their last remaining checker with overshoot (excess die). Must be an exact die roll." },
+  "card_exact_lock": { "name": "EXACT LOCK", "tagline": "Home & Bear Off", "description": "Opponent cannot bear off any checkers with overshoot. Checkers can only be borne off on exact die matches." },
+
+  "card_tailwind": { "name": "TAILWIND", "tagline": "Race & Pip", "description": "The first time you move your rearmost checker each turn, the die used gets +1 (Max 6)." },
+  "card_trailing_drag": { "name": "TRAILING DRAG", "tagline": "Race & Pip", "description": "The first time opponent moves their rearmost checker each turn, the die used gets −1 (Min 1)." },
+
+  "card_courier": { "name": "COURIER", "tagline": "Marked Checkers", "description": "Your Courier checker designated at match start gets +1 die distance every time it moves (Max 6)." },
+  "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Marked Checkers", "description": "The opponent Deadweight checker designated at match start gets −1 die distance every time it moves (Min 1)." },
+
+  "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Gravity Well", "description": "Every time the opponent bears off a checker, their next roll's lower die gets −1 (Min 1) — gravity intensifies the closer they get to escaping." },
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Full Lockdown", "description": "OMEGA CORE's own blots can never be hit — its exposed checkers cannot be broken." }
+}

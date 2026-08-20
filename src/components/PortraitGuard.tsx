@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RotateCw, Smartphone, Monitor } from 'lucide-react';
 
 export const PortraitGuard: React.FC = () => {
+  const { t } = useTranslation('ui');
   const [isPortrait, setIsPortrait] = useState<boolean>(false);
   const [bypassed, setBypassed] = useState<boolean>(false);
 
@@ -43,21 +45,21 @@ export const PortraitGuard: React.FC = () => {
 
       {/* Cyberpunk Title */}
       <span className="px-3 py-1 rounded-full bg-[#151525] border border-[#ff00ff] text-[#ff00ff] font-mono text-[10px] font-bold uppercase tracking-widest mb-3 shadow-[0_0_15px_rgba(255,0,255,0.3)]">
-        MANDATORY LANDSCAPE MODE
+        {t('portraitGuard.badge')}
       </span>
 
       <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-wider text-white mb-2 drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]">
-        PLEASE ROTATE YOUR DEVICE
+        {t('portraitGuard.title')}
       </h2>
 
       <p className="text-slate-300 text-xs sm:text-sm max-w-sm font-medium leading-relaxed mb-6">
-        Nextgammon requires a <span className="text-[#00ffff] font-extrabold">Horizontal (Landscape)</span> screen view to render all 24 board points, cards, and dice cleanly. Please turn your phone sideways!
+        {t('portraitGuard.description')}
       </p>
 
       {/* Help Tip */}
       <div className="bg-[#0a0a15] border border-[#2a2a4a] rounded-xl p-3 max-w-xs text-[11px] text-slate-400 font-mono mb-6 flex items-center gap-2">
         <RotateCw className="w-4 h-4 text-[#00ffff] shrink-0 animate-pulse" />
-        <span>Tip: Ensure portrait orientation lock is disabled on your phone settings.</span>
+        <span>{t('portraitGuard.tip')}</span>
       </div>
 
       {/* Bypass / Force Preview Button */}
@@ -66,7 +68,7 @@ export const PortraitGuard: React.FC = () => {
         className="px-4 py-2 rounded-lg bg-[#151525] border border-[#2a2a4a] hover:border-[#00ffff] text-slate-400 hover:text-white text-xs font-mono font-bold transition-all flex items-center gap-2"
       >
         <Monitor className="w-3.5 h-3.5 text-[#00ffff]" />
-        <span>Preview Landscape Mode Anyway</span>
+        <span>{t('portraitGuard.bypass')}</span>
       </button>
     </div>
   );

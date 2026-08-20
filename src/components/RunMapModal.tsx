@@ -1,12 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { RunState } from '../types';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS } from '../game/campaignData';
 import { PLAYER_CARDS } from '../game/cardsData';
 import { CardIcon } from './CardIcon';
+import { getCardText, getCampaignStageText, getProtocolText } from '../hooks/useLocalizedText';
 import { Swords, Lock, CheckCircle2, Trophy, AlertTriangle, Bot, Coins, FastForward } from 'lucide-react';
 
 export const BUYBACK_CARD_COST = 10000;
 export const SKIP_STAGE_COST = 100000;
+export const REROLL_DIE_COST = 8000;
 
 interface RunMapModalProps {
   run: RunState;
@@ -34,8 +37,12 @@ const RARITY_STYLE: Record<string, { border: string; bg: string; text: string }>
 };
 
 export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neonChips, onBuyBackCard, onSkipStage }) => {
+  const { t: tCards } = useTranslation('cards');
+  const { t: tBosses } = useTranslation('bosses');
+  const { t } = useTranslation('ui');
   const totalCardsWon = Math.max(0, run.deck.length - 1); // exclude the free starter card
   const currentStage = CAMPAIGN_STAGES[run.stage - 1];
+  const currentStageText = currentStage ? getCampaignStageText(tBosses, currentStage) : null;
   const acts = Array.from(new Set(CAMPAIGN_STAGES.map((s) => s.act)));
   const canSkipStage = !!currentStage && currentStage.kind === 'card';
 
@@ -44,14 +51,14 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
       {/* Run Status Header */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4 mb-4">
         <div>
-          <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-player">NEXTGAMMON CAMPAIGN</span>
-          <h2 className="font-display text-xl sm:text-2xl font-black text-text tracking-wide">
-            STAGE {run.stage} <span className="text-text-muted font-normal">OF {CAMPAIGN_STAGES.length}</span>
+          <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-player">{t('runMap.campaignLabel')}</span>
+          <h2 className="font-display text-xl sm:text-2xl font-black text-text tracking-wide uppercase">
+            {t('runMap.stageOf', { stage: run.stage, total: CAMPAIGN_STAGES.length })}
           </h2>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-panel-2 border border-rarity-legendary/50 text-rarity-legendary font-mono font-bold text-xs shadow-[0_0_15px_var(--rarity-legendary)]/20">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-panel-2 border border-rarity-legendary/50 text-rarity-legendary font-mono font-bold text-xs shadow-[0_0_15px_var(--rarity-legendary)]/20 uppercase">
           <Trophy className="w-4 h-4" />
-          {totalCardsWon} / {CAMPAIGN_STAGES.length} CARDS WON
+          {t('runMap.cardsWon', { won: totalCardsWon, total: CAMPAIGN_STAGES.length })}
         </div>
       </div>
 
@@ -69,11 +76,18 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
           <div className="flex items-start gap-3 text-sm">
             <AlertTriangle className="w-5 h-5 text-danger shrink-0 mt-0.5" />
             <div>
-              <span className="font-black text-danger uppercase tracking-wider">Boss holds your card{run.capturedCardIds.length > 1 ? 's' : ''}: </span>
-              <span className="text-text">
-                {run.capturedCardIds.map((id) => PLAYER_CARDS.find((c) => c.id === id)?.name || id).join(', ')}
+              <span className="font-black text-danger uppercase tracking-wider">
+                {run.capturedCardIds.length > 1 ? t('runMap.bossHoldsCards') : t('runMap.bossHoldsCard')}{' '}
               </span>
-              <span className="text-text-muted"> — clear this stage to recover {run.capturedCardIds.length > 1 ? 'them' : 'it'}, or buy it back now.</span>
+              <span className="text-text">
+                {run.capturedCardIds
+                  .map((id) => {
+                    const c = PLAYER_CARDS.find((c) => c.id === id);
+                    return c ? getCardText(tCards, c).name : id;
+                  })
+                  .join(', ')}
+              </span>
+              <span className="text-text-muted"> {run.capturedCardIds.length > 1 ? t('runMap.recoverHintPlural') : t('runMap.recoverHint')}</span>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 pl-8">
@@ -92,7 +106,7 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                   }`}
                 >
                   <Coins className="w-3.5 h-3.5" />
-                  Buy back {card?.name || id} — {BUYBACK_CARD_COST.toLocaleString()}
+                  {t('runMap.buyBack', { name: card ? getCardText(tCards, card).name : id, cost: BUYBACK_CARD_COST.toLocaleString() })}
                 </button>
               );
             })}
@@ -116,12 +130,12 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 text-player font-mono font-bold text-[10px] uppercase tracking-widest mb-0.5">
                 <Swords className="w-3.5 h-3.5" />
-                ACT {currentStage.act}: {ACT_NAMES[currentStage.act]}
+                {t('runMap.act', { n: currentStage.act, name: ACT_NAMES[currentStage.act] })}
               </div>
               <h3 className="font-display text-lg font-black text-text truncate">
-                {currentStage.bossName} <span className="text-text-muted font-normal text-sm">— {currentStage.bossTitle}</span>
+                {currentStageText!.bossName} <span className="text-text-muted font-normal text-sm">— {currentStageText!.bossTitle}</span>
               </h3>
-              <p className="text-xs text-text-muted italic mt-0.5 truncate">"{currentStage.quote}"</p>
+              <p className="text-xs text-text-muted italic mt-0.5 truncate">"{currentStageText!.quote}"</p>
             </div>
           </div>
           <div className="flex flex-col gap-2 shrink-0">
@@ -129,14 +143,14 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
               onClick={onEnterMatch}
               className="py-3 px-6 rounded-xl bg-player text-ink font-display font-black text-sm uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 hover:brightness-110 transition-all flex items-center justify-center gap-2"
             >
-              BATTLE OPPONENT
+              {t('runMap.battleOpponent')}
               <Swords className="w-4 h-4" />
             </button>
             {canSkipStage && (
               <button
                 onClick={onSkipStage}
                 disabled={neonChips < SKIP_STAGE_COST}
-                title="Skip this stage instantly and claim its reward card — protocol boss stages can't be skipped."
+                title={t('runMap.skipTitle')}
                 className={`py-1.5 px-4 rounded-lg font-mono text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all ${
                   neonChips >= SKIP_STAGE_COST
                     ? 'bg-panel-2 border border-player/50 text-player hover:border-player'
@@ -144,7 +158,7 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                 }`}
               >
                 <FastForward className="w-3 h-3" />
-                Skip — {SKIP_STAGE_COST.toLocaleString()}
+                {t('runMap.skip', { cost: SKIP_STAGE_COST.toLocaleString() })}
               </button>
             )}
           </div>
@@ -158,7 +172,7 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
           return (
             <div key={act}>
               <div className="font-mono text-[10px] font-black uppercase tracking-[0.25em] text-text-muted mb-2 pb-1 border-b border-line/60">
-                ACT {act} <span className="text-player">— {ACT_NAMES[act]}</span>
+                {t('runMap.actShort', { n: act })} <span className="text-player">— {ACT_NAMES[act]}</span>
               </div>
               <div className="flex flex-wrap gap-2.5">
                 {stagesInAct.map((stage) => {
@@ -170,6 +184,9 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                   const style = protocol
                     ? { border: 'border-danger/70', bg: 'bg-danger/10', text: 'text-danger' }
                     : RARITY_STYLE[rewardCard?.rarity || 'common'];
+                  const stageText = getCampaignStageText(tBosses, stage);
+                  const protocolName = protocol ? getProtocolText(tBosses, protocol).name : undefined;
+                  const rewardCardName = rewardCard ? getCardText(tCards, rewardCard).name : undefined;
 
                   return (
                     <div
@@ -183,7 +200,7 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                           ? 'bg-panel-2/60 opacity-55 grayscale-[0.3]'
                           : `${style.bg} opacity-90`
                       }`}
-                      title={protocol ? `${stage.bossName} — ${protocol.name}` : `${stage.bossName} plays ${rewardCard?.name}`}
+                      title={protocol ? `${stageText.bossName} — ${protocolName}` : `${stageText.bossName} plays ${rewardCardName}`}
                     >
                       {isCleared && (
                         <CheckCircle2 className="absolute -top-2 -right-2 w-5 h-5 text-success bg-ink rounded-full" />
@@ -212,10 +229,10 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                       </div>
 
                       <span className="font-display text-[10px] font-black text-text uppercase leading-tight truncate w-full">
-                        {stage.bossName}
+                        {stageText.bossName}
                       </span>
                       <span className={`font-mono text-[8px] uppercase mt-0.5 truncate w-full ${style.text}`}>
-                        {protocol ? protocol.name : rewardCard?.name}
+                        {protocol ? protocolName : rewardCardName}
                       </span>
                     </div>
                   );
@@ -229,8 +246,8 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
       {run.stage > CAMPAIGN_STAGES.length && (
         <div className="relative z-10 mt-6 bg-panel-2 border-2 border-rarity-legendary/60 rounded-xl p-6 text-center shadow-[0_0_30px_var(--rarity-legendary)]/30">
           <Trophy className="w-8 h-8 text-rarity-legendary mx-auto mb-2" />
-          <h3 className="font-display text-xl font-black text-rarity-legendary uppercase tracking-wider">Campaign Complete</h3>
-          <p className="text-text-muted text-sm mt-1">Every boss defeated. Every card recovered.</p>
+          <h3 className="font-display text-xl font-black text-rarity-legendary uppercase tracking-wider">{t('runMap.campaignComplete')}</h3>
+          <p className="text-text-muted text-sm mt-1">{t('runMap.campaignCompleteHint')}</p>
         </div>
       )}
     </div>

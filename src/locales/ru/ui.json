@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "Язык"
+  },
+  "common": {
+    "returnToMenu": "Вернуться в главное меню",
+    "toggleAudio": "Вкл/выкл звук",
+    "volume": "Громкость"
+  },
+  "paywall": {
+    "title": "Открыть режим забега",
+    "tagline": "Полная кампания кибер-нард.",
+    "features": {
+      "campaign": {
+        "title": "Кампания из 44 этапов",
+        "description": "Сражайтесь через 7 актов, от Boot Sector до Singularity."
+      },
+      "cards": {
+        "title": "45 карт-мутаций для коллекции",
+        "description": "Каждый босс охраняет карту — победите его, и она ваша. При марсе босс может отобрать её обратно."
+      },
+      "protocols": {
+        "title": "7 протокольных боссов",
+        "description": "Боссы, нарушающие правила, венчают каждый акт, обращая сами нарды против вас."
+      },
+      "adFree": {
+        "title": "100% без рекламы",
+        "description": "Эта покупка навсегда убирает всю рекламу в NEXTGAMMON."
+      }
+    },
+    "description": "Полная кампания из 44 этапов — каждый босс, каждая карта для коллекции — плюс отсутствие рекламы, всё это в единоразовой покупке за 3 $. Быстрый матч 1v1 навсегда остаётся бесплатным.",
+    "buyButton": "Открыть за 3 $",
+    "restoreButton": "Восстановить покупку",
+    "errorCancelled": "Покупка отменена.",
+    "errorGeneric": "Что-то пошло не так. Попробуйте ещё раз."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} Neon Chips",
+    "buyChipsDescription": "Мгновенное пополнение баланса Neon Chips. Можно покупать сколько угодно раз.",
+    "buyChipsButton": "Купить — 1 $",
+    "buyChipsSuccess": "+100 000 Neon Chips добавлено!",
+    "buyChipsErrorCancelled": "Покупка отменена.",
+    "buyChipsErrorGeneric": "Что-то пошло не так. Попробуйте ещё раз.",
+    "title": "Кибер-лаборатория",
+    "subtitleSpend": "Всё, что можно купить за Neon Chips, и где их потратить.",
+    "neonChips": "{{n}} Neon Chips",
+    "gamesPlayed": "Сыграно матчей: {{n}}",
+    "runWins": "Побед в забегах: {{n}}",
+    "highestStage": "Наивысший этап: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "Выкупить захваченную карту",
+        "description": "Верните карту, захваченную боссом, не проходя этап заново.",
+        "location": "Карта забега"
+      },
+      "skipStage": {
+        "name": "Пропустить этап",
+        "description": "Мгновенно пройдите этап с боссом-обладателем карты и получите карту-награду. Этапы с протокольными боссами пропустить нельзя.",
+        "location": "Карта забега"
+      },
+      "rerollDie": {
+        "name": "Перебросить кость",
+        "description": "Один раз за ход перебросьте одну кость после броска.",
+        "location": "Во время матча"
+      },
+      "coldStorage": {
+        "name": "Холодное хранилище",
+        "description": "Защитите экипированную карту от захвата при марсе — только на этом этапе.",
+        "location": "Экран экипировки"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "Скрытая карта",
+    "hiddenCardHint": "Срабатывает при определённом условии матча!",
+    "depleted": "Исчерпано",
+    "trigger": "Триггер",
+    "triggerLabel": "Триггер:"
+  },
+  "portraitGuard": {
+    "badge": "Обязательный альбомный режим",
+    "title": "Пожалуйста, поверните устройство",
+    "description": "Для корректного отображения всех 24 пунктов доски, карт и костей NEXTGAMMON требует горизонтальной (альбомной) ориентации экрана. Поверните телефон боком!",
+    "tip": "Совет: убедитесь, что блокировка книжной ориентации отключена в настройках телефона.",
+    "bypass": "Всё равно показать альбомный режим"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — выберите тяжёлую шашку соперника",
+    "deadweightSubtitle": "Выберите шашку соперника, чтобы наложить на неё штраф −1 к дистанции хода! Штраф сохраняется при каждом её ходе.",
+    "deadweightFilter": "Шашки соперника (CPU)",
+    "courierTitle": "Courier — выберите свою ускоренную шашку",
+    "courierSubtitle": "Выберите одну из своих шашек, чтобы она получала +1 к дистанции хода при каждом перемещении!",
+    "courierFilter": "Ваши шашки",
+    "blackIceTitle": "Black Ice — выберите пункт для ледяной ловушки",
+    "blackIceSubtitle": "Выберите пункт доски (1-24), чтобы покрыть его Black Ice. Любая шашка соперника, попавшая сюда, сразу же соскальзывает на бар!",
+    "blackIceFilter": "Все пункты доски",
+    "pointRange": "{{label}} (Пункт 1 - 24)",
+    "clickToDesignate": "Нажмите, чтобы назначить",
+    "pointTitle": "Пункт №{{n}} ({{count}} шашек)",
+    "you": "Вы",
+    "cpu": "CPU",
+    "empty": "Пусто",
+    "selectOnBoardHint": "Вы также можете выбирать пункты прямо на доске.",
+    "randomSelection": "🎲 Случайный выбор"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "Карта-мутация",
+    "augment": "Усиление (+)",
+    "sabotage": "Саботаж (−)",
+    "effectAndMechanics": "Эффект и механика:",
+    "closeDetails": "Закрыть детали"
+  },
+  "bossIntro": {
+    "encounter": "Встреча с протокольным боссом",
+    "engage": "В бой"
+  },
+  "neonBoard": {
+    "badgeIce": "Лёд",
+    "badgeCpuIce": "Лёд CPU",
+    "badgeSluggish": "Замедлена",
+    "badgeCourier": "Courier",
+    "off": "Убрано",
+    "borne": "Снято",
+    "you": "Вы",
+    "tray": "Лоток",
+    "bar": "Бар",
+    "ownerLabelPlayer": "Карта игрока",
+    "ownerLabelCpu": "Карта CPU",
+    "protocolActivated": "Протокол активирован",
+    "mutationActivated": "Мутация активирована",
+    "youGating": "Вы: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "Нажмите: изменить направление снятия шашек / доски (по часовой / против часовой стрелки)",
+    "bearOffClockwise": "Снятие шашек: по часовой (слева)",
+    "bearOffCounterCw": "Снятие шашек: против часовой (справа)",
+    "lookAroundTitleTable": "Откиньтесь назад и посмотрите на улицу",
+    "lookAroundTitlePeek": "Посмотрите вверх до конца — полный вид улицы",
+    "lookAroundTitlePanorama": "Вернуться к столу",
+    "lookAround": "Осмотреться",
+    "lookFurther": "Посмотреть дальше",
+    "backToTable": "Вернуться к столу",
+    "deadweightActive": "Deadweight активен:",
+    "courierActive": "Courier активен:",
+    "blackIceActive": "Black Ice активен:",
+    "clickPointOrMenu": "Нажмите на пункт или выберите из меню",
+    "selectPoint": "Выбрать пункт",
+    "coldRebootActive": "Cold Reboot активен",
+    "lowRollHint": "Низкая сумма броска ≤ 5 ({{dice}}). Нажмите, чтобы перебросить один раз!",
+    "reroll": "Переброс",
+    "bearOffModeActive": "Режим снятия шашек активен! Коснитесь шашки или лотка для снятия.",
+    "yourTurn": "Ваш ход",
+    "cpuTurnEllipsis": "Ход CPU...",
+    "noDice": "Нет костей",
+    "paidRerollTitle": "Потратьте Neon Chips, чтобы перебросить одну кость",
+    "rerollCost": "Переброс — {{cost}}",
+    "undo": "Отменить",
+    "undoTitle": "Отменить последний ход шашкой",
+    "reset": "Сбросить",
+    "resetTitle": "Сбросить ход к начальной позиции",
+    "roll": "Бросить",
+    "pass": "Пас",
+    "discardDieTitle": "Packet Drop: сбросьте оставшуюся кость и завершите ход досрочно",
+    "discardDie": "Сбросить кость",
+    "matchVictory": "Победа в матче",
+    "systemDefeat": "Поражение системы",
+    "victoryDescRun": "Вы разрушили сеть противника CPU! Задрафтуйте новую карту-бонус и переходите к следующему узлу.",
+    "victoryDescQuick": "Вы разрушили сеть противника CPU! Сыграйте ещё раунд.",
+    "defeatDescRun": "Ваше нардовое ядро было взломано ИИ-боссом. Перегруппируйтесь и повторите этап.",
+    "defeatDescQuick": "Ваше нардовое ядро было взломано CPU. Сыграйте реванш.",
+    "chipsEarned": "Заработано Neon Chips",
+    "opponentHitTimes": "{{count}}× Соперник побит",
+    "matchWon": "Матч выигран",
+    "total": "Итого",
+    "continue": "Продолжить",
+    "playerCard": "Карта игрока:",
+    "protocol": "Протокол:",
+    "cpuCard": "Карта CPU:",
+    "mirror": "{{name}} — Зеркало:",
+    "clickToExpand": "Нажмите, чтобы развернуть детали карты"
+  },
+  "opponentHeader": {
+    "cyberCpu": "1v1 Кибер-CPU",
+    "level": "УР ★★★",
+    "you": "Вы",
+    "cpu": "CPU",
+    "lead": "+{{n}} впереди",
+    "trailing": "-{{n}} впереди",
+    "even": "Равно",
+    "pipRace": "Гонка пипсов",
+    "protocolActive": "Протокол активен",
+    "cpuCard": "Карта CPU",
+    "mirrorSuffix": "{{name}} — Зеркало:",
+    "clickToExpand": "Нажмите, чтобы развернуть детали карты"
+  },
+  "cardSelect": {
+    "campaignLoadout": "Экипировка кампании",
+    "draftBadge": "Драфт мутаций 1v1 матча",
+    "equipTitle": "Экипируйте 1 карту",
+    "draftTitle": "Выберите 1 карту из 3",
+    "equipIntro": "{{bossName}} играет карту {{cardName}}. Выберите свою карту из коллекции, чтобы дать отпор.",
+    "draftIntro": "Из этого случайного пула в 3 карты вы и соперник {{bossName}} выбираете по одной карте. Выбранные мутации остаются активными весь матч!",
+    "capturedByBoss": "Захвачена боссом",
+    "usedLastStage": "Использована на прошлом этапе",
+    "cpuChoseThisCard": "CPU выбрал эту карту",
+    "augment": "Усиление (+ себе)",
+    "sabotage": "Саботаж (− сопернику)",
+    "mutationCardFallback": "Карта-мутация",
+    "unavailable": "Недоступно",
+    "yourSelection": "✓ Ваш выбор",
+    "clickToSelect": "Нажмите, чтобы выбрать",
+    "coldStorage": "Холодное хранилище",
+    "coldStorageHint": "Защитите эту карту от захвата при марсе — только на этом этапе.",
+    "equipAndEngage": "Экипировать и в бой",
+    "startMatch": "Начать матч с выбранной картой"
+  },
+  "toasts": {
+    "achievementUnlocked": "Достижение получено"
+  },
+  "mainMenu": {
+    "tagline": "Кибер-нарды с картами мутаций",
+    "resumeRun": "Продолжить забег",
+    "startRun": "Начать забег",
+    "start1v1": "Начать матч 1v1"
+  },
+  "runMap": {
+    "campaignLabel": "Кампания Nextgammon",
+    "stageOf": "Этап {{stage}} из {{total}}",
+    "cardsWon": "{{won}} / {{total}} карт выиграно",
+    "bossHoldsCard": "Босс удерживает вашу карту:",
+    "bossHoldsCards": "Босс удерживает ваши карты:",
+    "recoverHint": "— пройдите этот этап, чтобы вернуть её, или выкупите прямо сейчас.",
+    "recoverHintPlural": "— пройдите этот этап, чтобы вернуть их, или выкупите прямо сейчас.",
+    "buyBack": "Выкупить {{name}} — {{cost}}",
+    "act": "Акт {{n}}: {{name}}",
+    "actShort": "Акт {{n}}",
+    "battleOpponent": "Сразиться с соперником",
+    "skip": "Пропустить — {{cost}}",
+    "skipTitle": "Мгновенно пропустите этот этап и получите карту-награду — этапы с протокольными боссами пропустить нельзя.",
+    "campaignComplete": "Кампания завершена",
+    "campaignCompleteHint": "Все боссы побеждены. Все карты возвращены."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}

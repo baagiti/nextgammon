@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "Language"
+  },
+  "common": {
+    "returnToMenu": "Return to Main Menu",
+    "toggleAudio": "Toggle Audio",
+    "volume": "Volume"
+  },
+  "paywall": {
+    "title": "Unlock Run Mode",
+    "tagline": "The full cyber-backgammon campaign.",
+    "features": {
+      "campaign": {
+        "title": "44-Stage Campaign",
+        "description": "Battle across 7 acts, from Boot Sector to Singularity."
+      },
+      "cards": {
+        "title": "45 Mutation Cards to Collect",
+        "description": "Every boss guards a card — beat them and it's yours. Get marsed and they can steal it back."
+      },
+      "protocols": {
+        "title": "7 Protocol Bosses",
+        "description": "Rule-breaking bosses cap every act, bending backgammon itself against you."
+      },
+      "adFree": {
+        "title": "100% Ad-Free",
+        "description": "This purchase removes every ad in NEXTGAMMON, for good."
+      }
+    },
+    "description": "The full 44-stage campaign — every boss, every card to collect — plus an ad-free experience, all in a one-time $3 unlock. 1v1 Quick Match stays free forever.",
+    "buyButton": "Unlock for $3",
+    "restoreButton": "Restore Purchase",
+    "errorCancelled": "Purchase cancelled.",
+    "errorGeneric": "Something went wrong. Please try again."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} Neon Chips",
+    "buyChipsDescription": "An instant top-up for your Neon Chips balance. Can be bought as many times as you like.",
+    "buyChipsButton": "Buy — $1",
+    "buyChipsSuccess": "+100,000 Neon Chips added!",
+    "buyChipsErrorCancelled": "Purchase cancelled.",
+    "buyChipsErrorGeneric": "Something went wrong. Please try again.",
+    "title": "The Cyber Lab",
+    "subtitleSpend": "Everything Neon Chips can buy, and where to spend them.",
+    "neonChips": "{{n}} Neon Chips",
+    "gamesPlayed": "Games Played: {{n}}",
+    "runWins": "Run Wins: {{n}}",
+    "highestStage": "Highest Stage: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "Buy Back Captured Card",
+        "description": "Recover a card the boss captured from you, without clearing the stage first.",
+        "location": "Run Map"
+      },
+      "skipStage": {
+        "name": "Skip Stage",
+        "description": "Instantly clear a card-boss stage and claim its reward card. Protocol boss stages can't be skipped.",
+        "location": "Run Map"
+      },
+      "rerollDie": {
+        "name": "Reroll a Die",
+        "description": "Reroll one die on your turn, once, after rolling.",
+        "location": "In-Match"
+      },
+      "coldStorage": {
+        "name": "Cold Storage",
+        "description": "Protect your equipped card from mars-capture for this stage only.",
+        "location": "Equip Screen"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "Hidden Card",
+    "hiddenCardHint": "Triggers on specific match condition!",
+    "depleted": "Depleted",
+    "trigger": "Trigger",
+    "triggerLabel": "Trigger:"
+  },
+  "portraitGuard": {
+    "badge": "Mandatory Landscape Mode",
+    "title": "Please Rotate Your Device",
+    "description": "NEXTGAMMON requires a horizontal (landscape) screen view to render all 24 board points, cards, and dice cleanly. Please turn your phone sideways!",
+    "tip": "Tip: Ensure portrait orientation lock is disabled on your phone settings.",
+    "bypass": "Preview Landscape Mode Anyway"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — Select Opponent Heavy Checker",
+    "deadweightSubtitle": "Select an opponent checker to penalize with −1 move distance! The penalty persists as this checker moves.",
+    "deadweightFilter": "Opponent (CPU) Checkers",
+    "courierTitle": "Courier — Select Your Boosted Checker",
+    "courierSubtitle": "Select one of your checkers to gain +1 move distance speed boost every time it moves!",
+    "courierFilter": "Your Checkers",
+    "blackIceTitle": "Black Ice — Select Icy Trap Point",
+    "blackIceSubtitle": "Select a board point (1-24) to cover with Black Ice. Any opponent checker landing here slips directly to the Bar!",
+    "blackIceFilter": "All Board Points",
+    "pointRange": "{{label}} (Point 1 - 24)",
+    "clickToDesignate": "Click to Designate",
+    "pointTitle": "Point #{{n}} ({{count}} Checkers)",
+    "you": "You",
+    "cpu": "CPU",
+    "empty": "Empty",
+    "selectOnBoardHint": "You can also select points directly on the board field.",
+    "randomSelection": "🎲 Random Selection"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "Mutation Card",
+    "augment": "Augment (+)",
+    "sabotage": "Sabotage (−)",
+    "effectAndMechanics": "Effect & Mechanics:",
+    "closeDetails": "Close Details"
+  },
+  "bossIntro": {
+    "encounter": "Protocol Boss Encounter",
+    "engage": "Engage"
+  },
+  "neonBoard": {
+    "badgeIce": "Ice",
+    "badgeCpuIce": "CPU Ice",
+    "badgeSluggish": "Sluggish",
+    "badgeCourier": "Courier",
+    "off": "Off",
+    "borne": "Borne",
+    "you": "You",
+    "tray": "Tray",
+    "bar": "Bar",
+    "ownerLabelPlayer": "Player Card",
+    "ownerLabelCpu": "CPU Card",
+    "protocolActivated": "Protocol Activated",
+    "mutationActivated": "Mutation Activated",
+    "youGating": "You: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "Click: Change Bear Off / Board Direction (Clockwise / Counter-Clockwise)",
+    "bearOffClockwise": "Bear-off: Clockwise (Left)",
+    "bearOffCounterCw": "Bear-off: Counter-CW (Right)",
+    "lookAroundTitleTable": "Lean back and look up the street",
+    "lookAroundTitlePeek": "Look all the way up — full street view",
+    "lookAroundTitlePanorama": "Back to the table",
+    "lookAround": "Look Around",
+    "lookFurther": "Look Further",
+    "backToTable": "Back to Table",
+    "deadweightActive": "Deadweight Active:",
+    "courierActive": "Courier Active:",
+    "blackIceActive": "Black Ice Active:",
+    "clickPointOrMenu": "Click point or choose from menu",
+    "selectPoint": "Select Point",
+    "coldRebootActive": "Cold Reboot Active",
+    "lowRollHint": "Low roll sum ≤ 5 ({{dice}}). Click to reroll once!",
+    "reroll": "Reroll",
+    "bearOffModeActive": "Bear Off Mode Active! Tap checkers or Bear Off tray.",
+    "yourTurn": "Your Turn",
+    "cpuTurnEllipsis": "CPU Turn...",
+    "noDice": "No Dice",
+    "paidRerollTitle": "Spend Neon Chips to reroll one die",
+    "rerollCost": "Reroll — {{cost}}",
+    "undo": "Undo",
+    "undoTitle": "Undo last moved checker",
+    "reset": "Reset",
+    "resetTitle": "Reset turn to start position",
+    "roll": "Roll",
+    "pass": "Pass",
+    "discardDieTitle": "Packet Drop: Discard the remaining die and end your turn early",
+    "discardDie": "Discard Die",
+    "matchVictory": "Match Victory",
+    "systemDefeat": "System Defeat",
+    "victoryDescRun": "You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.",
+    "victoryDescQuick": "You dismantled the CPU opponent grid! Run it back for another round.",
+    "defeatDescRun": "Your backgammon core was compromised by the AI boss. Regroup and retry the stage.",
+    "defeatDescQuick": "Your backgammon core was compromised by the CPU. Run it back for a rematch.",
+    "chipsEarned": "Neon Chips Earned",
+    "opponentHitTimes": "{{count}}× Opponent hit",
+    "matchWon": "Match won",
+    "total": "Total",
+    "continue": "Continue",
+    "playerCard": "Player Card:",
+    "protocol": "Protocol:",
+    "cpuCard": "CPU Card:",
+    "mirror": "{{name}} Mirror:",
+    "clickToExpand": "Click to Expand Card Details"
+  },
+  "opponentHeader": {
+    "cyberCpu": "1v1 Cyber CPU",
+    "level": "LVL ★★★",
+    "you": "You",
+    "cpu": "CPU",
+    "lead": "+{{n}} Lead",
+    "trailing": "-{{n}} Lead",
+    "even": "Even",
+    "pipRace": "Pip Race",
+    "protocolActive": "Protocol Active",
+    "cpuCard": "CPU Card",
+    "mirrorSuffix": "{{name}} Mirror:",
+    "clickToExpand": "Click to Expand Card Details"
+  },
+  "cardSelect": {
+    "campaignLoadout": "Campaign Loadout",
+    "draftBadge": "1v1 Match Mutation Draft",
+    "equipTitle": "Equip 1 Card",
+    "draftTitle": "Choose 1 Card from 3",
+    "equipIntro": "{{bossName}} is playing {{cardName}}. Choose your own card from your collection to fight back.",
+    "draftIntro": "From this random 3-card draft pool, both you and opponent {{bossName}} pick one card. Selected mutations remain active for the entire match!",
+    "capturedByBoss": "Captured by Boss",
+    "usedLastStage": "Used Last Stage",
+    "cpuChoseThisCard": "CPU Chose This Card",
+    "augment": "Augment (+ Self)",
+    "sabotage": "Sabotage (− Opponent)",
+    "mutationCardFallback": "Mutation Card",
+    "unavailable": "Unavailable",
+    "yourSelection": "✓ Your Selection",
+    "clickToSelect": "Click to Select",
+    "coldStorage": "Cold Storage",
+    "coldStorageHint": "Protect this card from mars-capture this stage only.",
+    "equipAndEngage": "Equip & Engage",
+    "startMatch": "Start Match with Chosen Card"
+  },
+  "toasts": {
+    "achievementUnlocked": "Achievement Unlocked"
+  },
+  "mainMenu": {
+    "tagline": "Cyber Backgammon with Mutation Cards",
+    "resumeRun": "Resume Run",
+    "startRun": "Start Run",
+    "start1v1": "Start 1v1 Match"
+  },
+  "runMap": {
+    "campaignLabel": "Nextgammon Campaign",
+    "stageOf": "Stage {{stage}} of {{total}}",
+    "cardsWon": "{{won}} / {{total}} cards won",
+    "bossHoldsCard": "Boss holds your card:",
+    "bossHoldsCards": "Boss holds your cards:",
+    "recoverHint": "— clear this stage to recover it, or buy it back now.",
+    "recoverHintPlural": "— clear this stage to recover them, or buy it back now.",
+    "buyBack": "Buy back {{name}} — {{cost}}",
+    "act": "Act {{n}}: {{name}}",
+    "actShort": "Act {{n}}",
+    "battleOpponent": "Battle Opponent",
+    "skip": "Skip — {{cost}}",
+    "skipTitle": "Skip this stage instantly and claim its reward card — protocol boss stages can't be skipped.",
+    "campaignComplete": "Campaign Complete",
+    "campaignCompleteHint": "Every boss defeated. Every card recovered."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}

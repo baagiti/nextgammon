@@ -1,28 +1,42 @@
 import React from 'react';
-import { MetaData, MetaUpgrade } from '../types';
-import { INITIAL_META_UPGRADES } from '../game/cardsData';
-import { Cpu, Zap, Layers, Search, RotateCcw, Palette, Binary, Coins, Sparkles, Check, Lock, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { MetaData } from '../types';
+import { BUYBACK_CARD_COST, SKIP_STAGE_COST, REROLL_DIE_COST } from './RunMapModal';
+import { COLD_STORAGE_COST } from './CardSelectModal';
+import { CHIPS_100K_AMOUNT } from '../iap/purchases';
+import { Cpu, RotateCcw, FastForward, Coins, ShieldPlus, Sparkles, X, MapPin, Loader2 } from 'lucide-react';
 
 interface MetaLabModalProps {
   meta: MetaData;
-  onPurchase: (upgradeId: string) => void;
   onClose: () => void;
+  onBuyChips: () => void;
+  buyChipsLoading: boolean;
+  buyChipsError: string | null;
+  buyChipsJustSucceeded: boolean;
 }
 
-const ICON_MAP: Record<string, React.ElementType> = {
-  Coins,
-  Layers,
-  Search,
-  RotateCcw,
-  Zap,
-  Palette,
-  Binary,
-};
+// The only 4 things Neon Chips actually buy in this game. Each is a pay-per-use action tied to a
+// specific screen (not a standing purchase), so this modal is a reference list, not a shop — the
+// action itself always happens where it's contextually valid (run map, mid-match, equip screen).
+const CHIP_SINKS = [
+  { key: 'buyBackCard', icon: Coins, cost: BUYBACK_CARD_COST, location: 'runMap' },
+  { key: 'skipStage', icon: FastForward, cost: SKIP_STAGE_COST, location: 'runMap' },
+  { key: 'rerollDie', icon: RotateCcw, cost: REROLL_DIE_COST, location: 'match' },
+  { key: 'coldStorage', icon: ShieldPlus, cost: COLD_STORAGE_COST, location: 'equip' },
+] as const;
 
-export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, onClose }) => {
+export const MetaLabModal: React.FC<MetaLabModalProps> = ({
+  meta,
+  onClose,
+  onBuyChips,
+  buyChipsLoading,
+  buyChipsError,
+  buyChipsJustSucceeded,
+}) => {
+  const { t } = useTranslation('ui');
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 shadow-[0_0_60px_rgba(6,182,212,0.4)] flex flex-col max-h-[90vh] overflow-hidden">
+      <div className="max-w-2xl w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 shadow-[0_0_60px_rgba(6,182,212,0.4)] flex flex-col max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
           <div className="flex items-center gap-3">
@@ -30,15 +44,15 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, on
               <Cpu className="w-6 h-6 text-cyan-300" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-white tracking-widest uppercase">THE CYBER LAB</h2>
-              <p className="text-xs text-slate-400">Permanent meta-progression matrix and rule hack transformations.</p>
+              <h2 className="text-2xl font-black text-white tracking-widest uppercase">{t('cyberLab.title')}</h2>
+              <p className="text-xs text-slate-400">{t('cyberLab.subtitleSpend')}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300 font-black text-sm shadow-md">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300 font-black text-sm shadow-md uppercase">
               <Sparkles className="w-5 h-5 text-cyan-400 animate-spin" />
-              <span>{meta.neonChips} NEON CHIPS</span>
+              <span>{t('cyberLab.neonChips', { n: meta.neonChips })}</span>
             </div>
 
             <button
@@ -50,80 +64,69 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({ meta, onPurchase, on
           </div>
         </div>
 
-        {/* Upgrades List Grid */}
-        <div className="flex-1 overflow-y-auto pr-1 grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-          {INITIAL_META_UPGRADES.map((upgrade) => {
-            const currentLevel = meta.unlockedUpgrades[upgrade.id] || 0;
-            const isMaxed = currentLevel >= upgrade.maxLevel;
-            const nextCost = upgrade.cost * (currentLevel + 1);
-            const canAfford = meta.neonChips >= nextCost && !isMaxed;
-            const IconComp = ICON_MAP[upgrade.icon] || Zap;
+        {/* Real-money Chip Purchase — visually distinct (amber) from the cyan reference cards
+            below, since this one actually charges money rather than just explaining a sink. */}
+        <div className="mb-4 bg-gradient-to-r from-amber-950/60 via-amber-900/30 to-amber-950/60 border-2 border-amber-500/50 rounded-xl p-3.5 flex items-center gap-3 shadow-[0_0_25px_rgba(245,158,11,0.15)]">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border bg-amber-950 border-amber-500/60 text-amber-300">
+            <Coins className="w-5 h-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h4 className="text-xs font-black text-white tracking-wide uppercase">
+              {t('cyberLab.buyChipsTitle', { amount: CHIPS_100K_AMOUNT.toLocaleString() })}
+            </h4>
+            <p className="text-[11px] text-slate-400 mt-0.5 leading-tight">{t('cyberLab.buyChipsDescription')}</p>
+            {buyChipsError && (
+              <p className="text-[11px] text-rose-400 mt-1 font-bold">
+                {buyChipsError === 'purchase_cancelled' ? t('cyberLab.buyChipsErrorCancelled') : t('cyberLab.buyChipsErrorGeneric')}
+              </p>
+            )}
+            {buyChipsJustSucceeded && (
+              <p className="text-[11px] text-emerald-400 mt-1 font-bold">{t('cyberLab.buyChipsSuccess')}</p>
+            )}
+          </div>
+          <button
+            onClick={onBuyChips}
+            disabled={buyChipsLoading}
+            className="shrink-0 px-3.5 py-2 rounded-lg bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center gap-1.5 disabled:opacity-60"
+          >
+            {buyChipsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+            {t('cyberLab.buyChipsButton')}
+          </button>
+        </div>
 
-            return (
-              <div
-                key={upgrade.id}
-                className={`bg-slate-950/80 border rounded-xl p-3.5 flex items-start justify-between gap-3 transition-all ${
-                  isMaxed
-                    ? 'border-emerald-500/40 bg-emerald-950/10'
-                    : canAfford
-                    ? 'border-cyan-500/50 hover:border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
-                    : 'border-slate-800'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border ${
-                      isMaxed
-                        ? 'bg-emerald-950 border-emerald-500 text-emerald-400'
-                        : 'bg-cyan-950 border-cyan-500/50 text-cyan-300'
-                    }`}
-                  >
-                    <IconComp className="w-5 h-5" />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-xs font-black text-white tracking-wide">{upgrade.name}</h4>
-                      <span className="text-[10px] text-cyan-400 font-mono font-bold px-1.5 py-0.2 rounded bg-cyan-950 border border-cyan-800">
-                        LV {currentLevel}/{upgrade.maxLevel}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-400 mt-1 leading-tight">{upgrade.description}</p>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onPurchase(upgrade.id)}
-                  disabled={!canAfford || isMaxed}
-                  className={`px-3 py-2 rounded-lg font-black text-xs uppercase tracking-wider shrink-0 transition-all flex items-center gap-1 ${
-                    isMaxed
-                      ? 'bg-emerald-950 border border-emerald-500 text-emerald-400 cursor-default'
-                      : canAfford
-                      ? 'bg-cyan-500 text-black hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]'
-                      : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed'
-                  }`}
-                >
-                  {isMaxed ? (
-                    <>
-                      <Check className="w-4 h-4" /> MAXED
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-3.5 h-3.5" />
-                      {nextCost} CHIPS
-                    </>
-                  )}
-                </button>
+        {/* Chip Sink Reference List */}
+        <div className="flex-1 overflow-y-auto pr-1 space-y-3 mb-4">
+          {CHIP_SINKS.map(({ key, icon: IconComp, cost, location }) => (
+            <div
+              key={key}
+              className="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 flex items-start gap-3"
+            >
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border bg-cyan-950 border-cyan-500/50 text-cyan-300">
+                <IconComp className="w-5 h-5" />
               </div>
-            );
-          })}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="text-xs font-black text-white tracking-wide uppercase">{t(`cyberLab.sinks.${key}.name`)}</h4>
+                  <span className="shrink-0 flex items-center gap-1 font-mono text-[10px] font-bold text-cyan-300">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    {cost.toLocaleString()}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400 mt-1 leading-tight">{t(`cyberLab.sinks.${key}.description`)}</p>
+                <div className="mt-1.5 flex items-center gap-1 text-[10px] text-cyan-400/80 font-mono uppercase tracking-wide">
+                  <MapPin className="w-3 h-3" />
+                  {t(`cyberLab.sinks.${key}.location`)}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Footer Stats Summary */}
         <div className="border-t border-slate-800 pt-3 flex items-center justify-between text-xs text-slate-400 font-mono">
-          <span>GAMES PLAYED: {meta.totalGamesPlayed}</span>
-          <span>RUN WINS: {meta.totalWins}</span>
-          <span>HIGHEST STAGE: {meta.highestStage}</span>
+          <span>{t('cyberLab.gamesPlayed', { n: meta.totalGamesPlayed })}</span>
+          <span>{t('cyberLab.runWins', { n: meta.totalWins })}</span>
+          <span>{t('cyberLab.highestStage', { n: meta.highestStage })}</span>
         </div>
       </div>
     </div>

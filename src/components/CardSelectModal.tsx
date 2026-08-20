@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, BossProtocol } from '../types';
 import { CardIcon } from './CardIcon';
+import { getCardText, useCardText, useProtocolText } from '../hooks/useLocalizedText';
 import { Sparkles, Play, CheckCircle2, Bot, Lock, Skull, Swords, Home, ShieldPlus, Coins } from 'lucide-react';
 
 export const COLD_STORAGE_COST = 5000;
@@ -48,6 +50,12 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
   neonChips = 0,
   onActivateColdStorage,
 }) => {
+  const { t } = useTranslation('ui');
+  const { t: tCards } = useTranslation('cards');
+  const { name: protocolName, description: protocolDescription } = useProtocolText(
+    protocol ?? { id: '', name: '', description: '', taunt: '' }
+  );
+  const { name: bossCardName } = useCardText(bossCard ?? { id: '', name: '', tagline: '', description: '' });
   const [coldStorageChecked, setColdStorageChecked] = useState(false);
   const canAffordColdStorage = neonChips >= COLD_STORAGE_COST;
   // In equip mode, a card is unselectable if it was captured by the boss OR it's the card you
@@ -86,7 +94,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
         <button
           onClick={onGoBack}
           className="fixed top-4 left-4 sm:top-6 sm:left-6 z-20 p-2 rounded-lg bg-panel border border-line hover:border-player text-text-muted hover:text-player transition-colors"
-          title="Return to Main Menu"
+          title={t('common.returnToMenu')}
         >
           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -96,10 +104,10 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
       <div className="relative z-10 max-w-6xl w-full mx-auto text-center pt-2">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-panel border border-player/50 text-player font-mono text-xs uppercase tracking-widest mb-3 shadow-[0_0_15px_var(--player)]/30">
           <Sparkles className="w-4 h-4 text-player animate-pulse" />
-          {mode === 'equip' ? 'CAMPAIGN LOADOUT' : '1v1 MATCH MUTATION DRAFT'}
+          {mode === 'equip' ? t('cardSelect.campaignLoadout') : t('cardSelect.draftBadge')}
         </div>
         <h1 className="font-display text-3xl sm:text-5xl font-black text-text uppercase tracking-wider">
-          {mode === 'equip' ? 'EQUIP 1 CARD' : 'CHOOSE 1 CARD FROM 3'}
+          {mode === 'equip' ? t('cardSelect.equipTitle') : t('cardSelect.draftTitle')}
         </h1>
 
         {mode === 'equip' ? (
@@ -109,22 +117,18 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
                 <CardIcon name={protocol.iconName} className="w-5 h-5 text-danger" />
               </div>
               <div className="min-w-0">
-                <div className="text-danger font-black text-xs uppercase tracking-wider">{protocol.name}</div>
-                <div className="text-text-muted text-[11px] leading-snug">{protocol.description}</div>
+                <div className="text-danger font-black text-xs uppercase tracking-wider">{protocolName}</div>
+                <div className="text-text-muted text-[11px] leading-snug">{protocolDescription}</div>
               </div>
             </div>
           ) : bossCard ? (
             <p className="text-text-muted text-sm sm:text-base mt-2 max-w-2xl mx-auto font-medium">
-              <span className="text-opponent font-extrabold">{bossName}</span> is playing{' '}
-              <span className="text-opponent font-extrabold">{bossCard.name}</span>. Choose your own card from your
-              collection to fight back.
+              {t('cardSelect.equipIntro', { bossName, cardName: bossCardName })}
             </p>
           ) : null
         ) : (
           <p className="text-text-muted text-sm sm:text-base mt-2 max-w-2xl mx-auto font-medium">
-            From this random <span className="text-player font-extrabold">3-card draft pool</span>, both you and
-            opponent <span className="text-opponent font-extrabold">{bossName}</span> pick one card. Selected
-            mutations remain active for the entire match!
+            {t('cardSelect.draftIntro', { bossName })}
           </p>
         )}
       </div>
@@ -144,6 +148,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
           const usedLastStage = mode === 'equip' && card.id === lastEquippedCardId && !captured;
           const rarityStyle = RARITY_STYLE[card.rarity] || RARITY_STYLE.common;
           const metalVar = `var(--metal-${['common', 'rare', 'epic', 'legendary'].includes(card.rarity) ? card.rarity : 'common'})`;
+          const { name: itemName, tagline: itemTagline, description: itemDescription } = getCardText(tCards, card);
 
           return (
             <div
@@ -169,13 +174,13 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
               {captured && (
                 <div className="mb-3 px-3 py-1.5 rounded-xl bg-danger/10 border border-danger/50 flex items-center gap-1.5 text-xs font-mono text-danger font-bold uppercase tracking-wider">
                   <Skull className="w-4 h-4 text-danger" />
-                  CAPTURED BY BOSS
+                  {t('cardSelect.capturedByBoss')}
                 </div>
               )}
               {usedLastStage && (
                 <div className="mb-3 px-3 py-1.5 rounded-xl bg-panel-2 border border-line-strong flex items-center gap-1.5 text-xs font-mono text-text-muted font-bold uppercase tracking-wider">
                   <Lock className="w-4 h-4 text-text-muted" />
-                  USED LAST STAGE
+                  {t('cardSelect.usedLastStage')}
                 </div>
               )}
 
@@ -184,7 +189,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
                 <div className="mb-3 px-3 py-1.5 rounded-xl bg-opponent/10 border border-opponent/50 flex items-center justify-between text-xs font-mono text-opponent shadow-[0_0_15px_var(--opponent)]/30">
                   <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider">
                     <Bot className="w-4 h-4 text-opponent" />
-                    CPU CHOSE THIS CARD
+                    {t('cardSelect.cpuChoseThisCard')}
                   </span>
                   <span className="text-[10px] text-opponent/70 font-sans italic">({bossName})</span>
                 </div>
@@ -199,7 +204,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
                       : 'bg-opponent/10 text-opponent border-opponent/50'
                   }`}
                 >
-                  {isAugment ? 'AUGMENT (+ SELF)' : 'SABOTAGE (- OPPONENT)'}
+                  {isAugment ? t('cardSelect.augment') : t('cardSelect.sabotage')}
                 </span>
 
                 <div
@@ -229,21 +234,21 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
                 </div>
 
                 <div className="text-xs font-mono uppercase tracking-widest text-text-muted font-bold mb-1">
-                  {card.tagline || 'MUTATION CARD'}
+                  {itemTagline || t('cardSelect.mutationCardFallback')}
                 </div>
                 <h3 className="font-display text-2xl font-black text-text uppercase tracking-wider mb-3">
-                  {card.name}
+                  {itemName}
                 </h3>
 
                 <p className="text-sm text-text leading-relaxed font-medium bg-ink/50 p-4 rounded-xl border border-line">
-                  {card.description}
+                  {itemDescription}
                 </p>
               </div>
 
               {/* Select Footer Indicator */}
               <div className="relative mt-6 pt-4 border-t border-line flex items-center justify-between text-xs font-mono">
                 <span className={locked ? 'text-text-muted/60' : isSelectedByPlayer ? 'text-player font-bold' : 'text-text-muted'}>
-                  {locked ? 'UNAVAILABLE' : isSelectedByPlayer ? '✓ YOUR SELECTION' : 'CLICK TO SELECT'}
+                  {locked ? t('cardSelect.unavailable') : isSelectedByPlayer ? t('cardSelect.yourSelection') : t('cardSelect.clickToSelect')}
                 </span>
                 <span className={`uppercase font-bold ${rarityStyle.text}`}>{card.rarity}</span>
               </div>
@@ -271,9 +276,9 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
             />
             <ShieldPlus className="w-5 h-5 text-player shrink-0" />
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-black text-text uppercase tracking-wide">Cold Storage</div>
+              <div className="text-xs font-black text-text uppercase tracking-wide">{t('cardSelect.coldStorage')}</div>
               <div className="text-[11px] text-text-muted leading-snug">
-                Protect this card from mars-capture this stage only.
+                {t('cardSelect.coldStorageHint')}
               </div>
             </div>
             <span className="shrink-0 flex items-center gap-1 font-mono text-[10px] font-bold text-player">
@@ -288,7 +293,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
           className="w-full py-4 px-8 rounded-2xl bg-player text-ink font-display font-black text-lg uppercase tracking-wider shadow-[0_0_30px_var(--player)]/60 hover:scale-105 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
         >
           {mode === 'equip' ? <Swords className="w-6 h-6" /> : <Play className="w-6 h-6 fill-current" />}
-          {mode === 'equip' ? 'EQUIP & ENGAGE' : 'START MATCH WITH CHOSEN CARD'}
+          {mode === 'equip' ? t('cardSelect.equipAndEngage') : t('cardSelect.startMatch')}
         </button>
       </div>
     </div>

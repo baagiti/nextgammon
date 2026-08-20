@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "Sprache"
+  },
+  "common": {
+    "returnToMenu": "Zurück zum Hauptmenü",
+    "toggleAudio": "Ton ein/aus",
+    "volume": "Lautstärke"
+  },
+  "paywall": {
+    "title": "Run-Modus freischalten",
+    "tagline": "Die komplette Cyber-Backgammon-Kampagne.",
+    "features": {
+      "campaign": {
+        "title": "Kampagne mit 44 Stufen",
+        "description": "Kämpfe dich durch 7 Akte, von Boot Sector bis Singularity."
+      },
+      "cards": {
+        "title": "45 sammelbare Mutationskarten",
+        "description": "Jeder Boss bewacht eine Karte — besiege ihn, und sie gehört dir. Bei Mars kann er sie sich zurückholen."
+      },
+      "protocols": {
+        "title": "7 Protokoll-Bosse",
+        "description": "Regelbrechende Bosse krönen jeden Akt und drehen Backgammon selbst gegen dich."
+      },
+      "adFree": {
+        "title": "100 % werbefrei",
+        "description": "Dieser Kauf entfernt jede Werbung in NEXTGAMMON, dauerhaft."
+      }
+    },
+    "description": "Die komplette Kampagne mit 44 Stufen — jeder Boss, jede sammelbare Karte — plus ein werbefreies Erlebnis, alles in einer einmaligen Freischaltung für 3 $. 1v1-Schnellmatch bleibt für immer kostenlos.",
+    "buyButton": "Für 3 $ freischalten",
+    "restoreButton": "Kauf wiederherstellen",
+    "errorCancelled": "Kauf abgebrochen.",
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} Neon Chips",
+    "buyChipsDescription": "Ein sofortiges Aufladen deines Neon-Chips-Guthabens. Beliebig oft käuflich.",
+    "buyChipsButton": "Kaufen — 1 $",
+    "buyChipsSuccess": "+100.000 Neon Chips hinzugefügt!",
+    "buyChipsErrorCancelled": "Kauf abgebrochen.",
+    "buyChipsErrorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "title": "Das Cyber-Labor",
+    "subtitleSpend": "Alles, was Neon Chips kaufen können, und wo du sie ausgibst.",
+    "neonChips": "{{n}} Neon Chips",
+    "gamesPlayed": "Gespielte Matches: {{n}}",
+    "runWins": "Run-Siege: {{n}}",
+    "highestStage": "Höchste Stufe: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "Eroberte Karte zurückkaufen",
+        "description": "Hol dir eine Karte zurück, die der Boss dir abgenommen hat, ohne die Stufe erst abzuschließen.",
+        "location": "Run-Karte"
+      },
+      "skipStage": {
+        "name": "Stufe überspringen",
+        "description": "Schließe eine Karten-Boss-Stufe sofort ab und erhalte ihre Belohnungskarte. Protokoll-Boss-Stufen können nicht übersprungen werden.",
+        "location": "Run-Karte"
+      },
+      "rerollDie": {
+        "name": "Würfel neu würfeln",
+        "description": "Würfle einmal pro Zug, nach dem Würfeln, einen Würfel neu.",
+        "location": "Im Match"
+      },
+      "coldStorage": {
+        "name": "Kühllagerung",
+        "description": "Schützt deine ausgerüstete Karte für diese Stufe vor Mars-Eroberung.",
+        "location": "Ausrüstungsbildschirm"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "Versteckte Karte",
+    "hiddenCardHint": "Wird bei einer bestimmten Matchbedingung ausgelöst!",
+    "depleted": "Aufgebraucht",
+    "trigger": "Auslöser",
+    "triggerLabel": "Auslöser:"
+  },
+  "portraitGuard": {
+    "badge": "Querformat erforderlich",
+    "title": "Bitte drehe dein Gerät",
+    "description": "NEXTGAMMON benötigt eine horizontale (Querformat-)Bildschirmansicht, um alle 24 Brettpunkte, Karten und Würfel sauber darzustellen. Bitte dreh dein Telefon quer!",
+    "tip": "Tipp: Stelle sicher, dass die Hochformat-Sperre in den Einstellungen deines Telefons deaktiviert ist.",
+    "bypass": "Querformat trotzdem in der Vorschau anzeigen"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — Wähle den schweren Stein des Gegners",
+    "deadweightSubtitle": "Wähle einen gegnerischen Stein aus, um ihn mit −1 Bewegungsdistanz zu bestrafen! Die Strafe bleibt bestehen, solange sich dieser Stein bewegt.",
+    "deadweightFilter": "Gegnerische (CPU-)Steine",
+    "courierTitle": "Courier — Wähle deinen beschleunigten Stein",
+    "courierSubtitle": "Wähle einen deiner Steine aus, der bei jeder Bewegung einen Geschwindigkeitsbonus von +1 Bewegungsdistanz erhält!",
+    "courierFilter": "Deine Steine",
+    "blackIceTitle": "Black Ice — Wähle den vereisten Fallenpunkt",
+    "blackIceSubtitle": "Wähle einen Brettpunkt (1-24), den du mit Black Ice bedecken willst. Jeder gegnerische Stein, der hier landet, rutscht direkt auf die Bar!",
+    "blackIceFilter": "Alle Brettpunkte",
+    "pointRange": "{{label}} (Punkt 1 - 24)",
+    "clickToDesignate": "Klicken zum Festlegen",
+    "pointTitle": "Punkt Nr. {{n}} ({{count}} Steine)",
+    "you": "Du",
+    "cpu": "CPU",
+    "empty": "Leer",
+    "selectOnBoardHint": "Du kannst Punkte auch direkt auf dem Spielfeld auswählen.",
+    "randomSelection": "🎲 Zufällige Auswahl"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "Mutationskarte",
+    "augment": "Verstärkung (+)",
+    "sabotage": "Sabotage (−)",
+    "effectAndMechanics": "Effekt & Mechanik:",
+    "closeDetails": "Details schließen"
+  },
+  "bossIntro": {
+    "encounter": "Protokoll-Boss-Begegnung",
+    "engage": "Angreifen"
+  },
+  "neonBoard": {
+    "badgeIce": "Eis",
+    "badgeCpuIce": "CPU-Eis",
+    "badgeSluggish": "Träge",
+    "badgeCourier": "Courier",
+    "off": "Draußen",
+    "borne": "Ausgewürfelt",
+    "you": "Du",
+    "tray": "Ablage",
+    "bar": "Bar",
+    "ownerLabelPlayer": "Spielerkarte",
+    "ownerLabelCpu": "CPU-Karte",
+    "protocolActivated": "Protokoll aktiviert",
+    "mutationActivated": "Mutation aktiviert",
+    "youGating": "Du: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "Klicken: Auswürfel-/Brettrichtung ändern (im Uhrzeigersinn / gegen den Uhrzeigersinn)",
+    "bearOffClockwise": "Auswürfeln: im Uhrzeigersinn (links)",
+    "bearOffCounterCw": "Auswürfeln: gegen den Uhrzeigersinn (rechts)",
+    "lookAroundTitleTable": "Zurücklehnen und die Straße hochblicken",
+    "lookAroundTitlePeek": "Ganz nach oben blicken — volle Straßenansicht",
+    "lookAroundTitlePanorama": "Zurück zum Tisch",
+    "lookAround": "Umsehen",
+    "lookFurther": "Weiter blicken",
+    "backToTable": "Zurück zum Tisch",
+    "deadweightActive": "Deadweight aktiv:",
+    "courierActive": "Courier aktiv:",
+    "blackIceActive": "Black Ice aktiv:",
+    "clickPointOrMenu": "Punkt anklicken oder aus dem Menü wählen",
+    "selectPoint": "Punkt auswählen",
+    "coldRebootActive": "Cold Reboot aktiv",
+    "lowRollHint": "Niedrige Würfelsumme ≤ 5 ({{dice}}). Klicken, um einmal neu zu würfeln!",
+    "reroll": "Neu würfeln",
+    "bearOffModeActive": "Auswürfeln-Modus aktiv! Tippe auf Steine oder die Auswürfeln-Ablage.",
+    "yourTurn": "Du bist am Zug",
+    "cpuTurnEllipsis": "CPU ist am Zug...",
+    "noDice": "Keine Würfel",
+    "paidRerollTitle": "Neon Chips ausgeben, um einen Würfel neu zu würfeln",
+    "rerollCost": "Neu würfeln — {{cost}}",
+    "undo": "Rückgängig",
+    "undoTitle": "Zuletzt bewegten Stein rückgängig machen",
+    "reset": "Zurücksetzen",
+    "resetTitle": "Zug auf Startposition zurücksetzen",
+    "roll": "Würfeln",
+    "pass": "Passen",
+    "discardDieTitle": "Packet Drop: Verbleibenden Würfel verwerfen und Zug vorzeitig beenden",
+    "discardDie": "Würfel verwerfen",
+    "matchVictory": "Match-Sieg",
+    "systemDefeat": "Systemniederlage",
+    "victoryDescRun": "Du hast das Netzwerk des CPU-Gegners zerschlagen! Wähle einen neuen Kartenvorteil und ziehe zum nächsten Knoten weiter.",
+    "victoryDescQuick": "Du hast das Netzwerk des CPU-Gegners zerschlagen! Spiel noch eine Runde.",
+    "defeatDescRun": "Dein Backgammon-Kern wurde vom KI-Boss kompromittiert. Sammle dich neu und versuche die Stufe erneut.",
+    "defeatDescQuick": "Dein Backgammon-Kern wurde von der CPU kompromittiert. Fordere eine Revanche.",
+    "chipsEarned": "Verdiente Neon Chips",
+    "opponentHitTimes": "{{count}}× Gegner geschlagen",
+    "matchWon": "Match gewonnen",
+    "total": "Gesamt",
+    "continue": "Weiter",
+    "playerCard": "Spielerkarte:",
+    "protocol": "Protokoll:",
+    "cpuCard": "CPU-Karte:",
+    "mirror": "{{name}} Spiegel:",
+    "clickToExpand": "Klicken, um Kartendetails anzuzeigen"
+  },
+  "opponentHeader": {
+    "cyberCpu": "1v1 Cyber-CPU",
+    "level": "LVL ★★★",
+    "you": "Du",
+    "cpu": "CPU",
+    "lead": "+{{n}} Vorsprung",
+    "trailing": "-{{n}} Vorsprung",
+    "even": "Ausgeglichen",
+    "pipRace": "Pip-Rennen",
+    "protocolActive": "Protokoll aktiv",
+    "cpuCard": "CPU-Karte",
+    "mirrorSuffix": "{{name}} Spiegel:",
+    "clickToExpand": "Klicken, um Kartendetails anzuzeigen"
+  },
+  "cardSelect": {
+    "campaignLoadout": "Kampagnen-Ausrüstung",
+    "draftBadge": "1v1-Match-Mutations-Draft",
+    "equipTitle": "1 Karte ausrüsten",
+    "draftTitle": "Wähle 1 von 3 Karten",
+    "equipIntro": "{{bossName}} spielt {{cardName}}. Wähle eine eigene Karte aus deiner Sammlung, um dich zu wehren.",
+    "draftIntro": "Aus diesem zufälligen 3-Karten-Draft-Pool wählen sowohl du als auch Gegner {{bossName}} jeweils eine Karte. Die gewählten Mutationen bleiben für das gesamte Match aktiv!",
+    "capturedByBoss": "Vom Boss erobert",
+    "usedLastStage": "Letzte Stufe verwendet",
+    "cpuChoseThisCard": "CPU hat diese Karte gewählt",
+    "augment": "Verstärkung (+ Selbst)",
+    "sabotage": "Sabotage (− Gegner)",
+    "mutationCardFallback": "Mutationskarte",
+    "unavailable": "Nicht verfügbar",
+    "yourSelection": "✓ Deine Auswahl",
+    "clickToSelect": "Klicken zum Auswählen",
+    "coldStorage": "Kühllagerung",
+    "coldStorageHint": "Schützt diese Karte nur für diese Stufe vor Mars-Eroberung.",
+    "equipAndEngage": "Ausrüsten & Angreifen",
+    "startMatch": "Match mit gewählter Karte starten"
+  },
+  "toasts": {
+    "achievementUnlocked": "Erfolg freigeschaltet"
+  },
+  "mainMenu": {
+    "tagline": "Cyber-Backgammon mit Mutationskarten",
+    "resumeRun": "Run fortsetzen",
+    "startRun": "Run starten",
+    "start1v1": "1v1-Match starten"
+  },
+  "runMap": {
+    "campaignLabel": "Nextgammon-Kampagne",
+    "stageOf": "Stufe {{stage}} von {{total}}",
+    "cardsWon": "{{won}} / {{total}} Karten gewonnen",
+    "bossHoldsCard": "Boss hält deine Karte:",
+    "bossHoldsCards": "Boss hält deine Karten:",
+    "recoverHint": "— schließe diese Stufe ab, um sie zurückzuholen, oder kauf sie jetzt zurück.",
+    "recoverHintPlural": "— schließe diese Stufe ab, um sie zurückzuholen, oder kauf sie jetzt zurück.",
+    "buyBack": "{{name}} zurückkaufen — {{cost}}",
+    "act": "Akt {{n}}: {{name}}",
+    "actShort": "Akt {{n}}",
+    "battleOpponent": "Gegner bekämpfen",
+    "skip": "Überspringen — {{cost}}",
+    "skipTitle": "Überspringe diese Stufe sofort und erhalte ihre Belohnungskarte — Protokoll-Boss-Stufen können nicht übersprungen werden.",
+    "campaignComplete": "Kampagne abgeschlossen",
+    "campaignCompleteHint": "Jeder Boss besiegt. Jede Karte zurückgeholt."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}

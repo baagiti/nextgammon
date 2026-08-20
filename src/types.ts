@@ -108,17 +108,6 @@ export interface GameSettings {
   boardTheme: 'neon' | 'kiraathane';
 }
 
-export interface MetaUpgrade {
-  id: string;
-  name: string;
-  description: string;
-  cost: number;
-  level: number;
-  maxLevel: number;
-  icon: string;
-  category: 'starter' | 'perks' | 'rule_hacks' | 'cosmetics';
-}
-
 export interface RunState {
   stage: number;
   maxStages: number;

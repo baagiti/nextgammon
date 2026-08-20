@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { OpponentCard, BossProtocol } from '../types';
 import { CardIcon } from './CardIcon';
+import { useTranslation } from 'react-i18next';
+import { useOpponentDisplayText, useProtocolText } from '../hooks/useLocalizedText';
 import { Skull, Swords, Home } from 'lucide-react';
 
 interface BossIntroOverlayProps {
@@ -13,13 +15,18 @@ interface BossIntroOverlayProps {
 }
 
 export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, protocol, onEngage, onGoBack }) => {
+  const { t } = useTranslation('ui');
+  const { bossName, bossTitle } = useOpponentDisplayText(opponent);
+  const { name: protocolName, description: protocolDescription, taunt: protocolTaunt } = useProtocolText(
+    protocol ?? { id: '', name: '', description: '', taunt: '' }
+  );
   return (
     <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 overflow-y-auto">
       {onGoBack && (
         <button
           onClick={onGoBack}
           className="fixed top-4 left-4 sm:top-6 sm:left-6 z-20 p-2 rounded-lg bg-panel border border-line hover:border-player text-text-muted hover:text-player transition-colors"
-          title="Return to Main Menu"
+          title={t('common.returnToMenu')}
         >
           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -56,19 +63,19 @@ export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, pr
 
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-danger/15 border border-danger/60 text-danger font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-3">
           <Swords className="w-3.5 h-3.5" />
-          PROTOCOL BOSS ENCOUNTER
+          {t('bossIntro.encounter')}
         </div>
 
         <h1 className="font-display text-3xl sm:text-5xl font-black text-text uppercase tracking-wider mb-1">
-          {opponent.bossName}
+          {bossName}
         </h1>
-        <p className="text-danger/80 text-xs sm:text-sm font-mono uppercase tracking-widest mb-6">{opponent.bossTitle}</p>
+        <p className="text-danger/80 text-xs sm:text-sm font-mono uppercase tracking-widest mb-6">{bossTitle}</p>
 
         {/* Speech bubble with the boss's taunt */}
         {protocol && (
           <div className="relative max-w-lg mb-6">
             <div className="bg-ink-2/95 border-2 border-danger/60 rounded-2xl px-5 py-4 shadow-[0_0_30px_rgba(255,32,32,0.25)]">
-              <p className="text-text text-sm sm:text-base italic leading-relaxed">"{protocol.taunt}"</p>
+              <p className="text-text text-sm sm:text-base italic leading-relaxed">"{protocolTaunt}"</p>
             </div>
             <div
               className="absolute left-1/2 -translate-x-1/2 -bottom-3 w-0 h-0"
@@ -88,10 +95,10 @@ export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, pr
             <div className="flex items-center justify-center gap-2 mb-2">
               <CardIcon name={protocol.iconName} className="w-5 h-5 text-danger" />
               <span className="font-display font-black text-danger uppercase tracking-[0.15em] text-sm sm:text-base">
-                {protocol.name}
+                {protocolName}
               </span>
             </div>
-            <p className="text-text-muted text-xs sm:text-sm leading-relaxed">{protocol.description}</p>
+            <p className="text-text-muted text-xs sm:text-sm leading-relaxed">{protocolDescription}</p>
           </div>
         )}
 
@@ -100,7 +107,7 @@ export const BossIntroOverlay: React.FC<BossIntroOverlayProps> = ({ opponent, pr
           className="w-full max-w-xs py-4 rounded-2xl bg-gradient-to-r from-danger via-red-600 to-danger text-white font-black text-base uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(255,32,32,0.5)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
         >
           <Swords className="w-5 h-5" />
-          ENGAGE
+          {t('bossIntro.engage')}
         </button>
       </motion.div>
     </div>

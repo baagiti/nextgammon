@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "Come una ficha rival por primera vez." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "Consigue 50 capturas de fichas rivales, de por vida." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "Consigue 200 capturas de fichas rivales, de por vida." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "Hazle mars al rival — gana una partida sin que la CPU saque ninguna ficha." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "Gana tus primeros Neon Chips." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "Gana 10.000 Neon Chips, de por vida." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "Gana 100.000 Neon Chips, de por vida." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "Gana 1.000.000 Neon Chips, de por vida." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "Gana tu primera partida rápida 1v1." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "Gana 10 partidas rápidas 1v1." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "Gana 100 partidas rápidas 1v1." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "Equipa cada carta disponible para draft al menos una vez en partidas rápidas 1v1." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "Completa tu primera etapa de campaña." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "Derrota a BOLLARD y completa el Acto 1: Boot Sector." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "Derrota a GHOSTGATE y completa el Acto 2: Street Level." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "Derrota a SENTINEL WALL y completa el Acto 3: The Grid." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "Derrota a MIRROR CORE y completa el Acto 4: Deep Net." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "Derrota a SIEGE ENGINE y completa el Acto 5: Black Market." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "Derrota a NULL SECTOR y completa el Acto 6: Core Breach." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "Derrota a OMEGA CORE y completa el Acto 7: Singularity." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "Termina la campaña completa de 44 etapas." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "Termina la campaña sin perder ni una sola etapa en el camino." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "Desbloquea 25 de las 45 cartas." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "Desbloquea las 45 cartas." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "Reintenta la misma etapa 10 veces seguidas sin abandonar la run." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "Gana una etapa en modo run después de que un boss ya te haya capturado una carta." }
+}

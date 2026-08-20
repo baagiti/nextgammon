@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "اضرب حجر خصم لأول مرة." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "سجّل 50 ضربة على أحجار الخصم، إجمالاً مدى اللعب." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "سجّل 200 ضربة على أحجار الخصم، إجمالاً مدى اللعب." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "مارس الخصم — اربح مباراة دون أن يُخرج CPU أي حجر." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "اكسب أولى Neon Chips الخاصة بك." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "اكسب 10,000 من Neon Chips، إجمالاً مدى اللعب." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "اكسب 100,000 من Neon Chips، إجمالاً مدى اللعب." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "اكسب 1,000,000 من Neon Chips، إجمالاً مدى اللعب." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "اربح أول مباراة سريعة 1v1 لك." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "اربح 10 مباريات سريعة 1v1." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "اربح 100 مباراة سريعة 1v1." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "جهّز كل بطاقة قابلة للاختيار مرة واحدة على الأقل في مباريات 1v1 السريعة." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "اجتز أول مرحلة من مراحل الحملة." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "اهزم BOLLARD واجتز الفصل 1: Boot Sector." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "اهزم GHOSTGATE واجتز الفصل 2: Street Level." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "اهزم SENTINEL WALL واجتز الفصل 3: The Grid." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "اهزم MIRROR CORE واجتز الفصل 4: Deep Net." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "اهزم SIEGE ENGINE واجتز الفصل 5: Black Market." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "اهزم NULL SECTOR واجتز الفصل 6: Core Breach." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "اهزم OMEGA CORE واجتز الفصل 7: Singularity." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "أكمل الحملة بأكملها المكوّنة من 44 مرحلة." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "أكمل الحملة دون خسارة مرحلة واحدة طوال الطريق." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "افتح 25 من أصل 45 بطاقة." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "افتح جميع البطاقات الـ45." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "أعد محاولة نفس المرحلة 10 مرات متتالية دون التخلي عن الجولة." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "اربح مرحلة في وضع الجولة بعد أن يكون Boss قد استولى بالفعل على إحدى بطاقاتك." }
+}

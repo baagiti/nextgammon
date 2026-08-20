@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "Hit an opponent checker for the first time." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "Land 50 hits on opponent checkers, lifetime." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "Land 200 hits on opponent checkers, lifetime." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "Mars the opponent — win a match with the CPU bearing off zero checkers." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "Earn your first Neon Chips." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "Earn 10,000 Neon Chips, lifetime." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "Earn 100,000 Neon Chips, lifetime." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "Earn 1,000,000 Neon Chips, lifetime." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "Win your first 1v1 quick match." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "Win 10 1v1 quick matches." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "Win 100 1v1 quick matches." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "Equip every draftable card at least once in 1v1 quick matches." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "Clear your first campaign stage." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "Defeat BOLLARD and clear Act 1: Boot Sector." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "Defeat GHOSTGATE and clear Act 2: Street Level." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "Defeat SENTINEL WALL and clear Act 3: The Grid." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "Defeat MIRROR CORE and clear Act 4: Deep Net." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "Defeat SIEGE ENGINE and clear Act 5: Black Market." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "Defeat NULL SECTOR and clear Act 6: Core Breach." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "Defeat OMEGA CORE and clear Act 7: Singularity." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "Finish the entire 44-stage campaign." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "Finish the campaign without losing a single stage along the way." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "Unlock 25 of the 45 cards." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "Unlock all 45 cards." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "Retry the same stage 10 times in a row without abandoning the run." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "Win a run-mode stage after a boss has already captured one of your cards." }
+}

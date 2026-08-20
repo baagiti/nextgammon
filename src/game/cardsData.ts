@@ -1,4 +1,4 @@
-import { Card, OpponentCard, MetaUpgrade } from '../types';
+import { Card, OpponentCard } from '../types';
 
 export const PLAYER_CARDS: Card[] = [
   // --- Group 1: Dice Geometry (10) ---
@@ -628,75 +628,3 @@ export const OPPONENT_BOSSES: OpponentCard[] = [
   }
 ];
 
-export const INITIAL_META_UPGRADES: MetaUpgrade[] = [
-  {
-    id: 'meta_start_chips',
-    name: 'CHIP BUFFER',
-    description: 'Start every new run with +50 Neon Chips per level.',
-    cost: 100,
-    level: 0,
-    maxLevel: 5,
-    icon: 'Coins',
-    category: 'starter',
-  },
-  {
-    id: 'meta_card_slots',
-    name: 'PERK BAY EXPANSION',
-    description: 'Increases active card equip limit by +1 (up to 3 cards active simultaneously!).',
-    cost: 250,
-    level: 0,
-    maxLevel: 2,
-    icon: 'Layers',
-    category: 'perks',
-  },
-  {
-    id: 'meta_scanner_tech',
-    name: 'CODE SCANNER',
-    description: 'Reveals opponent hidden card class and hint before match start.',
-    cost: 150,
-    level: 0,
-    maxLevel: 1,
-    icon: 'Search',
-    category: 'perks',
-  },
-  {
-    id: 'meta_reroll_tokens',
-    name: 'DRAFT MATRIX RE-DRAFT',
-    description: 'Gain +1 free Card Draft Reroll in every shop/post-match reward.',
-    cost: 120,
-    level: 0,
-    maxLevel: 3,
-    icon: 'RotateCcw',
-    category: 'starter',
-  },
-  {
-    id: 'meta_gammon_multiplier',
-    name: 'RULE HACK: GAMMON OVERDRIVE',
-    description: 'Increases Neon Chips reward by 1.5x when winning by Gammon or Backgammon.',
-    cost: 200,
-    level: 0,
-    maxLevel: 3,
-    icon: 'Zap',
-    category: 'rule_hacks',
-  },
-  {
-    id: 'meta_dice_vapor',
-    name: 'VAPORWAVE DICE SKIN',
-    description: 'Unlocks aesthetic pink/purple neon dice with glowing synth trails.',
-    cost: 80,
-    level: 0,
-    maxLevel: 1,
-    icon: 'Palette',
-    category: 'cosmetics',
-  },
-  {
-    id: 'meta_dice_matrix',
-    name: 'MATRIX CODE DICE SKIN',
-    description: 'Unlocks energetic green digital rain dice styling.',
-    cost: 120,
-    level: 0,
-    maxLevel: 1,
-    icon: 'Binary',
-    category: 'cosmetics',
-  }
-];

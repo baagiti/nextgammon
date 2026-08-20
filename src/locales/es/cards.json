@@ -1,0 +1,56 @@
+{
+  "card_overclock": { "name": "OVERCLOCK", "tagline": "Geometría de Dados", "description": "Aumenta el dado menor en +1 en tiradas no dobles (Máx. 6)." },
+  "card_synchronize": { "name": "SYNCHRONIZE", "tagline": "Geometría de Dados", "description": "Si los dados no dobles son consecutivos, el dado menor aumenta en +1 (ej.: 5-4 → 5-5). Solo se juegan 2 movimientos." },
+  "card_convergence": { "name": "CONVERGENCE", "tagline": "Geometría de Dados", "description": "Si los dados no dobles difieren en al menos 3, el dado menor recibe +2 y el dado mayor recibe −1 (ej.: 6-1 → 5-3)." },
+  "card_cold_reboot": { "name": "COLD REBOOT", "tagline": "Geometría de Dados", "description": "Si la suma de los dados originales es 5 o menos, puedes volver a tirar ambos dados una vez (opcional)." },
+  "card_double_tuner": { "name": "DOUBLE TUNER", "tagline": "Geometría de Dados", "description": "En un doble natural x-x, reemplaza los 4 valores idénticos con [x−1, x, x, x+1]." },
+  "card_doubles_engine": { "name": "DOUBLES ENGINE", "tagline": "Geometría de Dados", "description": "En los dobles naturales, permite usar el valor del dado 5 veces en lugar de 4." },
+  "card_compression_field": { "name": "COMPRESSION FIELD", "tagline": "Geometría de Dados", "description": "Si los dados no dobles del rival difieren en al menos 3, el dado mayor recibe −2 y el dado menor recibe +1 (ej.: 6-1 → 4-2)." },
+  "card_overvoltage_trip": { "name": "OVERVOLTAGE TRIP", "tagline": "Geometría de Dados", "description": "Si la suma de los dados no dobles del rival es 10 o más, obliga a que sus dados se vuelvan a tirar automáticamente." },
+  "card_double_fault": { "name": "DOUBLE FAULT", "tagline": "Geometría de Dados", "description": "Cuando el rival tira un doble natural, solo recibe 3 movimientos en lugar de 4." },
+  "card_six_tax": { "name": "SIX TAX", "tagline": "Geometría de Dados", "description": "Cuando el rival tira un 6 en una tirada no doble, su otro dado recibe −1 (Mín. 1)." },
+
+  "card_mirror_reflex": { "name": "MIRROR REFLEX", "tagline": "Ficha Suelta y Captura", "description": "Cuando comen tu ficha suelta, la ficha rival que la come también es enviada a la barra." },
+  "card_shatter_blot": { "name": "SHATTER BLOT", "tagline": "Ficha Suelta y Captura", "description": "Cuando comes una ficha suelta rival, otra ficha suelta rival adyacente justo delante también es enviada a la barra." },
+  "card_double_tap": { "name": "DOUBLE TAP", "tagline": "Ficha Suelta y Captura", "description": "Después de tu primera captura en un turno, cualquier dado sin usar recibe +1 (Máx. 6)." },
+  "card_open_circuit": { "name": "OPEN CIRCUIT", "tagline": "Ficha Suelta y Captura", "description": "Si terminas tu turno con al menos una ficha suelta expuesta, tu dado menor recibe +1 en tu próxima tirada no doble." },
+  "card_second_wind": { "name": "SECOND WIND", "tagline": "Ficha Suelta y Captura", "description": "Cuando una de tus fichas sueltas es comida, tu dado menor recibe +1 en tu próximo turno (Máx. 6)." },
+  "card_deflection": { "name": "DEFLECTION", "tagline": "Ficha Suelta y Captura", "description": "Cuando comen tu ficha suelta, en lugar de ir a la barra, retrocede 1 punto si es posible." },
+  "card_compulsory_hit": { "name": "COMPULSORY HIT", "tagline": "Ficha Suelta y Captura", "description": "Si el rival tiene alguna secuencia de movimientos legal que incluya una captura, DEBE realizar al menos una captura." },
+  "card_blood_tax": { "name": "BLOOD TAX", "tagline": "Ficha Suelta y Captura", "description": "Después de que el rival realice su primera captura en un turno, su siguiente dado recibe −1 (Mín. 1)." },
+  "card_double_fracture": { "name": "DOUBLE FRACTURE", "tagline": "Ficha Suelta y Captura", "description": "Cuando el rival realiza una captura durante una tirada doble, se destruye 1 movimiento de dado restante." },
+  "card_backlash": { "name": "BACKLASH", "tagline": "Ficha Suelta y Captura", "description": "Después de que el rival realice su primera captura en un turno, la ficha que capturó retrocede 1 punto si es posible." },
+  "card_blood_magnet": { "name": "BLOOD MAGNET", "tagline": "Ficha Suelta y Captura", "description": "Si el rival comienza su turno con al menos una ficha suelta y tiene movimientos válidos, su primer movimiento DEBE mover una ficha suelta." },
+  "card_cowards_tax": { "name": "COWARD'S TAX", "tagline": "Ficha Suelta y Captura", "description": "Si el rival tiene al menos una oportunidad de captura legal durante su turno pero elige no capturar, su dado menor recibe −1 en su próximo turno." },
+
+  "card_magnetic_link": { "name": "MAGNETIC LINK", "tagline": "Puertas y Control", "description": "Si un movimiento termina exactamente 1 punto detrás de tu propia ficha suelta, avanza automáticamente +1 para formar un punto/puerta." },
+  "card_repulsor": { "name": "REPULSOR", "tagline": "Puertas y Control", "description": "Si el rival mueve sobre su propia ficha suelta para formar un nuevo punto, la ficha que aterriza es empujada +1 hacia adelante, impidiendo la creación del punto." },
+
+  "card_counterstrike": { "name": "COUNTERSTRIKE", "tagline": "Barra y Reingreso", "description": "Al reingresar desde la barra y comer una ficha suelta rival, cualquier dado sin usar recibe +1 (Máx. 6)." },
+  "card_launchpad": { "name": "LAUNCHPAD", "tagline": "Barra y Reingreso", "description": "Al reingresar desde la barra sobre tu propia ficha suelta para formar un punto, cualquier dado sin usar recibe +1 (Máx. 6)." },
+  "card_failsafe": { "name": "FAILSAFE", "tagline": "Barra y Reingreso", "description": "Si no puedes reingresar ninguna ficha desde la barra durante un turno completo, tu dado menor recibe +1 en tu próximo turno." },
+  "card_batch_upload": { "name": "BATCH UPLOAD", "tagline": "Barra y Reingreso", "description": "Si comienzas tu turno con exactamente 2 fichas en la barra y tiras un no doble con entrada válida, ambas fichas reingresan juntas usando 1 dado." },
+  "card_bypass_protocol": { "name": "BYPASS PROTOCOL", "tagline": "Barra y Reingreso", "description": "Si tienes fichas en la barra pero tus dados no pueden reingresarlas, se suspende la prioridad de la barra y puedes mover fichas en el tablero." },
+  "card_bar_static": { "name": "BAR STATIC", "tagline": "Barra y Reingreso", "description": "Si el rival comienza su turno con 2 o más fichas en la barra, su dado mayor recibe −1 antes de resolver las entradas." },
+
+  "card_black_ice": { "name": "BLACK ICE", "tagline": "Anomalía del Tablero", "description": "Si una ficha rival termina su movimiento en el punto helado designado al inicio de la partida, es enviada instantáneamente a la barra." },
+
+  "card_packet_drop": { "name": "PACKET DROP", "tagline": "Movimiento y Tiradas Muertas", "description": "Después de jugar 1 dado en una tirada no doble, puedes descartar el dado restante y terminar tu turno." },
+  "card_lost_packet": { "name": "LOST PACKET", "tagline": "Movimiento y Tiradas Muertas", "description": "Si el rival no puede jugar uno de sus dados y termina su turno antes de tiempo, su dado menor recibe −1 en su próximo turno." },
+  "card_echo_jam": { "name": "ECHO JAM", "tagline": "Movimiento y Tiradas Muertas", "description": "Si el rival usa ambos dados en la misma ficha en un turno no doble, el segundo dado recibe −1 (Mín. 1)." },
+  "card_forced_commit": { "name": "FORCED COMMIT", "tagline": "Movimiento y Tiradas Muertas", "description": "Si el rival juega su primer dado en una ficha y el segundo dado también se puede jugar en esa misma ficha, DEBE jugarlo en esa misma ficha." },
+
+  "card_redundancy": { "name": "REDUNDANCY", "tagline": "Casa y Salida de Fichas", "description": "Cuando todas tus fichas están en tu casa y uno de los dados no se puede jugar de ninguna forma, el dado jugable puede usarse dos veces." },
+  "card_home_security": { "name": "HOME SECURITY", "tagline": "Casa y Salida de Fichas", "description": "Si el rival tiene al menos una ficha suelta expuesta en su casa, no puede sacar fichas." },
+  "card_final_check": { "name": "FINAL CHECK", "tagline": "Casa y Salida de Fichas", "description": "El rival no puede sacar su última ficha restante con sobrante (dado excedente). Debe ser una tirada exacta." },
+  "card_exact_lock": { "name": "EXACT LOCK", "tagline": "Casa y Salida de Fichas", "description": "El rival no puede sacar ninguna ficha con sobrante. Las fichas solo pueden sacarse con una coincidencia exacta del dado." },
+
+  "card_tailwind": { "name": "TAILWIND", "tagline": "Carrera y Pip", "description": "La primera vez que mueves tu ficha más rezagada en cada turno, el dado usado recibe +1 (Máx. 6)." },
+  "card_trailing_drag": { "name": "TRAILING DRAG", "tagline": "Carrera y Pip", "description": "La primera vez que el rival mueve su ficha más rezagada en cada turno, el dado usado recibe −1 (Mín. 1)." },
+
+  "card_courier": { "name": "COURIER", "tagline": "Fichas Marcadas", "description": "Tu ficha Courier, designada al inicio de la partida, gana +1 de distancia de dado cada vez que se mueve (Máx. 6)." },
+  "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Fichas Marcadas", "description": "La ficha Deadweight del rival, designada al inicio de la partida, pierde −1 de distancia de dado cada vez que se mueve (Mín. 1)." },
+
+  "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Pozo de Gravedad", "description": "Cada vez que el rival saca una ficha, el dado menor de su próxima tirada recibe −1 (Mín. 1) — la gravedad se intensifica cuanto más cerca está de escapar." },
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Bloqueo Total", "description": "Las fichas sueltas de OMEGA CORE nunca pueden ser comidas — sus fichas expuestas no pueden ser capturadas." }
+}

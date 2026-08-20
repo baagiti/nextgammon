@@ -1,5 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, OpponentCard } from '../types';
+import { useCardText } from '../hooks/useLocalizedText';
 import { Zap, Flame, ShieldAlert, ShieldCheck, RefreshCw, Sparkles, Coins, Sliders, FastForward, Target, Cpu, EyeOff, Binary, Radio, Skull } from 'lucide-react';
 
 interface CardWidgetProps {
@@ -39,6 +41,11 @@ export const CardWidget: React.FC<CardWidgetProps> = ({
   onActivate,
   canActivate = false,
 }) => {
+  const { t } = useTranslation('ui');
+  const { name: cardName, tagline: cardTagline, description: cardDescription } = useCardText(
+    (card as Card) ?? { id: '', name: '', tagline: '', description: '' }
+  );
+
   if (!card) return null;
 
   const IconComponent = ICON_MAP[card.iconName] || Zap;
@@ -67,9 +74,9 @@ export const CardWidget: React.FC<CardWidgetProps> = ({
           <div className="w-12 h-12 rounded-full bg-danger/15 border border-danger flex items-center justify-center mb-2 animate-pulse">
             <Skull className="w-6 h-6 text-danger" />
           </div>
-          <p className="text-xs uppercase font-bold tracking-widest text-danger mb-1">HIDDEN CARD</p>
+          <p className="text-xs uppercase font-bold tracking-widest text-danger mb-1">{t('cardWidget.hiddenCard')}</p>
           <p className="text-[10px] text-danger/70 italic px-1">
-            Triggers on specific match condition!
+            {t('cardWidget.hiddenCardHint')}
           </p>
         </div>
 
@@ -105,13 +112,13 @@ export const CardWidget: React.FC<CardWidgetProps> = ({
         <div className={`w-10 h-10 rounded-lg ${style.bg} border ${style.border} flex items-center justify-center mb-1.5 shadow-inner group-hover:rotate-6 transition-transform`}>
           <IconComponent className={`w-5 h-5 ${style.text}`} />
         </div>
-        <h4 className="font-display text-xs font-black tracking-wide text-text line-clamp-1">{card.name}</h4>
-        <p className="text-[9px] text-text-muted tracking-tight italic line-clamp-1">{card.tagline}</p>
+        <h4 className="font-display text-xs font-black tracking-wide text-text line-clamp-1">{cardName}</h4>
+        <p className="text-[9px] text-text-muted tracking-tight italic line-clamp-1">{cardTagline}</p>
       </div>
 
       {/* Description */}
       <p className="text-[9.5px] text-text-muted leading-tight text-center bg-black/50 p-1.5 rounded-md border border-white/5 line-clamp-3">
-        {card.description}
+        {cardDescription}
       </p>
 
       {/* Footer / Active Trigger Button */}
@@ -128,11 +135,11 @@ export const CardWidget: React.FC<CardWidgetProps> = ({
               : 'bg-panel text-text-muted border-line cursor-not-allowed'
           }`}
         >
-          {card.usesRemaining !== undefined && card.usesRemaining <= 0 ? 'DEPLETED' : 'TRIGGER'}
+          {card.usesRemaining !== undefined && card.usesRemaining <= 0 ? t('cardWidget.depleted') : t('cardWidget.trigger')}
         </button>
       ) : (
         <div className="mt-1 flex items-center justify-between text-[8px] text-text-muted px-1 pt-1 border-t border-white/10">
-          <span>TRIGGER:</span>
+          <span>{t('cardWidget.triggerLabel')}</span>
           <span className="text-player font-semibold">{card.trigger.replace('ON_', '')}</span>
         </div>
       )}

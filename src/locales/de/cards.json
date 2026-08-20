@@ -1,0 +1,56 @@
+{
+  "card_overclock": { "name": "OVERCLOCK", "tagline": "Würfelgeometrie", "description": "Erhöht bei Würfen ohne Pasch den niedrigeren Würfel um +1 (max. 6)." },
+  "card_synchronize": { "name": "SYNCHRONIZE", "tagline": "Würfelgeometrie", "description": "Sind die Würfel ohne Pasch aufeinanderfolgend, erhöht sich der niedrigere Würfel um +1 (z. B. 5-4 → 5-5). Es werden nur 2 Züge gespielt." },
+  "card_convergence": { "name": "CONVERGENCE", "tagline": "Würfelgeometrie", "description": "Unterscheiden sich die Würfel ohne Pasch um mindestens 3, erhält der niedrigere Würfel +2 und der höhere Würfel −1 (z. B. 6-1 → 5-3)." },
+  "card_cold_reboot": { "name": "COLD REBOOT", "tagline": "Würfelgeometrie", "description": "Beträgt die Summe der rohen Würfel 5 oder weniger, kannst du optional beide Würfel einmal neu würfeln." },
+  "card_double_tuner": { "name": "DOUBLE TUNER", "tagline": "Würfelgeometrie", "description": "Bei einem natürlichen Pasch x-x werden die 4 identischen Werte durch [x−1, x, x, x+1] ersetzt." },
+  "card_doubles_engine": { "name": "DOUBLES ENGINE", "tagline": "Würfelgeometrie", "description": "Bei natürlichem Pasch darfst du den Würfelwert 5-mal statt 4-mal verwenden." },
+  "card_compression_field": { "name": "COMPRESSION FIELD", "tagline": "Würfelgeometrie", "description": "Unterscheiden sich die Würfel des Gegners ohne Pasch um mindestens 3, erhält der höhere Würfel −2 und der niedrigere Würfel +1 (z. B. 6-1 → 4-2)." },
+  "card_overvoltage_trip": { "name": "OVERVOLTAGE TRIP", "tagline": "Würfelgeometrie", "description": "Beträgt die Summe der gegnerischen Würfel ohne Pasch 10 oder mehr, muss der Gegner automatisch neu würfeln." },
+  "card_double_fault": { "name": "DOUBLE FAULT", "tagline": "Würfelgeometrie", "description": "Würfelt der Gegner einen natürlichen Pasch, erhält er nur 3 Züge statt 4." },
+  "card_six_tax": { "name": "SIX TAX", "tagline": "Würfelgeometrie", "description": "Würfelt der Gegner bei einem Wurf ohne Pasch eine 6, erhält sein anderer Würfel −1 (min. 1)." },
+
+  "card_mirror_reflex": { "name": "MIRROR REFLEX", "tagline": "Offener Stein & Schlagen", "description": "Wird dein einzelner Stein geschlagen, wird der schlagende gegnerische Stein ebenfalls auf die Bar geschickt." },
+  "card_shatter_blot": { "name": "SHATTER BLOT", "tagline": "Offener Stein & Schlagen", "description": "Schlägst du einen einzelnen gegnerischen Stein, wird ein direkt davor liegender einzelner gegnerischer Stein ebenfalls auf die Bar geschickt." },
+  "card_double_tap": { "name": "DOUBLE TAP", "tagline": "Offener Stein & Schlagen", "description": "Nach deinem ersten Schlag in einem Zug erhält jeder noch nicht verwendete Würfel +1 (max. 6)." },
+  "card_open_circuit": { "name": "OPEN CIRCUIT", "tagline": "Offener Stein & Schlagen", "description": "Beendest du deinen Zug mit mindestens einem einzelnen Stein im offenen Feld, erhält dein niedrigerer Würfel bei deinem nächsten Wurf ohne Pasch +1." },
+  "card_second_wind": { "name": "SECOND WIND", "tagline": "Offener Stein & Schlagen", "description": "Wird einer deiner einzelnen Steine geschlagen, erhält dein niedrigerer Würfel in deinem nächsten Zug +1 (max. 6)." },
+  "card_deflection": { "name": "DEFLECTION", "tagline": "Offener Stein & Schlagen", "description": "Wird dein einzelner Stein geschlagen, zieht er sich, statt auf die Bar zu gehen, nach Möglichkeit 1 Punkt zurück." },
+  "card_compulsory_hit": { "name": "COMPULSORY HIT", "tagline": "Offener Stein & Schlagen", "description": "Hat der Gegner eine gültige Zugfolge, die einen Schlag enthält, MUSS er mindestens einen Schlag ausführen." },
+  "card_blood_tax": { "name": "BLOOD TAX", "tagline": "Offener Stein & Schlagen", "description": "Nachdem der Gegner in einem Zug seinen ersten Schlag ausgeführt hat, erhält sein nächster Würfel −1 (min. 1)." },
+  "card_double_fracture": { "name": "DOUBLE FRACTURE", "tagline": "Offener Stein & Schlagen", "description": "Schlägt der Gegner bei einem Pasch-Wurf, wird 1 verbleibender Würfelzug zerstört." },
+  "card_backlash": { "name": "BACKLASH", "tagline": "Offener Stein & Schlagen", "description": "Nachdem der Gegner in einem Zug seinen ersten Schlag ausgeführt hat, zieht sich der schlagende Stein nach Möglichkeit 1 Punkt zurück." },
+  "card_blood_magnet": { "name": "BLOOD MAGNET", "tagline": "Offener Stein & Schlagen", "description": "Beginnt der Gegner seinen Zug mit mindestens einem einzelnen Stein und hat er gültige Züge, MUSS sein erster Zug einen einzelnen Stein bewegen." },
+  "card_cowards_tax": { "name": "COWARD'S TAX", "tagline": "Offener Stein & Schlagen", "description": "Hat der Gegner während seines Zuges mindestens eine gültige Schlagmöglichkeit, nutzt sie aber nicht, erhält sein niedrigerer Würfel in seinem nächsten Zug −1." },
+
+  "card_magnetic_link": { "name": "MAGNETIC LINK", "tagline": "Tore & Kontrolle", "description": "Endet ein Zug genau 1 Punkt hinter deinem eigenen einzelnen Stein, rückt dieser automatisch um +1 vor und bildet so einen Punkt/ein Tor." },
+  "card_repulsor": { "name": "REPULSOR", "tagline": "Tore & Kontrolle", "description": "Zieht der Gegner auf seinen eigenen einzelnen Stein, um einen neuen Punkt zu bilden, wird der landende Stein um +1 nach vorn geschoben, wodurch die Punktbildung verhindert wird." },
+
+  "card_counterstrike": { "name": "COUNTERSTRIKE", "tagline": "Bar & Wiedereinstieg", "description": "Schlägst du beim Wiedereinstieg von der Bar einen einzelnen gegnerischen Stein, erhält jeder noch nicht verwendete Würfel +1 (max. 6)." },
+  "card_launchpad": { "name": "LAUNCHPAD", "tagline": "Bar & Wiedereinstieg", "description": "Steigst du von der Bar auf deinen eigenen einzelnen Stein wieder ein und bildest so einen Punkt, erhält jeder noch nicht verwendete Würfel +1 (max. 6)." },
+  "card_failsafe": { "name": "FAILSAFE", "tagline": "Bar & Wiedereinstieg", "description": "Kannst du einen ganzen Zug lang keinen Stein von der Bar wieder einsetzen, erhält dein niedrigerer Würfel in deinem nächsten Zug +1." },
+  "card_batch_upload": { "name": "BATCH UPLOAD", "tagline": "Bar & Wiedereinstieg", "description": "Beginnst du deinen Zug mit genau 2 Steinen auf der Bar und würfelst einen Nicht-Pasch mit gültigem Einstieg, steigen beide Steine gemeinsam mit 1 Würfel wieder ein." },
+  "card_bypass_protocol": { "name": "BYPASS PROTOCOL", "tagline": "Bar & Wiedereinstieg", "description": "Hast du Steine auf der Bar, kannst sie aber mit deinen Würfeln nicht wieder einsetzen, wird die Bar-Priorität aufgehoben und du darfst Steine auf dem Brett bewegen." },
+  "card_bar_static": { "name": "BAR STATIC", "tagline": "Bar & Wiedereinstieg", "description": "Beginnt der Gegner seinen Zug mit 2 oder mehr Steinen auf der Bar, erhält sein höherer Würfel −1, bevor die Einstiege aufgelöst werden." },
+
+  "card_black_ice": { "name": "BLACK ICE", "tagline": "Brett-Anomalie", "description": "Landet ein gegnerischer Stein auf dem zu Matchbeginn festgelegten vereisten Punkt, wird er sofort auf die Bar geschickt." },
+
+  "card_packet_drop": { "name": "PACKET DROP", "tagline": "Bewegung & Tote Würfe", "description": "Nachdem du bei einem Nicht-Pasch-Wurf 1 Würfel gespielt hast, kannst du den verbleibenden Würfel verwerfen und deinen Zug beenden." },
+  "card_lost_packet": { "name": "LOST PACKET", "tagline": "Bewegung & Tote Würfe", "description": "Kann der Gegner einen seiner Würfel nicht spielen und beendet er seinen Zug vorzeitig, erhält sein niedrigerer Würfel in seinem nächsten Zug −1." },
+  "card_echo_jam": { "name": "ECHO JAM", "tagline": "Bewegung & Tote Würfe", "description": "Verwendet der Gegner bei einem Nicht-Pasch-Zug beide Würfel auf demselben Stein, erhält der zweite Würfel −1 (min. 1)." },
+  "card_forced_commit": { "name": "FORCED COMMIT", "tagline": "Bewegung & Tote Würfe", "description": "Spielt der Gegner seinen ersten Würfel auf einem Stein und lässt sich der zweite Würfel ebenfalls auf demselben Stein spielen, MUSS er ihn auf demselben Stein spielen." },
+
+  "card_redundancy": { "name": "REDUNDANCY", "tagline": "Heimfeld & Auswürfeln", "description": "Befinden sich alle Steine in deinem Heimfeld und kann ein Würfel überhaupt nicht gespielt werden, darf der spielbare Würfel zweimal verwendet werden." },
+  "card_home_security": { "name": "HOME SECURITY", "tagline": "Heimfeld & Auswürfeln", "description": "Hat der Gegner mindestens einen einzelnen Stein im offenen Feld seines Heimfelds, kann er keine Steine auswürfeln." },
+  "card_final_check": { "name": "FINAL CHECK", "tagline": "Heimfeld & Auswürfeln", "description": "Der Gegner kann seinen letzten verbleibenden Stein nicht mit Überschuss (zu hohem Würfel) auswürfeln. Es muss ein exakter Würfelwert sein." },
+  "card_exact_lock": { "name": "EXACT LOCK", "tagline": "Heimfeld & Auswürfeln", "description": "Der Gegner kann keinen Stein mit Überschuss auswürfeln. Steine können nur bei exakt passendem Würfel ausgewürfelt werden." },
+
+  "card_tailwind": { "name": "TAILWIND", "tagline": "Rennen & Pip", "description": "Bewegst du in einem Zug zum ersten Mal deinen hintersten Stein, erhält der dafür verwendete Würfel +1 (max. 6)." },
+  "card_trailing_drag": { "name": "TRAILING DRAG", "tagline": "Rennen & Pip", "description": "Bewegt der Gegner in einem Zug zum ersten Mal seinen hintersten Stein, erhält der dafür verwendete Würfel −1 (min. 1)." },
+
+  "card_courier": { "name": "COURIER", "tagline": "Markierte Steine", "description": "Dein zu Matchbeginn festgelegter Courier-Stein erhält bei jeder Bewegung +1 Würfeldistanz (max. 6)." },
+  "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Markierte Steine", "description": "Der zu Matchbeginn festgelegte gegnerische Deadweight-Stein verliert bei jeder Bewegung −1 Würfeldistanz (min. 1)." },
+
+  "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Gravitationsfeld", "description": "Jedes Mal, wenn der Gegner einen Stein auswürfelt, erhält der niedrigere Würfel seines nächsten Wurfs −1 (min. 1) — die Schwerkraft verstärkt sich, je näher er der Flucht kommt." },
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Vollständige Blockade", "description": "Die einzelnen Steine von OMEGA CORE können niemals geschlagen werden — seine offenen Steine können nicht gebrochen werden." }
+}

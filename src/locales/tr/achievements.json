@@ -1,0 +1,33 @@
+{
+  "ach_first_blood": { "name": "FIRST BLOOD", "description": "İlk kez bir rakip taşını kır." },
+  "ach_grid_breaker": { "name": "GRID BREAKER", "description": "Ömür boyu toplam 50 rakip taşı kır." },
+  "ach_demolition_expert": { "name": "DEMOLITION EXPERT", "description": "Ömür boyu toplam 200 rakip taşı kır." },
+  "ach_system_purge": { "name": "SYSTEM PURGE", "description": "Rakibi mars et — CPU sıfır taş çıkararak bir maç kazan." },
+
+  "ach_first_payday": { "name": "FIRST PAYDAY", "description": "İlk Neon Chip'ini kazan." },
+  "ach_chip_stacker": { "name": "CHIP STACKER", "description": "Ömür boyu 10.000 Neon Chip kazan." },
+  "ach_data_baron": { "name": "DATA BARON", "description": "Ömür boyu 100.000 Neon Chip kazan." },
+  "ach_neon_tycoon": { "name": "NEON TYCOON", "description": "Ömür boyu 1.000.000 Neon Chip kazan." },
+
+  "ach_street_runner": { "name": "STREET RUNNER", "description": "İlk 1v1 hızlı maçını kazan." },
+  "ach_glitch9_slayer": { "name": "GLITCH-9 SLAYER", "description": "10 tane 1v1 hızlı maç kazan." },
+  "ach_street_legend": { "name": "STREET LEGEND", "description": "100 tane 1v1 hızlı maç kazan." },
+  "ach_full_loadout": { "name": "FULL LOADOUT", "description": "1v1 hızlı maçlarda çekilebilir her kartı en az bir kez kuşan." },
+
+  "ach_ghost_in_shell": { "name": "GHOST IN THE SHELL", "description": "İlk kampanya aşamanı temizle." },
+  "ach_act1_boot_sector": { "name": "BOOT SECTOR CLEARED", "description": "BOLLARD'ı yen ve 1. Perde: Boot Sector'u temizle." },
+  "ach_act2_street_level": { "name": "STREET LEVEL CLEARED", "description": "GHOSTGATE'i yen ve 2. Perde: Street Level'ı temizle." },
+  "ach_act3_the_grid": { "name": "THE GRID CLEARED", "description": "SENTINEL WALL'u yen ve 3. Perde: The Grid'i temizle." },
+  "ach_act4_deep_net": { "name": "DEEP NET CLEARED", "description": "MIRROR CORE'u yen ve 4. Perde: Deep Net'i temizle." },
+  "ach_act5_black_market": { "name": "BLACK MARKET CLEARED", "description": "SIEGE ENGINE'i yen ve 5. Perde: Black Market'i temizle." },
+  "ach_act6_core_breach": { "name": "CORE BREACH CLEARED", "description": "NULL SECTOR'ü yen ve 6. Perde: Core Breach'i temizle." },
+  "ach_act7_singularity": { "name": "SINGULARITY CLEARED", "description": "OMEGA CORE'u yen ve 7. Perde: Singularity'yi temizle." },
+  "ach_campaign_complete": { "name": "RUN COMPLETE", "description": "44 aşamalık kampanyanın tamamını bitir." },
+  "ach_flawless_run": { "name": "FLAWLESS EXECUTION", "description": "Kampanyayı tek bir aşama bile kaybetmeden bitir." },
+
+  "ach_collector": { "name": "COLLECTOR", "description": "45 karttan 25'inin kilidini aç." },
+  "ach_full_deck": { "name": "FULL DECK", "description": "45 kartın tamamının kilidini aç." },
+
+  "ach_no_surrender": { "name": "NO SURRENDER", "description": "Koşuyu terk etmeden aynı aşamayı arka arkaya 10 kez tekrar dene." },
+  "ach_comeback_kid": { "name": "COMEBACK KID", "description": "Bir boss kartlarından birini zaten ele geçirmişken run modunda bir aşama kazan." }
+}

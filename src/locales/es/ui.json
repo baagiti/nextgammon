@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "Idioma"
+  },
+  "common": {
+    "returnToMenu": "Volver al Menú Principal",
+    "toggleAudio": "Activar/Desactivar Audio",
+    "volume": "Volumen"
+  },
+  "paywall": {
+    "title": "Desbloquea el modo Run",
+    "tagline": "La campaña completa de backgammon cibernético.",
+    "features": {
+      "campaign": {
+        "title": "Campaña de 44 etapas",
+        "description": "Combate a través de 7 actos, desde Boot Sector hasta Singularity."
+      },
+      "cards": {
+        "title": "45 cartas de mutación por coleccionar",
+        "description": "Cada jefe guarda una carta — derrótalo y será tuya. Si caes por mars, puede robártela de vuelta."
+      },
+      "protocols": {
+        "title": "7 jefes de protocolo",
+        "description": "Jefes que rompen las reglas coronan cada acto, volviendo el propio backgammon en tu contra."
+      },
+      "adFree": {
+        "title": "100% sin anuncios",
+        "description": "Esta compra elimina todos los anuncios de NEXTGAMMON, para siempre."
+      }
+    },
+    "description": "La campaña completa de 44 etapas — cada jefe, cada carta por coleccionar — más una experiencia sin anuncios, todo en un desbloqueo único de $3. La Partida Rápida 1v1 siempre será gratis.",
+    "buyButton": "Desbloquear por $3",
+    "restoreButton": "Restaurar compra",
+    "errorCancelled": "Compra cancelada.",
+    "errorGeneric": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} Neon Chips",
+    "buyChipsDescription": "Una recarga instantánea de tu saldo de Neon Chips. Puedes comprarla las veces que quieras.",
+    "buyChipsButton": "Comprar — $1",
+    "buyChipsSuccess": "¡+100.000 Neon Chips añadidos!",
+    "buyChipsErrorCancelled": "Compra cancelada.",
+    "buyChipsErrorGeneric": "Algo salió mal. Inténtalo de nuevo.",
+    "title": "El Laboratorio Cibernético",
+    "subtitleSpend": "Todo lo que los Neon Chips pueden comprar, y dónde gastarlos.",
+    "neonChips": "{{n}} Neon Chips",
+    "gamesPlayed": "Partidas Jugadas: {{n}}",
+    "runWins": "Victorias en Run: {{n}}",
+    "highestStage": "Etapa Más Alta: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "Recomprar Carta Capturada",
+        "description": "Recupera una carta que el boss te capturó, sin necesidad de completar antes la etapa.",
+        "location": "Mapa de la Run"
+      },
+      "skipStage": {
+        "name": "Saltar Etapa",
+        "description": "Completa instantáneamente una etapa de boss de carta y reclama su carta de recompensa. Las etapas de boss de protocolo no se pueden saltar.",
+        "location": "Mapa de la Run"
+      },
+      "rerollDie": {
+        "name": "Volver a Tirar un Dado",
+        "description": "Vuelve a tirar un dado en tu turno, una vez, después de tirar.",
+        "location": "Durante la Partida"
+      },
+      "coldStorage": {
+        "name": "Almacenamiento en Frío",
+        "description": "Protege tu carta equipada de la captura-mars solo durante esta etapa.",
+        "location": "Pantalla de Equipamiento"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "Carta Oculta",
+    "hiddenCardHint": "¡Se activa bajo una condición específica de la partida!",
+    "depleted": "Agotada",
+    "trigger": "Activar",
+    "triggerLabel": "Activador:"
+  },
+  "portraitGuard": {
+    "badge": "Modo Horizontal Obligatorio",
+    "title": "Por Favor, Gira Tu Dispositivo",
+    "description": "NEXTGAMMON necesita una vista de pantalla horizontal (landscape) para mostrar correctamente los 24 puntos del tablero, las cartas y los dados. ¡Por favor, gira tu teléfono de lado!",
+    "tip": "Consejo: Asegúrate de que el bloqueo de orientación vertical esté desactivado en la configuración de tu teléfono.",
+    "bypass": "Ver el Modo Horizontal de Todas Formas"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — Selecciona la Ficha Pesada del Rival",
+    "deadweightSubtitle": "¡Selecciona una ficha rival para penalizarla con −1 de distancia de movimiento! La penalización persiste mientras esta ficha se mueve.",
+    "deadweightFilter": "Fichas del Rival (CPU)",
+    "courierTitle": "Courier — Selecciona Tu Ficha Potenciada",
+    "courierSubtitle": "¡Selecciona una de tus fichas para que gane +1 de distancia de movimiento cada vez que se mueva!",
+    "courierFilter": "Tus Fichas",
+    "blackIceTitle": "Black Ice — Selecciona el Punto de Trampa Helada",
+    "blackIceSubtitle": "Selecciona un punto del tablero (1-24) para cubrir con Black Ice. ¡Cualquier ficha rival que aterrice aquí se desliza directo a la barra!",
+    "blackIceFilter": "Todos los Puntos del Tablero",
+    "pointRange": "{{label}} (Punto 1 - 24)",
+    "clickToDesignate": "Haz Clic para Designar",
+    "pointTitle": "Punto #{{n}} ({{count}} Fichas)",
+    "you": "Tú",
+    "cpu": "CPU",
+    "empty": "Vacío",
+    "selectOnBoardHint": "También puedes seleccionar puntos directamente en el tablero.",
+    "randomSelection": "🎲 Selección Aleatoria"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "Carta de Mutación",
+    "augment": "Mejora (+)",
+    "sabotage": "Sabotaje (−)",
+    "effectAndMechanics": "Efecto y Mecánica:",
+    "closeDetails": "Cerrar Detalles"
+  },
+  "bossIntro": {
+    "encounter": "Encuentro con Boss de Protocolo",
+    "engage": "Entrar en Combate"
+  },
+  "neonBoard": {
+    "badgeIce": "Hielo",
+    "badgeCpuIce": "Hielo CPU",
+    "badgeSluggish": "Lento",
+    "badgeCourier": "Courier",
+    "off": "Fuera",
+    "borne": "Sacada",
+    "you": "Tú",
+    "tray": "Bandeja",
+    "bar": "Barra",
+    "ownerLabelPlayer": "Carta del Jugador",
+    "ownerLabelCpu": "Carta de la CPU",
+    "protocolActivated": "Protocolo Activado",
+    "mutationActivated": "Mutación Activada",
+    "youGating": "Tú: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "Clic: Cambiar Dirección de Salida de Fichas / Tablero (Horario / Antihorario)",
+    "bearOffClockwise": "Salida de Fichas: Horario (Izquierda)",
+    "bearOffCounterCw": "Salida de Fichas: Antihorario (Derecha)",
+    "lookAroundTitleTable": "Recuéstate y mira hacia la calle",
+    "lookAroundTitlePeek": "Mira hasta arriba — vista completa de la calle",
+    "lookAroundTitlePanorama": "Volver a la mesa",
+    "lookAround": "Mirar Alrededor",
+    "lookFurther": "Mirar Más Lejos",
+    "backToTable": "Volver a la Mesa",
+    "deadweightActive": "Deadweight Activo:",
+    "courierActive": "Courier Activo:",
+    "blackIceActive": "Black Ice Activo:",
+    "clickPointOrMenu": "Haz clic en un punto o elige del menú",
+    "selectPoint": "Seleccionar Punto",
+    "coldRebootActive": "Cold Reboot Activo",
+    "lowRollHint": "Suma de tirada baja ≤ 5 ({{dice}}). ¡Haz clic para volver a tirar una vez!",
+    "reroll": "Volver a Tirar",
+    "bearOffModeActive": "¡Modo de Salida de Fichas Activo! Toca las fichas o la bandeja de salida.",
+    "yourTurn": "Tu Turno",
+    "cpuTurnEllipsis": "Turno de la CPU...",
+    "noDice": "Sin Dados",
+    "paidRerollTitle": "Gasta Neon Chips para volver a tirar un dado",
+    "rerollCost": "Volver a Tirar — {{cost}}",
+    "undo": "Deshacer",
+    "undoTitle": "Deshacer la última ficha movida",
+    "reset": "Reiniciar",
+    "resetTitle": "Reiniciar el turno a la posición inicial",
+    "roll": "Tirar",
+    "pass": "Pasar",
+    "discardDieTitle": "Packet Drop: Descarta el dado restante y termina tu turno antes de tiempo",
+    "discardDie": "Descartar Dado",
+    "matchVictory": "Victoria en la Partida",
+    "systemDefeat": "Derrota del Sistema",
+    "victoryDescRun": "¡Desmantelaste la red del rival CPU! Elige una nueva mejora de carta y avanza al siguiente nodo.",
+    "victoryDescQuick": "¡Desmantelaste la red del rival CPU! Juega otra ronda.",
+    "defeatDescRun": "Tu núcleo de backgammon fue comprometido por el boss de IA. Reagrúpate e intenta la etapa de nuevo.",
+    "defeatDescQuick": "Tu núcleo de backgammon fue comprometido por la CPU. Juega la revancha.",
+    "chipsEarned": "Neon Chips Ganados",
+    "opponentHitTimes": "{{count}}× Rival capturado",
+    "matchWon": "Partida ganada",
+    "total": "Total",
+    "continue": "Continuar",
+    "playerCard": "Carta del Jugador:",
+    "protocol": "Protocolo:",
+    "cpuCard": "Carta de la CPU:",
+    "mirror": "Reflejo de {{name}}:",
+    "clickToExpand": "Haz Clic para Ampliar los Detalles de la Carta"
+  },
+  "opponentHeader": {
+    "cyberCpu": "CPU Cibernética 1v1",
+    "level": "NVL ★★★",
+    "you": "Tú",
+    "cpu": "CPU",
+    "lead": "+{{n}} de Ventaja",
+    "trailing": "-{{n}} de Ventaja",
+    "even": "Empate",
+    "pipRace": "Carrera de Pips",
+    "protocolActive": "Protocolo Activo",
+    "cpuCard": "Carta de la CPU",
+    "mirrorSuffix": "Reflejo de {{name}}:",
+    "clickToExpand": "Haz Clic para Ampliar los Detalles de la Carta"
+  },
+  "cardSelect": {
+    "campaignLoadout": "Equipamiento de Campaña",
+    "draftBadge": "Draft de Mutación de Partida 1v1",
+    "equipTitle": "Equipar 1 Carta",
+    "draftTitle": "Elige 1 Carta de 3",
+    "equipIntro": "{{bossName}} está jugando {{cardName}}. Elige tu propia carta de tu colección para contraatacar.",
+    "draftIntro": "De esta selección aleatoria de 3 cartas, tanto tú como tu rival {{bossName}} eligen una carta. ¡Las mutaciones seleccionadas permanecen activas durante toda la partida!",
+    "capturedByBoss": "Capturada por el Boss",
+    "usedLastStage": "Usada en la Última Etapa",
+    "cpuChoseThisCard": "La CPU Eligió Esta Carta",
+    "augment": "Mejora (+ Propia)",
+    "sabotage": "Sabotaje (− Rival)",
+    "mutationCardFallback": "Carta de Mutación",
+    "unavailable": "No Disponible",
+    "yourSelection": "✓ Tu Selección",
+    "clickToSelect": "Haz Clic para Seleccionar",
+    "coldStorage": "Almacenamiento en Frío",
+    "coldStorageHint": "Protege esta carta de la captura-mars solo durante esta etapa.",
+    "equipAndEngage": "Equipar y Entrar en Combate",
+    "startMatch": "Iniciar Partida con la Carta Elegida"
+  },
+  "toasts": {
+    "achievementUnlocked": "Logro Desbloqueado"
+  },
+  "mainMenu": {
+    "tagline": "Backgammon Cibernético con Cartas de Mutación",
+    "resumeRun": "Reanudar Run",
+    "startRun": "Iniciar Run",
+    "start1v1": "Iniciar Partida 1v1"
+  },
+  "runMap": {
+    "campaignLabel": "Campaña de Nextgammon",
+    "stageOf": "Etapa {{stage}} de {{total}}",
+    "cardsWon": "{{won}} / {{total}} cartas ganadas",
+    "bossHoldsCard": "El boss tiene tu carta:",
+    "bossHoldsCards": "El boss tiene tus cartas:",
+    "recoverHint": "— completa esta etapa para recuperarla, o cómprala ahora.",
+    "recoverHintPlural": "— completa esta etapa para recuperarlas, o cómpralas ahora.",
+    "buyBack": "Recomprar {{name}} — {{cost}}",
+    "act": "Acto {{n}}: {{name}}",
+    "actShort": "Acto {{n}}",
+    "battleOpponent": "Enfrentar al Rival",
+    "skip": "Saltar — {{cost}}",
+    "skipTitle": "Salta esta etapa al instante y reclama su carta de recompensa — las etapas de boss de protocolo no se pueden saltar.",
+    "campaignComplete": "Campaña Completada",
+    "campaignCompleteHint": "Todos los boss derrotados. Todas las cartas recuperadas."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}

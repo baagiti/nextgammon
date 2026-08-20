@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Snowflake, Anchor, Navigation, Check, Sparkles } from 'lucide-react';
 import { BoardState } from '../types';
 
@@ -19,6 +20,7 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
   onSelectPoint,
   currentSelectedPoint,
 }) => {
+  const { t } = useTranslation('ui');
   if (!isOpen) return null;
 
   const points = Array.from({ length: 24 }, (_, i) => i); // 0..23
@@ -27,8 +29,8 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
     switch (type) {
       case 'deadweight':
         return {
-          title: 'DEADWEIGHT - SELECT OPPONENT HEAVY CHECKER',
-          subtitle: 'Select an opponent checker to penalize with −1 move distance! The penalty persists as this checker moves.',
+          title: t('markedChecker.deadweightTitle'),
+          subtitle: t('markedChecker.deadweightSubtitle'),
           icon: Anchor,
           colorClass: 'pink',
           borderColor: 'border-pink-500',
@@ -36,12 +38,12 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
           bgColor: 'bg-pink-950',
           shadowColor: 'shadow-[0_0_20px_#ff007f]',
           validPoints: points.filter((p) => board.points[p].some((c) => c.color === 'cpu')),
-          filterLabel: 'Opponent (CPU) Checkers',
+          filterLabel: t('markedChecker.deadweightFilter'),
         };
       case 'courier':
         return {
-          title: 'COURIER - SELECT YOUR BOOSTED CHECKER',
-          subtitle: 'Select one of your checkers to gain +1 move distance speed boost every time it moves!',
+          title: t('markedChecker.courierTitle'),
+          subtitle: t('markedChecker.courierSubtitle'),
           icon: Navigation,
           colorClass: 'emerald',
           borderColor: 'border-emerald-400',
@@ -49,13 +51,13 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
           bgColor: 'bg-emerald-950',
           shadowColor: 'shadow-[0_0_20px_#00ff66]',
           validPoints: points.filter((p) => board.points[p].some((c) => c.color === 'player')),
-          filterLabel: 'Your Checkers',
+          filterLabel: t('markedChecker.courierFilter'),
         };
       case 'black_ice':
       default:
         return {
-          title: 'BLACK ICE - SELECT ICY TRAP POINT',
-          subtitle: 'Select a board point (1-24) to cover with Black Ice. Any opponent checker landing here slips directly to the Bar!',
+          title: t('markedChecker.blackIceTitle'),
+          subtitle: t('markedChecker.blackIceSubtitle'),
           icon: Snowflake,
           colorClass: 'cyan',
           borderColor: 'border-cyan-400',
@@ -63,7 +65,7 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
           bgColor: 'bg-cyan-950',
           shadowColor: 'shadow-[0_0_20px_#00ffff]',
           validPoints: points,
-          filterLabel: 'All Board Points',
+          filterLabel: t('markedChecker.blackIceFilter'),
         };
     }
   };
@@ -95,8 +97,8 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
         {/* Board Representation Grid */}
         <div className="my-4 bg-slate-950/80 p-3 rounded-xl border border-slate-800">
           <div className="text-[10px] uppercase font-mono font-semibold text-slate-400 mb-2 flex justify-between">
-            <span>{config.filterLabel} (Point 1 - 24)</span>
-            <span>Click to Designate</span>
+            <span>{t('markedChecker.pointRange', { label: config.filterLabel })}</span>
+            <span>{t('markedChecker.clickToDesignate')}</span>
           </div>
 
           <div className="grid grid-cols-6 sm:grid-cols-12 gap-1.5">
@@ -112,7 +114,7 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
                   key={p}
                   disabled={!isValid}
                   onClick={() => onSelectPoint(p)}
-                  title={`Point #${pointNumber} (${checkerCount} Checkers)`}
+                  title={t('markedChecker.pointTitle', { n: pointNumber, count: checkerCount })}
                   className={`h-14 rounded-lg border font-mono font-black text-xs flex flex-col items-center justify-between p-1 transition-all ${
                     isSelected
                       ? `${config.bgColor} ${config.borderColor} text-white ${config.shadowColor} scale-105 z-10`
@@ -127,10 +129,10 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
                     <Check className="w-3 h-3 text-emerald-300" />
                   ) : checkerCount > 0 ? (
                     <span className={`text-[8px] font-bold ${checkerOwner === 'player' ? 'text-cyan-400' : 'text-pink-400'}`}>
-                      {checkerCount} {checkerOwner === 'player' ? 'YOU' : 'CPU'}
+                      {checkerCount} {checkerOwner === 'player' ? t('markedChecker.you') : t('markedChecker.cpu')}
                     </span>
                   ) : (
-                    <span className="text-[7px] text-slate-600">EMPTY</span>
+                    <span className="text-[7px] text-slate-600">{t('markedChecker.empty')}</span>
                   )}
                 </button>
               );
@@ -142,7 +144,7 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
         <div className="flex items-center justify-between gap-3 pt-2">
           <div className="text-xs text-slate-400 flex items-center gap-1">
             <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span>You can also select points directly on the board field.</span>
+            <span>{t('markedChecker.selectOnBoardHint')}</span>
           </div>
 
           <button
@@ -153,7 +155,7 @@ export const MarkedCheckerModal: React.FC<MarkedCheckerModalProps> = ({
             }}
             className="px-4 py-2 rounded-xl bg-slate-800 border border-slate-600 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 text-xs font-bold transition-all"
           >
-            🎲 RANDOM SELECTION
+            {t('markedChecker.randomSelection')}
           </button>
         </div>
       </div>

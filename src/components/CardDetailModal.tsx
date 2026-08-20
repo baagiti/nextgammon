@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '../types';
 import { CardIcon } from './CardIcon';
+import { useCardText } from '../hooks/useLocalizedText';
 import { X, Sparkles, Shield, Zap, AlertTriangle } from 'lucide-react';
 
 interface CardDetailModalProps {
@@ -10,6 +12,11 @@ interface CardDetailModalProps {
 }
 
 export const CardDetailModal: React.FC<CardDetailModalProps> = ({ card, ownerLabel, onClose }) => {
+  const { t } = useTranslation('ui');
+  const { name: cardName, tagline: cardTagline, description: cardDescription } = useCardText(
+    card ?? { id: '', name: '', tagline: '', description: '' }
+  );
+
   if (!card) return null;
 
   const isAugment = card.category === 'self';
@@ -72,27 +79,27 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ card, ownerLab
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold px-2 py-0.5 rounded bg-slate-800">
-                {card.tagline || 'MUTATION CARD'}
+                {cardTagline || t('cardDetail.mutationCardFallback')}
               </span>
               <span
                 className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
                   isAugment ? 'text-cyan-400' : 'text-rose-400'
                 }`}
               >
-                {isAugment ? 'AUGMENT (+)' : 'SABOTAGE (-)'}
+                {isAugment ? t('cardDetail.augment') : t('cardDetail.sabotage')}
               </span>
             </div>
-            <h2 className="text-2xl font-black text-white uppercase tracking-wider">{card.name}</h2>
+            <h2 className="text-2xl font-black text-white uppercase tracking-wider">{cardName}</h2>
           </div>
         </div>
 
         {/* Description Box */}
         <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 mb-6">
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400 mb-2 font-bold">
-            EFFECT & MECHANICS:
+            {t('cardDetail.effectAndMechanics')}
           </p>
           <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed">
-            {card.description}
+            {cardDescription}
           </p>
         </div>
 
@@ -105,7 +112,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({ card, ownerLab
               : 'bg-rose-500 hover:bg-rose-400 text-slate-950 shadow-[0_0_20px_rgba(244,63,94,0.4)]'
           }`}
         >
-          CLOSE DETAILS
+          {t('cardDetail.closeDetails')}
         </button>
       </div>
     </div>

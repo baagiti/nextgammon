@@ -1,5 +1,5 @@
-import { RunState, MetaData, Card, OpponentCard, MetaUpgrade } from '../types';
-import { PLAYER_CARDS, OPPONENT_BOSSES, INITIAL_META_UPGRADES } from './cardsData';
+import { RunState, MetaData, Card, OpponentCard } from '../types';
+import { PLAYER_CARDS, OPPONENT_BOSSES } from './cardsData';
 import { STARTER_CARD_ID } from './campaignData';
 
 const META_STORAGE_KEY = 'NEXTGAMMON_META_PROGRESSION_V1';
@@ -119,32 +119,3 @@ export function generateCardDraftChoices(run: RunState, count: number = 3): Card
   return choices;
 }
 
-export function purchaseMetaUpgrade(meta: MetaData, upgradeId: string): MetaData {
-  const upgrade = INITIAL_META_UPGRADES.find((u) => u.id === upgradeId);
-  if (!upgrade) return meta;
-
-  const currentLevel = meta.unlockedUpgrades[upgradeId] || 0;
-  if (currentLevel >= upgrade.maxLevel) return meta;
-
-  const cost = upgrade.cost * (currentLevel + 1);
-  if (meta.neonChips < cost) return meta;
-
-  const newMeta: MetaData = {
-    ...meta,
-    neonChips: meta.neonChips - cost,
-    unlockedUpgrades: {
-      ...meta.unlockedUpgrades,
-      [upgradeId]: currentLevel + 1,
-    },
-  };
-
-  // If unlocking cards or skin upgrades:
-  if (upgradeId === 'meta_dice_vapor' && !newMeta.selectedDiceSkin) {
-    newMeta.selectedDiceSkin = 'vapor_pink';
-  } else if (upgradeId === 'meta_dice_matrix') {
-    newMeta.selectedDiceSkin = 'matrix_green';
-  }
-
-  saveMetaData(newMeta);
-  return newMeta;
-}

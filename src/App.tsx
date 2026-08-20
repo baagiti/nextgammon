@@ -15,7 +15,6 @@ import {
   startNewRun,
   getOpponentForStage,
   generateCardDraftChoices,
-  purchaseMetaUpgrade,
 } from './game/runManager';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID } from './game/campaignData';
 import { evaluateAchievements } from './game/achievements';
@@ -40,7 +39,6 @@ import bossAmbient from './assets/audio/boss-ambient.mp3';
 // Protocol boss matches always use the single dedicated boss track instead.
 const NORMAL_GAMEPLAY_TRACKS = [gameplayAmbient, gameplayAmbient2];
 
-const REROLL_DIE_COST = 8000;
 
 import { PlatformFrame } from './components/PlatformFrame';
 import { ViewStage } from './components/CyberSkyline';
@@ -50,15 +48,20 @@ import { CardWidget } from './components/CardWidget';
 import { DraftModal } from './components/DraftModal';
 import { ShopModal } from './components/ShopModal';
 import { MetaLabModal } from './components/MetaLabModal';
-import { RunMapModal, BUYBACK_CARD_COST, SKIP_STAGE_COST } from './components/RunMapModal';
+import { RunMapModal, BUYBACK_CARD_COST, SKIP_STAGE_COST, REROLL_DIE_COST } from './components/RunMapModal';
 
 import { CardSelectModal, COLD_STORAGE_COST } from './components/CardSelectModal';
 import { BossIntroOverlay } from './components/BossIntroOverlay';
 import { CardDetailModal } from './components/CardDetailModal';
 import { MarkedCheckerModal, SelectionType } from './components/MarkedCheckerModal';
 import { PLAYER_CARDS } from './game/cardsData';
+import { useOpponentDisplayText } from './hooks/useLocalizedText';
+import { useTranslation } from 'react-i18next';
+import { PaywallModal } from './components/PaywallModal';
+import { initPurchases, hasRunModeEntitlement, purchaseRunMode, restoreRunModePurchase, purchaseChips100k, CHIPS_100K_AMOUNT } from './iap/purchases';
+import { initAds, preloadInterstitial, showInterstitial, showBanner, hideBanner } from './ads/admob';
 
-import { Play, Sparkles, Layers, RotateCcw, Shield, Dices, ChevronRight, Swords, Trophy, Skull } from 'lucide-react';
+import { Play, Sparkles, Layers, RotateCcw, Shield, Dices, ChevronRight, Swords, Trophy, Skull, Lock } from 'lucide-react';
 
 function fireBearOffConfetti() {
   confetti({
@@ -81,6 +84,7 @@ function fireVictoryConfetti() {
 }
 
 export default function App() {
+  const { t } = useTranslation('ui');
   // Settings & Meta state
   const [settings, setSettings] = useState<GameSettings>({
     soundEnabled: true,
@@ -94,6 +98,83 @@ export default function App() {
 
   const [meta, setMeta] = useState<MetaData>(loadMetaData);
   const [run, setRun] = useState<RunState | null>(null);
+
+  // Run Mode paywall (iOS only — see src/iap/purchases.ts). `null` = entitlement check still in
+  // flight; treat as locked until it resolves so the paywall can't be bypassed by a race on load.
+  const [runModeUnlocked, setRunModeUnlocked] = useState<boolean | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [paywallLoading, setPaywallLoading] = useState(false);
+  const [paywallError, setPaywallError] = useState<string | null>(null);
+  useEffect(() => {
+    initPurchases()
+      .then(() => hasRunModeEntitlement())
+      .then(setRunModeUnlocked)
+      .catch(() => setRunModeUnlocked(false));
+  }, []);
+
+  // AdMob (iOS only — see src/ads/admob.ts). Cheap and side-effect-free until a banner/interstitial
+  // is actually shown; every ad call is gated on `runModeUnlocked === false` at the call site below.
+  useEffect(() => {
+    initAds();
+  }, []);
+
+  const handleRunModeEntry = (enter: () => void) => {
+    if (runModeUnlocked) {
+      enter();
+    } else {
+      setPaywallError(null);
+      setShowPaywall(true);
+    }
+  };
+
+  const handleBuyRunMode = async () => {
+    setPaywallLoading(true);
+    setPaywallError(null);
+    const result = await purchaseRunMode();
+    setPaywallLoading(false);
+    if (result.success) {
+      setRunModeUnlocked(true);
+      setShowPaywall(false);
+    } else if (result.cancelled) {
+      setPaywallError('purchase_cancelled');
+    } else {
+      setPaywallError(result.error || 'purchase_failed');
+    }
+  };
+
+  const handleRestoreRunMode = async () => {
+    setPaywallLoading(true);
+    setPaywallError(null);
+    const result = await restoreRunModePurchase();
+    setPaywallLoading(false);
+    if (result.success) {
+      setRunModeUnlocked(true);
+      setShowPaywall(false);
+    } else {
+      setPaywallError(result.error || 'restore_failed');
+    }
+  };
+
+  // Consumable Neon Chips purchase (Cyber Lab) — separate from the Run Mode paywall above: no
+  // entitlement, no restore, just grant CHIPS_100K_AMOUNT into meta.neonChips on a successful buy.
+  const [buyChipsLoading, setBuyChipsLoading] = useState(false);
+  const [buyChipsError, setBuyChipsError] = useState<string | null>(null);
+  const [buyChipsJustSucceeded, setBuyChipsJustSucceeded] = useState(false);
+  const handleBuyChips = async () => {
+    setBuyChipsLoading(true);
+    setBuyChipsError(null);
+    setBuyChipsJustSucceeded(false);
+    const result = await purchaseChips100k();
+    setBuyChipsLoading(false);
+    if (result.success) {
+      applyMetaUpdate({ neonChips: meta.neonChips + CHIPS_100K_AMOUNT });
+      setBuyChipsJustSucceeded(true);
+    } else if (result.cancelled) {
+      setBuyChipsError('purchase_cancelled');
+    } else {
+      setBuyChipsError(result.error || 'purchase_failed');
+    }
+  };
 
   // Achievement-unlock toast queue: newly-unlocked ids land here (possibly several at once, e.g.
   // clearing the whole campaign), and are popped one at a time into activeAchievementToast.
@@ -138,6 +219,15 @@ export default function App() {
   // Active View Screen: 'MAIN_MENU' | 'MAP' | 'MATCH' | 'DRAFT' | 'SHOP' | 'META_LAB'
   const [activeScreen, setActiveScreen] = useState<string>('MAIN_MENU');
 
+  // Main-menu banner ad — shown only there, and only for players who haven't bought Run Mode.
+  useEffect(() => {
+    if (activeScreen === 'MAIN_MENU' && runModeUnlocked === false) {
+      showBanner();
+    } else {
+      hideBanner();
+    }
+  }, [activeScreen, runModeUnlocked]);
+
   // Match State
   const [board, setBoard] = useState<BoardState>(createInitialBoard());
   const [turn, setTurn] = useState<PlayerId>('player');
@@ -145,6 +235,9 @@ export default function App() {
   const [isDoubles, setIsDoubles] = useState<boolean>(false);
   const [cardNotes, setCardNotes] = useState<string[]>([]);
   const [currentOpponent, setCurrentOpponent] = useState<OpponentCard | null>(null);
+  const { bossName: currentOpponentBossName } = useOpponentDisplayText(
+    currentOpponent ?? { id: '', bossName: '', bossTitle: '', quote: '' }
+  );
   const [activePlayerCard, setActivePlayerCard] = useState<Card | null>(null);
   const [activeCpuCard, setActiveCpuCard] = useState<Card | null>(null);
 
@@ -264,8 +357,19 @@ export default function App() {
   // earned breakdown — reset at match start (handleConfirmCardSelection), incremented on each hit.
   const [matchHitCount, setMatchHitCount] = useState<number>(0);
 
-  // History stack for current player turn (enables Undo Move & Reset Turn)
-  const [turnHistory, setTurnHistory] = useState<{ board: BoardState; dice: number[] }[]>([]);
+  // History stack for current player turn (enables Undo Move & Reset Turn). Marked-checker points
+  // (Courier/Deadweight) follow whichever checker they're tagged to as it moves, same as the board
+  // itself — snapshotting only board+dice let Undo revert the checker's position while leaving the
+  // tracked point stuck wherever the undone move had sent it, orphaning the badge from the checker.
+  interface TurnSnapshot {
+    board: BoardState;
+    dice: number[];
+    playerCourierPoint: number | null;
+    cpuCourierPoint: number | null;
+    playerDeadweightPoint: number | null;
+    cpuDeadweightPoint: number | null;
+  }
+  const [turnHistory, setTurnHistory] = useState<TurnSnapshot[]>([]);
 
   // Post-match draft choices state
   const [draftChoices, setDraftChoices] = useState<Card[]>([]);
@@ -707,7 +811,10 @@ export default function App() {
     setTurnSkippedHitOpportunity(finalSkippedHitOpportunity);
 
     // Save snapshot to history BEFORE executing move
-    setTurnHistory((prev) => [...prev, { board, dice: [...dice] }]);
+    setTurnHistory((prev) => [
+      ...prev,
+      { board, dice: [...dice], playerCourierPoint, cpuCourierPoint, playerDeadweightPoint, cpuDeadweightPoint },
+    ]);
 
     const moveResult = executeMove(board, 'player', move, equippedCards, activeCpuCard || undefined, {
       isFirstHitInTurn: firstHitInTurn,
@@ -809,6 +916,10 @@ export default function App() {
     const lastSnap = turnHistory[turnHistory.length - 1];
     setBoard(lastSnap.board);
     setDice(lastSnap.dice);
+    setPlayerCourierPoint(lastSnap.playerCourierPoint);
+    setCpuCourierPoint(lastSnap.cpuCourierPoint);
+    setPlayerDeadweightPoint(lastSnap.playerDeadweightPoint);
+    setCpuDeadweightPoint(lastSnap.cpuDeadweightPoint);
     setTurnHistory((prev) => prev.slice(0, -1));
     setCardNotes((prev) => [...prev, 'Undo: Returned checker to previous position']);
   };
@@ -821,6 +932,10 @@ export default function App() {
     const firstSnap = turnHistory[0];
     setBoard(firstSnap.board);
     setDice(firstSnap.dice);
+    setPlayerCourierPoint(firstSnap.playerCourierPoint);
+    setCpuCourierPoint(firstSnap.cpuCourierPoint);
+    setPlayerDeadweightPoint(firstSnap.playerDeadweightPoint);
+    setCpuDeadweightPoint(firstSnap.cpuDeadweightPoint);
     setTurnHistory([]);
     setCardNotes((prev) => [...prev, 'Reset Turn: Reverted all moves for this turn']);
   };
@@ -1152,6 +1267,11 @@ export default function App() {
   // Handle Match End: campaign win/loss/card-capture bookkeeping. `wasMars` = the loser bore off
   // zero checkers (a gammon) — only a mars loss can cost the player their equipped card.
   const handleMatchEnd = (winnerId: PlayerId, wasMars: boolean) => {
+    // Give the interstitial the match-result screen's dwell time to finish loading before the
+    // player taps Continue — actually showing it (if this player hasn't bought Run Mode) happens
+    // in handleContinueAfterMatch below.
+    if (runModeUnlocked === false) preloadInterstitial();
+
     // Quick 1v1 matches aren't part of a run — just the flat Neon Chips win bonus, shared with
     // whatever run is (or isn't) in progress, since it's tracked on `meta`, not on `run`.
     if (!run) {
@@ -1270,12 +1390,15 @@ export default function App() {
 
   // Continue after match screen: the campaign has no post-match draft anymore (rewards are fixed
   // per stage) — win or lose, you land back on the map. Outside a run, quick-match "play again" is unchanged.
-  const handleContinueAfterMatch = () => {
+  const handleContinueAfterMatch = async () => {
     if (run) {
+      // Reaching a run/campaign match at all already required buying Run Mode (see
+      // handleRunModeEntry) — never show an ad here, only 1v1 Quick Match players can be unpaid.
       setActiveBossProtocolId(null);
       setActiveScreen('MAP');
       return;
     }
+    if (runModeUnlocked === false) await showInterstitial();
     handleStartQuickMatch();
   };
 
@@ -1380,23 +1503,23 @@ export default function App() {
             NEXTGAMMON
           </h1>
           <p className="text-sm sm:text-base text-player font-bold uppercase tracking-wider mb-8">
-            CYBER BACKGAMMON WITH MUTATION CARDS
+            {t('mainMenu.tagline')}
           </p>
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <button
-              onClick={run ? () => setActiveScreen('MAP') : handleStartRun}
+              onClick={() => handleRunModeEntry(run ? () => setActiveScreen('MAP') : handleStartRun)}
               className="w-full py-4 rounded-xl bg-gradient-to-r from-opponent via-point-b to-player text-ink font-black text-base uppercase tracking-wider shadow-[0_0_30px_var(--opponent)]/70 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
-              <Swords className="w-5 h-5" />
-              {run ? 'RESUME RUN' : 'START RUN'}
+              {runModeUnlocked ? <Swords className="w-5 h-5" /> : <Lock className="w-4 h-4" />}
+              {run ? t('mainMenu.resumeRun') : t('mainMenu.startRun')}
             </button>
             <button
               onClick={handleStartQuickMatch}
               className="w-full py-4 rounded-xl bg-gradient-to-r from-player via-success to-success text-ink font-black text-base uppercase tracking-wider shadow-[0_0_30px_var(--player)]/70 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Play className="w-5 h-5 fill-current" />
-              START 1v1 MATCH
+              {t('mainMenu.start1v1')}
             </button>
           </div>
         </div>
@@ -1427,7 +1550,7 @@ export default function App() {
               maxStages={1}
               cpuCard={activeCpuCard || undefined}
               protocol={BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null}
-              onCardClick={(card) => setInspectedCard({ card, ownerLabel: 'CPU CARD' })}
+              onCardClick={(card) => setInspectedCard({ card, ownerLabel: t('neonBoard.ownerLabelCpu') })}
             />
           )}
 
@@ -1545,7 +1668,7 @@ export default function App() {
           protocol={run ? BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null : null}
           lastEquippedCardId={run?.lastEquippedCardId || null}
           capturedCardIds={run?.capturedCardIds || []}
-          bossName={currentOpponent?.bossName || 'CPU'}
+          bossName={currentOpponentBossName || 'CPU'}
           onConfirmSelection={handleConfirmCardSelection}
           neonChips={meta.neonChips}
           onActivateColdStorage={handleActivateColdStorage}
@@ -1624,17 +1747,31 @@ export default function App() {
       {activeScreen === 'META_LAB' && createPortal(
         <MetaLabModal
           meta={meta}
-          onPurchase={(upgradeId) => {
-            soundFx.playClick();
-            const updated = purchaseMetaUpgrade(meta, upgradeId);
-            setMeta(updated);
+          onClose={() => {
+            setActiveScreen(run ? 'MAP' : 'MAIN_MENU');
+            setBuyChipsError(null);
+            setBuyChipsJustSucceeded(false);
           }}
-          onClose={() => setActiveScreen(run ? 'MAP' : 'MAIN_MENU')}
+          onBuyChips={handleBuyChips}
+          buyChipsLoading={buyChipsLoading}
+          buyChipsError={buyChipsError}
+          buyChipsJustSucceeded={buyChipsJustSucceeded}
         />,
         document.body
       )}
 
       {createPortal(<AchievementToast achievementId={activeAchievementToast} />, document.body)}
+
+      {showPaywall && createPortal(
+        <PaywallModal
+          isLoading={paywallLoading}
+          error={paywallError}
+          onBuy={handleBuyRunMode}
+          onRestore={handleRestoreRunMode}
+          onClose={() => setShowPaywall(false)}
+        />,
+        document.body
+      )}
     </>
   );
 }

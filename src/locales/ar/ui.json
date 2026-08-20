@@ -1,0 +1,250 @@
+{
+  "settings": {
+    "language": "اللغة"
+  },
+  "common": {
+    "returnToMenu": "العودة إلى القائمة الرئيسية",
+    "toggleAudio": "تبديل الصوت",
+    "volume": "مستوى الصوت"
+  },
+  "paywall": {
+    "title": "افتح وضع الحملة",
+    "tagline": "الحملة الكاملة لطاولة سيبرانية.",
+    "features": {
+      "campaign": {
+        "title": "حملة من 44 مرحلة",
+        "description": "قاتل عبر 7 فصول، من Boot Sector إلى Singularity."
+      },
+      "cards": {
+        "title": "45 بطاقة طفرة يمكن جمعها",
+        "description": "كل زعيم يحرس بطاقة — اهزمه وستصبح لك. إذا خسرت بمارس، يمكنه استعادتها منك."
+      },
+      "protocols": {
+        "title": "7 زعماء بروتوكول",
+        "description": "زعماء يكسرون القواعد يتوّجون كل فصل، محوّلين الطاولة نفسها ضدك."
+      },
+      "adFree": {
+        "title": "100% بلا إعلانات",
+        "description": "يزيل هذا الشراء جميع الإعلانات في NEXTGAMMON، بشكل دائم."
+      }
+    },
+    "description": "الحملة الكاملة المكوّنة من 44 مرحلة — كل زعيم، كل بطاقة يمكن جمعها — بالإضافة إلى تجربة خالية من الإعلانات، كل ذلك مقابل فتح لمرة واحدة بسعر 3 دولارات. مباراة 1v1 السريعة تبقى مجانية دائماً.",
+    "buyButton": "افتح مقابل 3 دولارات",
+    "restoreButton": "استعادة الشراء",
+    "errorCancelled": "تم إلغاء الشراء.",
+    "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  },
+  "cyberLab": {
+    "buyChipsTitle": "{{amount}} نيون تشيب",
+    "buyChipsDescription": "شحن فوري لرصيدك من Neon Chips. يمكن شراؤه عدة مرات كما تشاء.",
+    "buyChipsButton": "شراء — دولار واحد",
+    "buyChipsSuccess": "تمت إضافة 100,000 نيون تشيب!",
+    "buyChipsErrorCancelled": "تم إلغاء الشراء.",
+    "buyChipsErrorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "title": "المختبر السيبراني",
+    "subtitleSpend": "كل ما يمكن شراؤه بـ Neon Chips، وأين يمكن إنفاقها.",
+    "neonChips": "{{n}} Neon Chips",
+    "gamesPlayed": "المباريات الملعوبة: {{n}}",
+    "runWins": "انتصارات الجولة: {{n}}",
+    "highestStage": "أعلى مرحلة: {{n}}",
+    "sinks": {
+      "buyBackCard": {
+        "name": "استرداد البطاقة المُستولى عليها",
+        "description": "استرجع بطاقة استولى عليها Boss منك، دون الحاجة لاجتياز المرحلة أولاً.",
+        "location": "خريطة الجولة"
+      },
+      "skipStage": {
+        "name": "تخطي المرحلة",
+        "description": "اجتز مرحلة Boss البطاقات فوراً واحصل على بطاقة المكافأة الخاصة بها. لا يمكن تخطي مراحل Boss البروتوكول.",
+        "location": "خريطة الجولة"
+      },
+      "rerollDie": {
+        "name": "إعادة رمي زهر",
+        "description": "أعد رمي زهر واحد في دورك، مرة واحدة، بعد الرمي.",
+        "location": "أثناء المباراة"
+      },
+      "coldStorage": {
+        "name": "التخزين البارد",
+        "description": "احمِ بطاقتك المُجهَّزة من الاستيلاء بالمارس لهذه المرحلة فقط.",
+        "location": "شاشة التجهيز"
+      }
+    }
+  },
+  "cardWidget": {
+    "hiddenCard": "بطاقة مخفية",
+    "hiddenCardHint": "تُفعَّل عند شرط معين أثناء المباراة!",
+    "depleted": "نفدت",
+    "trigger": "تفعيل",
+    "triggerLabel": "شرط التفعيل:"
+  },
+  "portraitGuard": {
+    "badge": "وضع أفقي إلزامي",
+    "title": "يرجى تدوير جهازك",
+    "description": "يتطلب NEXTGAMMON عرض الشاشة أفقياً (landscape) لإظهار جميع نقاط اللوحة الـ24 والبطاقات والزهر بوضوح. يرجى إمالة هاتفك جانبياً!",
+    "tip": "نصيحة: تأكد من تعطيل قفل الوضع الرأسي في إعدادات هاتفك.",
+    "bypass": "معاينة الوضع الأفقي على أي حال"
+  },
+  "markedChecker": {
+    "deadweightTitle": "Deadweight — اختر حجر الخصم الثقيل",
+    "deadweightSubtitle": "اختر حجراً للخصم لمعاقبته بمسافة حركة −1! تستمر هذه العقوبة طوال تحرك هذا الحجر.",
+    "deadweightFilter": "أحجار الخصم (CPU)",
+    "courierTitle": "Courier — اختر حجرك المُعزَّز",
+    "courierSubtitle": "اختر أحد أحجارك ليحصل على تعزيز سرعة بمسافة حركة +1 في كل مرة يتحرك فيها!",
+    "courierFilter": "أحجارك",
+    "blackIceTitle": "Black Ice — اختر نقطة الفخ الجليدي",
+    "blackIceSubtitle": "اختر نقطة على اللوحة (1-24) لتغطيتها بـ Black Ice. أي حجر للخصم يحط عليها ينزلق مباشرة إلى البار!",
+    "blackIceFilter": "جميع نقاط اللوحة",
+    "pointRange": "{{label}} (النقطة 1 - 24)",
+    "clickToDesignate": "انقر للتحديد",
+    "pointTitle": "النقطة رقم {{n}} ({{count}} حجر)",
+    "you": "أنت",
+    "cpu": "CPU",
+    "empty": "فارغة",
+    "selectOnBoardHint": "يمكنك أيضاً اختيار النقاط مباشرة من على اللوحة.",
+    "randomSelection": "🎲 اختيار عشوائي"
+  },
+  "cardDetail": {
+    "mutationCardFallback": "بطاقة طفرة",
+    "augment": "تعزيز (+)",
+    "sabotage": "تخريب (−)",
+    "effectAndMechanics": "التأثير والآلية:",
+    "closeDetails": "إغلاق التفاصيل"
+  },
+  "bossIntro": {
+    "encounter": "مواجهة Boss البروتوكول",
+    "engage": "ادخل المعركة"
+  },
+  "neonBoard": {
+    "badgeIce": "جليد",
+    "badgeCpuIce": "جليد CPU",
+    "badgeSluggish": "بطيء",
+    "badgeCourier": "Courier",
+    "off": "خارج",
+    "borne": "مُخرَج",
+    "you": "أنت",
+    "tray": "الصينية",
+    "bar": "بار",
+    "ownerLabelPlayer": "بطاقة اللاعب",
+    "ownerLabelCpu": "بطاقة CPU",
+    "protocolActivated": "تم تفعيل البروتوكول",
+    "mutationActivated": "تم تفعيل الطفرة",
+    "youGating": "أنت: {{label}}",
+    "cpuGating": "CPU: {{label}}",
+    "changeDirectionTitle": "انقر: تغيير اتجاه الإخراج / اللوحة (باتجاه عقارب الساعة / عكس عقارب الساعة)",
+    "bearOffClockwise": "الإخراج: باتجاه عقارب الساعة (يسار)",
+    "bearOffCounterCw": "الإخراج: عكس عقارب الساعة (يمين)",
+    "lookAroundTitleTable": "استرخِ وانظر إلى الشارع",
+    "lookAroundTitlePeek": "انظر إلى الأعلى بالكامل — رؤية كاملة للشارع",
+    "lookAroundTitlePanorama": "العودة إلى الطاولة",
+    "lookAround": "انظر حولك",
+    "lookFurther": "انظر أبعد",
+    "backToTable": "العودة إلى الطاولة",
+    "deadweightActive": "Deadweight نشط:",
+    "courierActive": "Courier نشط:",
+    "blackIceActive": "Black Ice نشط:",
+    "clickPointOrMenu": "انقر على نقطة أو اختر من القائمة",
+    "selectPoint": "اختر نقطة",
+    "coldRebootActive": "Cold Reboot نشط",
+    "lowRollHint": "مجموع رمية منخفض ≤ 5 ({{dice}}). انقر لإعادة الرمي مرة واحدة!",
+    "reroll": "إعادة الرمي",
+    "bearOffModeActive": "وضع الإخراج نشط! انقر على الأحجار أو صينية الإخراج.",
+    "yourTurn": "دورك",
+    "cpuTurnEllipsis": "دور CPU...",
+    "noDice": "لا يوجد زهر",
+    "paidRerollTitle": "أنفق Neon Chips لإعادة رمي زهر واحد",
+    "rerollCost": "إعادة الرمي — {{cost}}",
+    "undo": "تراجع",
+    "undoTitle": "تراجع عن آخر حجر تم تحريكه",
+    "reset": "إعادة تعيين",
+    "resetTitle": "إعادة تعيين الدور إلى وضع البداية",
+    "roll": "ارمِ الزهر",
+    "pass": "تمرير",
+    "discardDieTitle": "Packet Drop: تجاهل الزهر المتبقي وأنهِ دورك مبكراً",
+    "discardDie": "تجاهل الزهر",
+    "matchVictory": "فوز بالمباراة",
+    "systemDefeat": "هزيمة النظام",
+    "victoryDescRun": "لقد فككت شبكة الخصم CPU! اختر ميزة بطاقة جديدة وانتقل إلى العقدة التالية.",
+    "victoryDescQuick": "لقد فككت شبكة الخصم CPU! العب جولة أخرى.",
+    "defeatDescRun": "تم اختراق نواة الطاولة الخاصة بك من قِبل Boss الذكاء الاصطناعي. أعد التجمع وحاول المرحلة مجدداً.",
+    "defeatDescQuick": "تم اختراق نواة الطاولة الخاصة بك من قِبل CPU. العب مباراة إعادة.",
+    "chipsEarned": "Neon Chips المكتسبة",
+    "opponentHitTimes": "{{count}}× ضربة للخصم",
+    "matchWon": "تم الفوز بالمباراة",
+    "total": "الإجمالي",
+    "continue": "متابعة",
+    "playerCard": "بطاقة اللاعب:",
+    "protocol": "البروتوكول:",
+    "cpuCard": "بطاقة CPU:",
+    "mirror": "انعكاس {{name}}:",
+    "clickToExpand": "انقر لعرض تفاصيل البطاقة"
+  },
+  "opponentHeader": {
+    "cyberCpu": "CPU سيبراني 1v1",
+    "level": "المستوى ★★★",
+    "you": "أنت",
+    "cpu": "CPU",
+    "lead": "+{{n}} تقدم",
+    "trailing": "-{{n}} تقدم",
+    "even": "تعادل",
+    "pipRace": "سباق النقاط",
+    "protocolActive": "البروتوكول نشط",
+    "cpuCard": "بطاقة CPU",
+    "mirrorSuffix": "انعكاس {{name}}:",
+    "clickToExpand": "انقر لعرض تفاصيل البطاقة"
+  },
+  "cardSelect": {
+    "campaignLoadout": "تجهيز الحملة",
+    "draftBadge": "اختيار طفرة مباراة 1v1",
+    "equipTitle": "جهّز بطاقة واحدة",
+    "draftTitle": "اختر بطاقة واحدة من 3",
+    "equipIntro": "{{bossName}} يستخدم {{cardName}}. اختر بطاقتك الخاصة من مجموعتك للرد.",
+    "draftIntro": "من بين هذه المجموعة العشوائية المكونة من 3 بطاقات، يختار كل من أنت والخصم {{bossName}} بطاقة واحدة. تبقى الطفرات المختارة نشطة طوال المباراة!",
+    "capturedByBoss": "استولى عليها Boss",
+    "usedLastStage": "استُخدمت في المرحلة السابقة",
+    "cpuChoseThisCard": "اختار CPU هذه البطاقة",
+    "augment": "تعزيز (+ لنفسك)",
+    "sabotage": "تخريب (− للخصم)",
+    "mutationCardFallback": "بطاقة طفرة",
+    "unavailable": "غير متاحة",
+    "yourSelection": "✓ اختيارك",
+    "clickToSelect": "انقر للاختيار",
+    "coldStorage": "التخزين البارد",
+    "coldStorageHint": "احمِ هذه البطاقة من الاستيلاء بالمارس لهذه المرحلة فقط.",
+    "equipAndEngage": "جهّز وادخل المعركة",
+    "startMatch": "ابدأ المباراة بالبطاقة المختارة"
+  },
+  "toasts": {
+    "achievementUnlocked": "تم فتح إنجاز"
+  },
+  "mainMenu": {
+    "tagline": "طاولة سيبرانية ببطاقات الطفرات",
+    "resumeRun": "استئناف الجولة",
+    "startRun": "ابدأ الجولة",
+    "start1v1": "ابدأ مباراة 1v1"
+  },
+  "runMap": {
+    "campaignLabel": "حملة Nextgammon",
+    "stageOf": "المرحلة {{stage}} من {{total}}",
+    "cardsWon": "{{won}} / {{total}} بطاقة مكتسبة",
+    "bossHoldsCard": "يحتفظ Boss ببطاقتك:",
+    "bossHoldsCards": "يحتفظ Boss ببطاقاتك:",
+    "recoverHint": "— اجتز هذه المرحلة لاستعادتها، أو اشترها الآن.",
+    "recoverHintPlural": "— اجتز هذه المرحلة لاستعادتها، أو اشترها الآن.",
+    "buyBack": "استرداد {{name}} — {{cost}}",
+    "act": "الفصل {{n}}: {{name}}",
+    "actShort": "الفصل {{n}}",
+    "battleOpponent": "قاتل الخصم",
+    "skip": "تخطي — {{cost}}",
+    "skipTitle": "تخطَّ هذه المرحلة فوراً واحصل على بطاقة مكافأتها — لا يمكن تخطي مراحل Boss البروتوكول.",
+    "campaignComplete": "اكتملت الحملة",
+    "campaignCompleteHint": "تمت هزيمة كل Boss. تم استرداد كل بطاقة."
+  },
+  "languageNames": {
+    "en": "English",
+    "tr": "Türkçe",
+    "de": "Deutsch",
+    "ar": "العربية",
+    "ru": "Русский",
+    "es": "Español"
+  }
+}
