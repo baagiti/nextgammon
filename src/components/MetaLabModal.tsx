@@ -13,6 +13,8 @@ interface MetaLabModalProps {
   buyChipsLoading: boolean;
   buyChipsError: string | null;
   buyChipsJustSucceeded: boolean;
+  /** Localized store price (e.g. "$0.99", "₺39,99"), or null while it's still unknown. */
+  chipsPrice: string | null;
 }
 
 // The only 4 things Neon Chips actually buy in this game. Each is a pay-per-use action tied to a
@@ -32,8 +34,13 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
   buyChipsLoading,
   buyChipsError,
   buyChipsJustSucceeded,
+  chipsPrice,
 }) => {
   const { t } = useTranslation('ui');
+  // Store-authoritative price only — see the same note in PaywallModal.
+  const buyChipsLabel = chipsPrice
+    ? t('cyberLab.buyChipsButtonPriced', { price: chipsPrice })
+    : t('cyberLab.buyChipsButton');
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
       <div className="max-w-2xl w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 shadow-[0_0_60px_rgba(6,182,212,0.4)] flex flex-col max-h-[90vh] overflow-hidden">
@@ -90,7 +97,7 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
             className="shrink-0 px-3.5 py-2 rounded-lg bg-amber-500 text-black font-black text-xs uppercase tracking-wider hover:bg-amber-400 transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] flex items-center gap-1.5 disabled:opacity-60"
           >
             {buyChipsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-            {t('cyberLab.buyChipsButton')}
+            {buyChipsLabel}
           </button>
         </div>
 

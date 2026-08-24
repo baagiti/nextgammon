@@ -28,16 +28,19 @@
         "description": "Bu satın alma, NEXTGAMMON'daki tüm reklamları kalıcı olarak kaldırır."
       }
     },
-    "description": "44 aşamalık tam kampanya — her boss, toplanacak her kart — üstelik reklamsız bir deneyim, hepsi tek seferlik 3 dolarlık bir açma işleminde. 1v1 Hızlı Maç her zaman ücretsiz kalır.",
-    "buyButton": "3 Dolara Aç",
+    "description": "44 aşamalık tam kampanya — her boss, toplanacak her kart — üstelik reklamsız bir deneyim, hepsi tek seferlik bir açma işleminde. 1v1 Hızlı Maç her zaman ücretsiz kalır.",
+    "buyButton": "Run Mode'u Aç",
     "restoreButton": "Satın Alımı Geri Yükle",
     "errorCancelled": "Satın alma iptal edildi.",
-    "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar dene."
+    "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    "descriptionPriced": "44 aşamalık tam kampanya — her boss, toplanacak her kart — üstelik reklamsız bir deneyim, hepsi tek seferlik {{price}} tutarındaki bir açma işleminde. 1v1 Hızlı Maç her zaman ücretsiz kalır.",
+    "buyButtonPriced": "{{price}} Karşılığında Aç",
+    "errorNothingToRestore": "Bu Apple Hesabında önceki bir satın alma bulunamadı."
   },
   "cyberLab": {
     "buyChipsTitle": "{{amount}} Neon Chip",
     "buyChipsDescription": "Neon Chip bakiyene anında ekleme. İstediğin kadar tekrar satın alabilirsin.",
-    "buyChipsButton": "Satın Al — 1$",
+    "buyChipsButton": "Satın Al",
     "buyChipsSuccess": "+100.000 Neon Chip eklendi!",
     "buyChipsErrorCancelled": "Satın alma iptal edildi.",
     "buyChipsErrorGeneric": "Bir şeyler ters gitti. Lütfen tekrar dene.",
@@ -68,7 +71,8 @@
         "description": "Kuşandığın kartı sadece bu aşamada mars-yakalamadan korur.",
         "location": "Kuşanma Ekranı"
       }
-    }
+    },
+    "buyChipsButtonPriced": "Satın Al — {{price}}"
   },
   "cardWidget": {
     "hiddenCard": "Gizli Kart",

@@ -58,7 +58,7 @@ import { PLAYER_CARDS } from './game/cardsData';
 import { useOpponentDisplayText } from './hooks/useLocalizedText';
 import { useTranslation } from 'react-i18next';
 import { PaywallModal } from './components/PaywallModal';
-import { initPurchases, hasRunModeEntitlement, purchaseRunMode, restoreRunModePurchase, purchaseChips100k, CHIPS_100K_AMOUNT } from './iap/purchases';
+import { initPurchases, hasRunModeEntitlement, purchaseRunMode, restoreRunModePurchase, purchaseChips100k, getRunModePrice, getChips100kPrice, CHIPS_100K_AMOUNT } from './iap/purchases';
 import { initAds, preloadInterstitial, showInterstitial, showBanner, hideBanner } from './ads/admob';
 
 import { Play, Sparkles, Layers, RotateCcw, Shield, Dices, ChevronRight, Swords, Trophy, Skull, Lock } from 'lucide-react';
@@ -105,6 +105,13 @@ export default function App() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [paywallLoading, setPaywallLoading] = useState(false);
   const [paywallError, setPaywallError] = useState<string | null>(null);
+  // Store-authoritative localized price strings (e.g. "$2.99", "₺99,99"). Never hardcode a price
+  // in copy — StoreKit bills in the buyer's own storefront currency, so a fixed "$3" would be
+  // wrong nearly everywhere this ships. `null` = not known yet; the UI drops the price from the
+  // label rather than guessing (see paywall.buyButton / cyberLab.buyChipsButton fallbacks).
+  const [runModePrice, setRunModePrice] = useState<string | null>(null);
+  const [chipsPrice, setChipsPrice] = useState<string | null>(null);
+
   useEffect(() => {
     initPurchases()
       .then(() => hasRunModeEntitlement())
@@ -112,11 +119,28 @@ export default function App() {
       .catch(() => setRunModeUnlocked(false));
   }, []);
 
-  // AdMob (iOS only — see src/ads/admob.ts). Cheap and side-effect-free until a banner/interstitial
-  // is actually shown; every ad call is gated on `runModeUnlocked === false` at the call site below.
+  // Prices are fetched separately from the entitlement check so a slow/failed offerings fetch can
+  // never delay or block unlocking content the player already owns.
   useEffect(() => {
-    initAds();
+    initPurchases()
+      .then(() => Promise.all([getRunModePrice(), getChips100kPrice()]))
+      .then(([runPrice, chips]) => {
+        setRunModePrice(runPrice);
+        setChipsPrice(chips);
+      })
+      .catch(() => {
+        /* Prices stay null — labels fall back to their price-free wording. */
+      });
   }, []);
+
+  // AdMob (iOS only — see src/ads/admob.ts). Deliberately gated on `runModeUnlocked === false`:
+  // initAds() triggers the App Tracking Transparency prompt, and a player who has already bought
+  // Run Mode will never be shown a single ad, so asking them for tracking permission would be
+  // requesting data we have no use for. Waits for the entitlement check to resolve (`null`) too,
+  // so owners never get prompted during that window either.
+  useEffect(() => {
+    if (runModeUnlocked === false) initAds();
+  }, [runModeUnlocked]);
 
   const handleRunModeEntry = (enter: () => void) => {
     if (runModeUnlocked) {
@@ -1767,6 +1791,7 @@ export default function App() {
           buyChipsLoading={buyChipsLoading}
           buyChipsError={buyChipsError}
           buyChipsJustSucceeded={buyChipsJustSucceeded}
+          chipsPrice={chipsPrice}
         />,
         document.body
       )}
@@ -1777,6 +1802,7 @@ export default function App() {
         <PaywallModal
           isLoading={paywallLoading}
           error={paywallError}
+          price={runModePrice}
           onBuy={handleBuyRunMode}
           onRestore={handleRestoreRunMode}
           onClose={() => setShowPaywall(false)}

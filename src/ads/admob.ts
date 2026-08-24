@@ -1,11 +1,16 @@
 import { Capacitor } from '@capacitor/core';
 import { AdMob, BannerAdPosition, InterstitialAdPluginEvents } from '@capacitor-community/admob';
 
-// Flip to false only once the app is actually live on the App Store. While true, every ad
-// request uses Google's official test ad unit IDs below instead of the real ones — required by
-// AdMob policy (never serve real ads during development/testing, or the account risks an
-// invalid-traffic flag). Same "flip when ready to ship" pattern as REVENUECAT_IOS_API_KEY.
-const ADS_TESTING_MODE = true;
+// Test mode swaps in Google's official test ad unit IDs, so no real impression is ever served
+// from a development build (AdMob policy — real ads during testing risk an invalid-traffic flag
+// on the account).
+//
+// Now FALSE because this build is the App Store submission: a released app running in test mode
+// would show every real player a "Test Ad" placeholder and earn nothing. App Review generating a
+// handful of genuine impressions while testing is normal and expected for any ad-supported app.
+//
+// Set this back to true for local/TestFlight experimentation on ad placement.
+const ADS_TESTING_MODE = false;
 
 // Google's official, permanent test ad unit IDs (iOS) — always return test creatives.
 const TEST_BANNER_AD_UNIT_ID = 'ca-app-pub-3940256099942544/2934735716';

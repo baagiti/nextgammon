@@ -28,16 +28,19 @@
         "description": "Esta compra elimina todos los anuncios de NEXTGAMMON, para siempre."
       }
     },
-    "description": "La campaña completa de 44 etapas — cada jefe, cada carta por coleccionar — más una experiencia sin anuncios, todo en un desbloqueo único de $3. La Partida Rápida 1v1 siempre será gratis.",
-    "buyButton": "Desbloquear por $3",
+    "description": "La campaña completa de 44 etapas — cada jefe, cada carta por coleccionar — más una experiencia sin anuncios, todo en un desbloqueo único. La Partida Rápida 1v1 siempre será gratis.",
+    "buyButton": "Desbloquear Run Mode",
     "restoreButton": "Restaurar compra",
     "errorCancelled": "Compra cancelada.",
-    "errorGeneric": "Algo salió mal. Inténtalo de nuevo."
+    "errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
+    "descriptionPriced": "La campaña completa de 44 etapas — cada jefe, cada carta por coleccionar — más una experiencia sin anuncios, todo en un desbloqueo único de {{price}}. La Partida Rápida 1v1 siempre será gratis.",
+    "buyButtonPriced": "Desbloquear por {{price}}",
+    "errorNothingToRestore": "No se encontró ninguna compra previa en esta cuenta de Apple."
   },
   "cyberLab": {
     "buyChipsTitle": "{{amount}} Neon Chips",
     "buyChipsDescription": "Una recarga instantánea de tu saldo de Neon Chips. Puedes comprarla las veces que quieras.",
-    "buyChipsButton": "Comprar — $1",
+    "buyChipsButton": "Comprar",
     "buyChipsSuccess": "¡+100.000 Neon Chips añadidos!",
     "buyChipsErrorCancelled": "Compra cancelada.",
     "buyChipsErrorGeneric": "Algo salió mal. Inténtalo de nuevo.",
@@ -68,7 +71,8 @@
         "description": "Protege tu carta equipada de la captura-mars solo durante esta etapa.",
         "location": "Pantalla de Equipamiento"
       }
-    }
+    },
+    "buyChipsButtonPriced": "Comprar — {{price}}"
   },
   "cardWidget": {
     "hiddenCard": "Carta Oculta",

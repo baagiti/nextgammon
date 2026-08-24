@@ -28,16 +28,19 @@
         "description": "This purchase removes every ad in NEXTGAMMON, for good."
       }
     },
-    "description": "The full 44-stage campaign — every boss, every card to collect — plus an ad-free experience, all in a one-time $3 unlock. 1v1 Quick Match stays free forever.",
-    "buyButton": "Unlock for $3",
+    "description": "The full 44-stage campaign — every boss, every card to collect — plus an ad-free experience, all in a one-time unlock. 1v1 Quick Match stays free forever.",
+    "buyButton": "Unlock Run Mode",
     "restoreButton": "Restore Purchase",
     "errorCancelled": "Purchase cancelled.",
-    "errorGeneric": "Something went wrong. Please try again."
+    "errorGeneric": "Something went wrong. Please try again.",
+    "descriptionPriced": "The full 44-stage campaign — every boss, every card to collect — plus an ad-free experience, all in a one-time {{price}} unlock. 1v1 Quick Match stays free forever.",
+    "buyButtonPriced": "Unlock for {{price}}",
+    "errorNothingToRestore": "No previous purchase was found on this Apple Account."
   },
   "cyberLab": {
     "buyChipsTitle": "{{amount}} Neon Chips",
     "buyChipsDescription": "An instant top-up for your Neon Chips balance. Can be bought as many times as you like.",
-    "buyChipsButton": "Buy — $1",
+    "buyChipsButton": "Buy",
     "buyChipsSuccess": "+100,000 Neon Chips added!",
     "buyChipsErrorCancelled": "Purchase cancelled.",
     "buyChipsErrorGeneric": "Something went wrong. Please try again.",
@@ -68,7 +71,8 @@
         "description": "Protect your equipped card from mars-capture for this stage only.",
         "location": "Equip Screen"
       }
-    }
+    },
+    "buyChipsButtonPriced": "Buy — {{price}}"
   },
   "cardWidget": {
     "hiddenCard": "Hidden Card",

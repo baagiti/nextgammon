@@ -59,6 +59,32 @@ async function findPackage(packageId: string) {
   return current?.availablePackages.find((p) => p.identifier === packageId);
 }
 
+// Localized, store-authoritative price strings (e.g. "$2.99", "₺99,99", "2,99 €").
+//
+// These MUST be used for any price shown in the UI instead of a hardcoded figure: StoreKit charges
+// in the user's own App Store storefront currency, so a hardcoded "$3" would be flat-out wrong for
+// most of the 175 territories this ships to — which is both misleading to the buyer and an App
+// Review rejection risk (Guideline 2.3.1, accurate metadata). `null` means the price isn't known
+// yet (offerings still loading, or offline); callers fall back to a price-free label rather than
+// inventing a number.
+export async function getRunModePrice(): Promise<string | null> {
+  if (!isNativeIOS()) return null;
+  try {
+    return (await findPackage(RUN_MODE_PACKAGE_ID))?.product.priceString ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getChips100kPrice(): Promise<string | null> {
+  if (!isNativeIOS()) return null;
+  try {
+    return (await findPackage(CHIPS_100K_PACKAGE_ID))?.product.priceString ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function purchaseRunMode(): Promise<PurchaseOutcome> {
   if (!isNativeIOS()) return { success: true }; // no store on web — treat as unlocked for dev
   try {

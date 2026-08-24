@@ -5,6 +5,8 @@ import { Swords, Lock, RotateCcw, X, Loader2, Layers, Sparkles, Skull, Ban } fro
 interface PaywallModalProps {
   isLoading: boolean;
   error: string | null;
+  /** Localized store price (e.g. "$2.99", "₺99,99"), or null while it's still unknown. */
+  price: string | null;
   onBuy: () => void;
   onRestore: () => void;
   onClose: () => void;
@@ -19,8 +21,23 @@ const FEATURES = [
   { key: 'adFree', icon: Ban, badgeClass: 'bg-success/15 border-success/50 text-success' },
 ] as const;
 
-export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, onBuy, onRestore, onClose }) => {
+export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, price, onBuy, onRestore, onClose }) => {
   const { t } = useTranslation('ui');
+
+  // Prices always come from StoreKit via RevenueCat, never from hardcoded copy — the buyer's
+  // storefront currency is the only correct one to show. Until it loads, use the price-free
+  // wording instead of a placeholder number.
+  const buyLabel = price ? t('paywall.buyButtonPriced', { price }) : t('paywall.buyButton');
+  const summary = price
+    ? t('paywall.descriptionPriced', { price })
+    : t('paywall.description');
+
+  const errorMessage =
+    error === 'purchase_cancelled'
+      ? t('paywall.errorCancelled')
+      : error === 'nothing_to_restore'
+      ? t('paywall.errorNothingToRestore')
+      : t('paywall.errorGeneric');
 
   return (
     <div className="fixed inset-0 z-50 bg-ink/90 backdrop-blur-xl flex items-center justify-center p-4">
@@ -65,11 +82,11 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, on
             ))}
           </div>
 
-          <p className="text-xs text-text-muted leading-relaxed mb-5">{t('paywall.description')}</p>
+          <p className="text-xs text-text-muted leading-relaxed mb-5">{summary}</p>
 
           {error && (
             <div className="mb-4 px-3 py-2 rounded-lg bg-danger/15 border border-danger/50 text-danger text-xs font-medium">
-              {error === 'purchase_cancelled' ? t('paywall.errorCancelled') : t('paywall.errorGeneric')}
+              {errorMessage}
             </div>
           )}
 
@@ -79,7 +96,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, on
             className="w-full py-3.5 rounded-xl bg-gradient-to-r from-player to-success text-ink font-black text-sm uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:scale-100 mb-3"
           >
             {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Swords className="w-5 h-5" />}
-            {t('paywall.buyButton')}
+            {buyLabel}
           </button>
 
           <button

@@ -28,16 +28,19 @@
         "description": "Dieser Kauf entfernt jede Werbung in NEXTGAMMON, dauerhaft."
       }
     },
-    "description": "Die komplette Kampagne mit 44 Stufen — jeder Boss, jede sammelbare Karte — plus ein werbefreies Erlebnis, alles in einer einmaligen Freischaltung für 3 $. 1v1-Schnellmatch bleibt für immer kostenlos.",
-    "buyButton": "Für 3 $ freischalten",
+    "description": "Die komplette Kampagne mit 44 Stufen — jeder Boss, jede sammelbare Karte — plus ein werbefreies Erlebnis, alles in einer einmaligen Freischaltung. 1v1-Schnellmatch bleibt für immer kostenlos.",
+    "buyButton": "Run Mode freischalten",
     "restoreButton": "Kauf wiederherstellen",
     "errorCancelled": "Kauf abgebrochen.",
-    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "descriptionPriced": "Die komplette Kampagne mit 44 Stufen — jeder Boss, jede sammelbare Karte — plus ein werbefreies Erlebnis, alles in einer einmaligen Freischaltung für {{price}}. 1v1-Schnellmatch bleibt für immer kostenlos.",
+    "buyButtonPriced": "Für {{price}} freischalten",
+    "errorNothingToRestore": "Für diesen Apple-Account wurde kein früherer Kauf gefunden."
   },
   "cyberLab": {
     "buyChipsTitle": "{{amount}} Neon Chips",
     "buyChipsDescription": "Ein sofortiges Aufladen deines Neon-Chips-Guthabens. Beliebig oft käuflich.",
-    "buyChipsButton": "Kaufen — 1 $",
+    "buyChipsButton": "Kaufen",
     "buyChipsSuccess": "+100.000 Neon Chips hinzugefügt!",
     "buyChipsErrorCancelled": "Kauf abgebrochen.",
     "buyChipsErrorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
@@ -68,7 +71,8 @@
         "description": "Schützt deine ausgerüstete Karte für diese Stufe vor Mars-Eroberung.",
         "location": "Ausrüstungsbildschirm"
       }
-    }
+    },
+    "buyChipsButtonPriced": "Kaufen — {{price}}"
   },
   "cardWidget": {
     "hiddenCard": "Versteckte Karte",
