@@ -14,10 +14,8 @@ export default defineConfig(() => {
     server: {
       // Bind to all network interfaces so other devices on the same WiFi can reach this dev server.
       host: true,
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // Set DISABLE_HMR=true to save CPU during heavy agent-driven edits.
       hmr: process.env.DISABLE_HMR !== 'true',
-      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
   };
