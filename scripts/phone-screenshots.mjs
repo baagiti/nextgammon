@@ -27,6 +27,16 @@ for (const profile of PROFILES) {
   });
   await context.addInitScript(() => {
     window.localStorage.setItem('i18nextLng', 'en');
+    // Seeded Math.random so every run drafts the same card pool and rolls the same dice —
+    // store shots stay reproducible, and the pool never includes a card that opens the
+    // marked-checker picker over the board.
+    let seed = 20260922;
+    Math.random = () => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
   });
   const page = await context.newPage();
 

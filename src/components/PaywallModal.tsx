@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Swords, Lock, RotateCcw, X, Loader2, Layers, Sparkles, Skull, Ban } from 'lucide-react';
+import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 interface PaywallModalProps {
   isLoading: boolean;
@@ -23,6 +24,9 @@ const FEATURES = [
 
 export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, price, onBuy, onRestore, onClose }) => {
   const { t } = useTranslation('ui');
+  // Landscape phones have width to spare but not height: the pitch goes in a column beside the
+  // buttons instead of above them, so the buy/restore buttons are always on screen.
+  const isPhone = useIsPhoneViewport();
 
   // Prices always come from StoreKit via RevenueCat, never from hardcoded copy — the buyer's
   // storefront currency is the only correct one to show. Until it loads, use the price-free
@@ -39,9 +43,68 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, pr
       ? t('paywall.errorNothingToRestore')
       : t('paywall.errorGeneric');
 
+  const features = (
+    <div className={isPhone ? 'grid grid-cols-2 gap-1.5 text-left' : 'space-y-2.5 text-left mb-5'}>
+      {FEATURES.map(({ key, icon: Icon, badgeClass }) => (
+        <div
+          key={key}
+          className={`flex items-start bg-panel-2/60 border border-line rounded-xl ${isPhone ? 'gap-2 p-2' : 'gap-3 p-3'}`}
+        >
+          <div className={`rounded-lg flex items-center justify-center shrink-0 border ${badgeClass} ${isPhone ? 'w-7 h-7' : 'w-9 h-9'}`}>
+            <Icon className={isPhone ? 'w-3.5 h-3.5' : 'w-4.5 h-4.5'} />
+          </div>
+          <div className="min-w-0">
+            <h4 className={`font-black text-text uppercase tracking-wide ${isPhone ? 'text-[10px]' : 'text-xs'}`}>
+              {t(`paywall.features.${key}.title`)}
+            </h4>
+            <p className={`text-text-muted mt-0.5 leading-snug ${isPhone ? 'text-[9px]' : 'text-[11px]'}`}>
+              {t(`paywall.features.${key}.description`)}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const actions = (
+    <>
+      {error && (
+        <div className={`px-3 py-2 rounded-lg bg-danger/15 border border-danger/50 text-danger text-xs font-medium ${isPhone ? 'mb-2' : 'mb-4'}`}>
+          {errorMessage}
+        </div>
+      )}
+
+      <button
+        onClick={onBuy}
+        disabled={isLoading}
+        className={`w-full rounded-xl bg-gradient-to-r from-player to-success text-ink font-black uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:scale-100 ${
+          isPhone ? 'py-2.5 text-xs mb-2' : 'py-3.5 text-sm mb-3'
+        }`}
+      >
+        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Swords className="w-5 h-5" />}
+        {buyLabel}
+      </button>
+
+      <button
+        onClick={onRestore}
+        disabled={isLoading}
+        className={`w-full rounded-xl bg-transparent border border-line hover:border-player/50 text-text-muted hover:text-text font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 ${
+          isPhone ? 'py-1.5 text-[10px]' : 'py-2.5 text-xs'
+        }`}
+      >
+        <RotateCcw className="w-3.5 h-3.5" />
+        {t('paywall.restoreButton')}
+      </button>
+    </>
+  );
+
   return (
-    <div className="fixed inset-0 z-50 bg-ink/90 backdrop-blur-xl flex items-center justify-center p-4">
-      <div className="relative max-w-lg w-full bg-panel border-2 border-player/60 rounded-2xl shadow-[0_0_60px_var(--player)]/40 flex flex-col max-h-[92vh]">
+    <div className={`fixed inset-0 z-50 bg-ink/90 backdrop-blur-xl flex items-center justify-center ${isPhone ? 'p-2' : 'p-4'}`}>
+      <div
+        className={`relative w-full bg-panel border-2 border-player/60 rounded-2xl shadow-[0_0_60px_var(--player)]/40 flex flex-col ${
+          isPhone ? 'max-w-3xl max-h-full' : 'max-w-lg max-h-[92vh]'
+        }`}
+      >
         <button
           onClick={onClose}
           className="absolute top-3 right-3 z-10 p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-panel-2 transition-colors"
@@ -49,65 +112,39 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isLoading, error, pr
           <X className="w-5 h-5" />
         </button>
 
-        <div className="overflow-y-auto p-6 sm:p-8 text-center">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl bg-player/15 border-2 border-player flex items-center justify-center mb-3 shadow-[0_0_25px_var(--player)]/50">
-            <Lock className="w-7 h-7 sm:w-8 sm:h-8 text-player" />
-          </div>
-
-          <h2 className="font-display text-xl sm:text-2xl font-black text-text uppercase tracking-wider mb-1">
-            {t('paywall.title')}
-          </h2>
-          <p className="text-xs sm:text-sm text-player font-bold uppercase tracking-wide mb-5">
-            {t('paywall.tagline')}
-          </p>
-
-          <div className="space-y-2.5 text-left mb-5">
-            {FEATURES.map(({ key, icon: Icon, badgeClass }) => (
-              <div
-                key={key}
-                className="flex items-start gap-3 bg-panel-2/60 border border-line rounded-xl p-3"
-              >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border ${badgeClass}`}>
-                  <Icon className="w-4.5 h-4.5" />
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-black text-text uppercase tracking-wide">
-                    {t(`paywall.features.${key}.title`)}
-                  </h4>
-                  <p className="text-[11px] text-text-muted mt-0.5 leading-snug">
-                    {t(`paywall.features.${key}.description`)}
-                  </p>
-                </div>
+        {isPhone ? (
+          <div className="grid grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-3 p-3 pr-11 items-center">
+            <div className="text-center flex flex-col">
+              <div className="w-10 h-10 mx-auto rounded-xl bg-player/15 border-2 border-player flex items-center justify-center mb-1.5 shadow-[0_0_25px_var(--player)]/50">
+                <Lock className="w-5 h-5 text-player" />
               </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-text-muted leading-relaxed mb-5">{summary}</p>
-
-          {error && (
-            <div className="mb-4 px-3 py-2 rounded-lg bg-danger/15 border border-danger/50 text-danger text-xs font-medium">
-              {errorMessage}
+              <h2 className="font-display text-base font-black text-text uppercase tracking-wider">{t('paywall.title')}</h2>
+              <p className="text-[10px] text-player font-bold uppercase tracking-wide mb-1.5">{t('paywall.tagline')}</p>
+              <p className="text-[10px] text-text-muted leading-snug mb-2">{summary}</p>
+              {actions}
             </div>
-          )}
+            {features}
+          </div>
+        ) : (
+          <div className="overflow-y-auto p-6 sm:p-8 text-center">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-2xl bg-player/15 border-2 border-player flex items-center justify-center mb-3 shadow-[0_0_25px_var(--player)]/50">
+              <Lock className="w-7 h-7 sm:w-8 sm:h-8 text-player" />
+            </div>
 
-          <button
-            onClick={onBuy}
-            disabled={isLoading}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-player to-success text-ink font-black text-sm uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:hover:scale-100 mb-3"
-          >
-            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Swords className="w-5 h-5" />}
-            {buyLabel}
-          </button>
+            <h2 className="font-display text-xl sm:text-2xl font-black text-text uppercase tracking-wider mb-1">
+              {t('paywall.title')}
+            </h2>
+            <p className="text-xs sm:text-sm text-player font-bold uppercase tracking-wide mb-5">
+              {t('paywall.tagline')}
+            </p>
 
-          <button
-            onClick={onRestore}
-            disabled={isLoading}
-            className="w-full py-2.5 rounded-xl bg-transparent border border-line hover:border-player/50 text-text-muted hover:text-text font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 disabled:opacity-60"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            {t('paywall.restoreButton')}
-          </button>
-        </div>
+            {features}
+
+            <p className="text-xs text-text-muted leading-relaxed mb-5">{summary}</p>
+
+            {actions}
+          </div>
+        )}
       </div>
     </div>
   );

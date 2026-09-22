@@ -73,8 +73,9 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
       {/* Cyber-Istanbul parallax backdrop — the whole app sits on a table inside this scene */}
       <CyberSkyline stage={viewStage} screen={screen} />
 
-      {/* Invisible tap strip along the very top edge — the only way back to the hidden header. */}
-      {isPhone && (
+      {/* Invisible tap strip along the very top edge — the only way back to the hidden header.
+          Removed while the header is out, or it would sit over the header's own buttons. */}
+      {headerHidden && (
         <button
           onClick={revealHeader}
           aria-label={t('common.returnToMenu')}
@@ -182,9 +183,10 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
       <main className="flex-1 min-h-0 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-4 relative overflow-hidden">
         <div
           className={`max-h-full flex flex-col justify-center overflow-hidden ${
-            // h-full only while the board is up: the match column distributes leftover height to
-            // the board via flex-1, which needs a definite height here to have anything to give.
-            offsetForBoard ? 'h-full' : ''
+            // h-full while the board is up: the match column distributes leftover height to the
+            // board via flex-1, which needs a definite height here to have anything to give. Phones
+            // always get it — the run map sizes its roadmap to the leftover height the same way.
+            offsetForBoard || isPhone ? 'h-full' : ''
           } ${
             isPhone
               ? 'w-full max-w-none mx-auto'

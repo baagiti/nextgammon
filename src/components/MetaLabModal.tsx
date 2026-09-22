@@ -5,6 +5,7 @@ import { BUYBACK_CARD_COST, SKIP_STAGE_COST, REROLL_DIE_COST } from './RunMapMod
 import { COLD_STORAGE_COST } from './CardSelectModal';
 import { CHIPS_100K_AMOUNT } from '../iap/purchases';
 import { Cpu, RotateCcw, FastForward, Coins, ShieldPlus, Sparkles, X, MapPin, Loader2 } from 'lucide-react';
+import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 interface MetaLabModalProps {
   meta: MetaData;
@@ -37,51 +38,58 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
   chipsPrice,
 }) => {
   const { t } = useTranslation('ui');
+  // Landscape phones: slimmer header/purchase row and the four chip sinks in a 2x2 grid instead of
+  // a vertical list, so the whole lab fits without scrolling.
+  const isPhone = useIsPhoneViewport();
   // Store-authoritative price only — see the same note in PaywallModal.
   const buyChipsLabel = chipsPrice
     ? t('cyberLab.buyChipsButtonPriced', { price: chipsPrice })
     : t('cyberLab.buyChipsButton');
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl p-6 shadow-[0_0_60px_rgba(6,182,212,0.4)] flex flex-col max-h-[90vh] overflow-hidden">
+    <div className={`fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center ${isPhone ? 'p-2' : 'p-4'}`}>
+      <div
+        className={`w-full bg-slate-900 border-2 border-cyan-500/60 rounded-2xl shadow-[0_0_60px_rgba(6,182,212,0.4)] flex flex-col overflow-hidden ${
+          isPhone ? 'max-w-3xl p-2.5 max-h-full' : 'max-w-2xl p-6 max-h-[90vh]'
+        }`}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-cyan-950 border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_20px_#00f0ff]">
-              <Cpu className="w-6 h-6 text-cyan-300" />
+        <div className={`flex items-center justify-between border-b border-slate-800 ${isPhone ? 'pb-1.5 mb-1.5' : 'pb-4 mb-4'}`}>
+          <div className={`flex items-center min-w-0 ${isPhone ? 'gap-2' : 'gap-3'}`}>
+            <div className={`rounded-xl bg-cyan-950 border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_20px_#00f0ff] shrink-0 ${isPhone ? 'w-8 h-8' : 'w-12 h-12'}`}>
+              <Cpu className={isPhone ? 'w-4 h-4 text-cyan-300' : 'w-6 h-6 text-cyan-300'} />
             </div>
-            <div>
-              <h2 className="text-2xl font-black text-white tracking-widest uppercase">{t('cyberLab.title')}</h2>
-              <p className="text-xs text-slate-400">{t('cyberLab.subtitleSpend')}</p>
+            <div className="min-w-0">
+              <h2 className={`font-black text-white tracking-widest uppercase ${isPhone ? 'text-base leading-tight' : 'text-2xl'}`}>{t('cyberLab.title')}</h2>
+              <p className={`text-slate-400 ${isPhone ? 'text-[10px] truncate' : 'text-xs'}`}>{t('cyberLab.subtitleSpend')}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300 font-black text-sm shadow-md uppercase">
-              <Sparkles className="w-5 h-5 text-cyan-400 animate-spin" />
+          <div className={`flex items-center shrink-0 ${isPhone ? 'gap-2' : 'gap-4'}`}>
+            <div className={`flex items-center gap-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-cyan-300 font-black shadow-md uppercase ${isPhone ? 'px-2.5 py-1 text-xs' : 'px-4 py-2 text-sm'}`}>
+              <Sparkles className={`text-cyan-400 animate-spin ${isPhone ? 'w-4 h-4' : 'w-5 h-5'}`} />
               <span>{t('cyberLab.neonChips', { n: meta.neonChips })}</span>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-colors"
+              className={`rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-colors ${isPhone ? 'p-1.5' : 'p-2'}`}
             >
-              <X className="w-6 h-6" />
+              <X className={isPhone ? 'w-5 h-5' : 'w-6 h-6'} />
             </button>
           </div>
         </div>
 
         {/* Real-money Chip Purchase — visually distinct (amber) from the cyan reference cards
             below, since this one actually charges money rather than just explaining a sink. */}
-        <div className="mb-4 bg-gradient-to-r from-amber-950/60 via-amber-900/30 to-amber-950/60 border-2 border-amber-500/50 rounded-xl p-3.5 flex items-center gap-3 shadow-[0_0_25px_rgba(245,158,11,0.15)]">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border bg-amber-950 border-amber-500/60 text-amber-300">
-            <Coins className="w-5 h-5" />
+        <div className={`bg-gradient-to-r from-amber-950/60 via-amber-900/30 to-amber-950/60 border-2 border-amber-500/50 rounded-xl flex items-center gap-3 shadow-[0_0_25px_rgba(245,158,11,0.15)] ${isPhone ? 'mb-1.5 p-2' : 'mb-4 p-3.5'}`}>
+          <div className={`${isPhone ? 'w-8 h-8' : 'w-10 h-10'} rounded-lg flex items-center justify-center shrink-0 border bg-amber-950 border-amber-500/60 text-amber-300`}>
+            <Coins className={isPhone ? 'w-4 h-4' : 'w-5 h-5'} />
           </div>
           <div className="min-w-0 flex-1">
             <h4 className="text-xs font-black text-white tracking-wide uppercase">
               {t('cyberLab.buyChipsTitle', { amount: CHIPS_100K_AMOUNT.toLocaleString() })}
             </h4>
-            <p className="text-[11px] text-slate-400 mt-0.5 leading-tight">{t('cyberLab.buyChipsDescription')}</p>
+            <p className={`text-slate-400 mt-0.5 leading-tight ${isPhone ? 'text-[10px] line-clamp-1' : 'text-[11px]'}`}>{t('cyberLab.buyChipsDescription')}</p>
             {buyChipsError && (
               <p className="text-[11px] text-rose-400 mt-1 font-bold">
                 {buyChipsError === 'purchase_cancelled' ? t('cyberLab.buyChipsErrorCancelled') : t('cyberLab.buyChipsErrorGeneric')}
@@ -102,14 +110,14 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
         </div>
 
         {/* Chip Sink Reference List */}
-        <div className="flex-1 overflow-y-auto pr-1 space-y-3 mb-4">
+        <div className={`flex-1 overflow-y-auto pr-1 ${isPhone ? 'grid grid-cols-2 gap-1.5 mb-1.5' : 'space-y-3 mb-4'}`}>
           {CHIP_SINKS.map(({ key, icon: IconComp, cost, location }) => (
             <div
               key={key}
-              className="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 flex items-start gap-3"
+              className={`bg-slate-950/80 border border-slate-800 rounded-xl flex items-start ${isPhone ? 'p-2 gap-2' : 'p-3.5 gap-3'}`}
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border bg-cyan-950 border-cyan-500/50 text-cyan-300">
-                <IconComp className="w-5 h-5" />
+              <div className={`rounded-lg flex items-center justify-center shrink-0 border bg-cyan-950 border-cyan-500/50 text-cyan-300 ${isPhone ? 'w-7 h-7' : 'w-10 h-10'}`}>
+                <IconComp className={isPhone ? 'w-3.5 h-3.5' : 'w-5 h-5'} />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
@@ -119,8 +127,8 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
                     {cost.toLocaleString()}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1 leading-tight">{t(`cyberLab.sinks.${key}.description`)}</p>
-                <div className="mt-1.5 flex items-center gap-1 text-[10px] text-cyan-400/80 font-mono uppercase tracking-wide">
+                <p className={`text-slate-400 leading-tight ${isPhone ? 'text-[10px] mt-0.5' : 'text-[11px] mt-1'}`}>{t(`cyberLab.sinks.${key}.description`)}</p>
+                <div className={`${isPhone ? 'mt-1' : 'mt-1.5'} flex items-center gap-1 text-[10px] text-cyan-400/80 font-mono uppercase tracking-wide`}>
                   <MapPin className="w-3 h-3" />
                   {t(`cyberLab.sinks.${key}.location`)}
                 </div>
@@ -130,7 +138,7 @@ export const MetaLabModal: React.FC<MetaLabModalProps> = ({
         </div>
 
         {/* Footer Stats Summary */}
-        <div className="border-t border-slate-800 pt-3 flex items-center justify-between text-xs text-slate-400 font-mono">
+        <div className={`border-t border-slate-800 flex items-center justify-between text-slate-400 font-mono ${isPhone ? 'pt-1.5 text-[10px]' : 'pt-3 text-xs'}`}>
           <span>{t('cyberLab.gamesPlayed', { n: meta.totalGamesPlayed })}</span>
           <span>{t('cyberLab.runWins', { n: meta.totalWins })}</span>
           <span>{t('cyberLab.highestStage', { n: meta.highestStage })}</span>

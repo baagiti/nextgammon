@@ -1017,7 +1017,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           shrinking, animation-affected ancestor instead of the real viewport. Portaling out
           removes the ancestor relationship entirely, which is the only fully reliable fix. */}
       {isMatchOver && createPortal(
-        <div className="fixed inset-0 z-50 bg-ink/70 flex flex-col items-center justify-center text-center p-4 sm:p-6 overflow-y-auto">
+        <div className={`fixed inset-0 z-50 bg-ink/70 flex flex-col items-center justify-center text-center overflow-y-auto ${isPhone ? 'p-2' : 'p-4 sm:p-6'}`}>
           {/* Outcome-tinted scanline wash, echoing the boss-intro alarm treatment */}
           <div
             className="pointer-events-none absolute inset-0 opacity-20"
@@ -1028,15 +1028,22 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             }}
           />
 
-          <div className="relative w-full max-w-sm px-6 py-4 sm:py-6 my-auto flex flex-col items-center">
+          {/* Phones split the result into two columns (outcome | chips + CONTINUE): stacked, the chip
+              breakdown pushes CONTINUE below a landscape phone's fold. */}
+          <div
+            className={`relative w-full my-auto ${
+              isPhone ? 'max-w-xl px-5 py-3 grid grid-cols-2 gap-4 items-center' : 'max-w-sm px-6 py-4 sm:py-6 flex flex-col items-center'
+            }`}
+          >
             {/* HUD corner brackets */}
             <span className={`absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 rounded-tr-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 rounded-bl-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
             <span className={`absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-lg ${winner === 'player' ? 'border-player' : 'border-opponent'}`} />
 
+            <div className={isPhone ? 'flex flex-col items-center' : 'contents'}>
             <div
-              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border-2 flex items-center justify-center mb-2 ${
+              className={`${isPhone ? 'w-11 h-11' : 'w-14 h-14 sm:w-16 sm:h-16'} rounded-2xl border-2 flex items-center justify-center mb-2 ${
                 winner === 'player'
                   ? 'bg-player/15 border-player shadow-[0_0_35px_5px_rgba(0,229,255,0.65)]'
                   : 'bg-opponent/15 border-opponent shadow-[0_0_35px_5px_rgba(255,45,120,0.65)]'
@@ -1045,7 +1052,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               {winner === 'player' ? <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-player" /> : <ServerCrash className="w-7 h-7 sm:w-8 sm:h-8 text-opponent" />}
             </div>
 
-            <h2 className="font-display text-2xl sm:text-3xl font-black tracking-widest mb-1 uppercase">
+            <h2 className={`font-display font-black tracking-widest mb-1 uppercase ${isPhone ? 'text-xl' : 'text-2xl sm:text-3xl'}`}>
               {winner === 'player' ? (
                 <span className="text-player drop-shadow-[0_2px_12px_rgba(0,229,255,0.8)]">{t('neonBoard.matchVictory')}</span>
               ) : (
@@ -1053,7 +1060,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               )}
             </h2>
 
-            <p className="text-xs sm:text-sm text-text max-w-md mb-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            <p className={`text-text max-w-md drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${isPhone ? 'text-[11px] leading-snug' : 'text-xs sm:text-sm mb-3'}`}>
               {winner === 'player'
                 ? isRunMatch
                   ? t('neonBoard.victoryDescRun')
@@ -1062,6 +1069,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                 ? t('neonBoard.defeatDescRun')
                 : t('neonBoard.defeatDescQuick')}
             </p>
+            </div>
+
+            <div className={isPhone ? 'flex flex-col items-center' : 'contents'}>
 
             {totalChipsEarned > 0 && (
               <div className="w-full max-w-[220px] mb-3 rounded-lg border border-line bg-panel/70 px-3 py-1.5 font-mono text-[10px] sm:text-[11px]">
@@ -1099,6 +1109,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
               {t('neonBoard.continue')}
               <ChevronRight className="w-5 h-5" />
             </button>
+            </div>
           </div>
         </div>,
         document.body

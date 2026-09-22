@@ -6,6 +6,7 @@ import { PLAYER_CARDS } from '../game/cardsData';
 import { CardIcon } from './CardIcon';
 import { getCardText, getCampaignStageText, getProtocolText } from '../hooks/useLocalizedText';
 import { Swords, Lock, CheckCircle2, Trophy, AlertTriangle, Bot, Coins, FastForward } from 'lucide-react';
+import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 export const BUYBACK_CARD_COST = 10000;
 export const SKIP_STAGE_COST = 100000;
@@ -40,6 +41,10 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
   const { t: tCards } = useTranslation('cards');
   const { t: tBosses } = useTranslation('bosses');
   const { t } = useTranslation('ui');
+  // Landscape phones: a slimmer header/encounter row, and the 44-stage roadmap collapses to one
+  // row of icon chips per act (two acts side by side) so the whole campaign fits on one screen.
+  // The current stage's full details are already in the encounter row above it.
+  const isPhone = useIsPhoneViewport();
   const totalCardsWon = Math.max(0, run.deck.length - 1); // exclude the free starter card
   const currentStage = CAMPAIGN_STAGES[run.stage - 1];
   const currentStageText = currentStage ? getCampaignStageText(tBosses, currentStage) : null;
@@ -47,23 +52,27 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
   const canSkipStage = !!currentStage && currentStage.kind === 'card';
 
   return (
-    <div className="w-full max-w-5xl mx-auto grain bg-panel border-2 border-line-strong rounded-2xl p-4 sm:p-6 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] text-text">
+    <div
+      className={`w-full max-w-5xl mx-auto grain bg-panel border-2 border-line-strong rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] text-text ${
+        isPhone ? 'p-2.5 h-full flex flex-col' : 'p-4 sm:p-6'
+      }`}
+    >
       {/* Run Status Header */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4 mb-4">
-        <div>
+      <div className={`relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-line ${isPhone ? 'pb-1.5 mb-1.5' : 'pb-4 mb-4'}`}>
+        <div className={isPhone ? 'flex items-baseline gap-2' : ''}>
           <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-player">{t('runMap.campaignLabel')}</span>
-          <h2 className="font-display text-xl sm:text-2xl font-black text-text tracking-wide uppercase">
+          <h2 className={`font-display font-black text-text tracking-wide uppercase ${isPhone ? 'text-sm' : 'text-xl sm:text-2xl'}`}>
             {t('runMap.stageOf', { stage: run.stage, total: CAMPAIGN_STAGES.length })}
           </h2>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-panel-2 border border-rarity-legendary/50 text-rarity-legendary font-mono font-bold text-xs shadow-[0_0_15px_var(--rarity-legendary)]/20 uppercase">
-          <Trophy className="w-4 h-4" />
+        <div className={`flex items-center gap-2 rounded-xl bg-panel-2 border border-rarity-legendary/50 text-rarity-legendary font-mono font-bold shadow-[0_0_15px_var(--rarity-legendary)]/20 uppercase ${isPhone ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1.5 text-xs'}`}>
+          <Trophy className={isPhone ? 'w-3 h-3' : 'w-4 h-4'} />
           {t('runMap.cardsWon', { won: totalCardsWon, total: CAMPAIGN_STAGES.length })}
         </div>
       </div>
 
       {/* Overall progress bar */}
-      <div className="relative z-10 w-full h-2 bg-panel-2 rounded-full overflow-hidden mb-5 border border-line">
+      <div className={`relative z-10 w-full bg-panel-2 rounded-full overflow-hidden border border-line shrink-0 ${isPhone ? 'h-1.5 mb-2' : 'h-2 mb-5'}`}>
         <div
           className="h-full bg-player transition-all duration-500 shadow-[0_0_10px_var(--player)]"
           style={{ width: `${(totalCardsWon / CAMPAIGN_STAGES.length) * 100}%` }}
@@ -72,9 +81,13 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
 
       {/* Captured cards warning + buyback option */}
       {run.capturedCardIds.length > 0 && (
-        <div className="relative z-10 mb-5 bg-danger/10 border border-danger/50 rounded-xl p-3 flex flex-col gap-2.5">
-          <div className="flex items-start gap-3 text-sm">
-            <AlertTriangle className="w-5 h-5 text-danger shrink-0 mt-0.5" />
+        <div
+          className={`relative z-10 bg-danger/10 border border-danger/50 rounded-xl flex ${
+            isPhone ? 'mb-2 p-1.5 flex-row items-center gap-2' : 'mb-5 p-3 flex-col gap-2.5'
+          }`}
+        >
+          <div className={`flex items-start min-w-0 ${isPhone ? 'gap-1.5 text-[10px] leading-snug flex-1' : 'gap-3 text-sm'}`}>
+            <AlertTriangle className={`text-danger shrink-0 ${isPhone ? 'w-3.5 h-3.5' : 'w-5 h-5 mt-0.5'}`} />
             <div>
               <span className="font-black text-danger uppercase tracking-wider">
                 {run.capturedCardIds.length > 1 ? t('runMap.bossHoldsCards') : t('runMap.bossHoldsCard')}{' '}
@@ -87,10 +100,10 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
                   })
                   .join(', ')}
               </span>
-              <span className="text-text-muted"> {run.capturedCardIds.length > 1 ? t('runMap.recoverHintPlural') : t('runMap.recoverHint')}</span>
+              <span className={`text-text-muted ${isPhone ? 'hidden' : ''}`}> {run.capturedCardIds.length > 1 ? t('runMap.recoverHintPlural') : t('runMap.recoverHint')}</span>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 pl-8">
+          <div className={`flex flex-wrap gap-2 ${isPhone ? 'shrink-0' : 'pl-8'}`}>
             {run.capturedCardIds.map((id) => {
               const card = PLAYER_CARDS.find((c) => c.id === id);
               const canAfford = neonChips >= BUYBACK_CARD_COST;
@@ -117,31 +130,33 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
       {/* Next Encounter Action */}
       {currentStage && (
         <div
-          className="relative z-10 bg-panel-2 border rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6"
+          className={`relative z-10 bg-panel-2 border rounded-xl flex justify-between gap-3 ${
+            isPhone ? 'p-2 flex-row items-center mb-2 shrink-0' : 'p-4 flex-col sm:flex-row sm:items-center mb-6'
+          }`}
           style={{ borderColor: `${currentStage.accentColor}60` }}
         >
           <div className="flex items-center gap-3 min-w-0">
             <div
-              className="w-12 h-12 rounded-xl border-2 flex items-center justify-center shrink-0"
+              className={`rounded-xl border-2 flex items-center justify-center shrink-0 ${isPhone ? 'w-9 h-9' : 'w-12 h-12'}`}
               style={{ borderColor: currentStage.accentColor, backgroundColor: `${currentStage.accentColor}15` }}
             >
-              <Bot className="w-6 h-6" style={{ color: currentStage.accentColor }} />
+              <Bot className={isPhone ? 'w-5 h-5' : 'w-6 h-6'} style={{ color: currentStage.accentColor }} />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 text-player font-mono font-bold text-[10px] uppercase tracking-widest mb-0.5">
                 <Swords className="w-3.5 h-3.5" />
                 {t('runMap.act', { n: currentStage.act, name: ACT_NAMES[currentStage.act] })}
               </div>
-              <h3 className="font-display text-lg font-black text-text truncate">
+              <h3 className={`font-display font-black text-text truncate ${isPhone ? 'text-sm' : 'text-lg'}`}>
                 {currentStageText!.bossName} <span className="text-text-muted font-normal text-sm">— {currentStageText!.bossTitle}</span>
               </h3>
-              <p className="text-xs text-text-muted italic mt-0.5 truncate">"{currentStageText!.quote}"</p>
+              <p className={`text-text-muted italic mt-0.5 truncate ${isPhone ? 'text-[10px]' : 'text-xs'}`}>"{currentStageText!.quote}"</p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 shrink-0">
+          <div className={`flex gap-2 shrink-0 ${isPhone ? 'flex-row items-center' : 'flex-col'}`}>
             <button
               onClick={onEnterMatch}
-              className="py-3 px-6 rounded-xl bg-player text-ink font-display font-black text-sm uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 hover:brightness-110 transition-all flex items-center justify-center gap-2"
+              className={`${isPhone ? 'py-2 px-4 text-xs' : 'py-3 px-6 text-sm'} rounded-xl bg-player text-ink font-display font-black uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 hover:brightness-110 transition-all flex items-center justify-center gap-2`}
             >
               {t('runMap.battleOpponent')}
               <Swords className="w-4 h-4" />
@@ -165,8 +180,54 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
         </div>
       )}
 
+      {/* Act-grouped roadmap — phone: one row of icon chips per act, two acts side by side */}
+      {isPhone && (
+        <div className="relative z-10 flex-1 min-h-0 overflow-y-auto grid grid-cols-2 gap-x-4 gap-y-1.5 content-start">
+          {acts.map((act) => (
+            <div key={act} className="flex items-center gap-2 min-w-0">
+              <div className="w-[72px] shrink-0 font-mono text-[8px] font-black uppercase leading-tight text-text-muted">
+                {t('runMap.actShort', { n: act })}
+                <span className="block text-player truncate">{ACT_NAMES[act]}</span>
+              </div>
+              <div className="flex gap-1">
+                {CAMPAIGN_STAGES.filter((s) => s.act === act).map((stage) => {
+                  const isCleared = stage.stage < run.stage;
+                  const isCurrent = stage.stage === run.stage;
+                  const protocol = stage.protocolId ? BOSS_PROTOCOLS.find((p) => p.id === stage.protocolId) : null;
+                  const rewardCard = PLAYER_CARDS.find((c) => c.id === stage.rewardCardId);
+                  const style = protocol
+                    ? { border: 'border-danger/70', bg: 'bg-danger/10', text: 'text-danger' }
+                    : RARITY_STYLE[rewardCard?.rarity || 'common'];
+                  return (
+                    <div
+                      key={stage.stage}
+                      className={`relative w-6 h-6 rounded-md border flex items-center justify-center ${style.border} ${
+                        isCurrent
+                          ? `${style.bg} ring-2 ring-player ring-offset-1 ring-offset-panel`
+                          : isCleared
+                          ? 'bg-panel-2/60 opacity-45'
+                          : `${style.bg} opacity-80`
+                      }`}
+                    >
+                      {isCleared ? (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-success" />
+                      ) : (
+                        <CardIcon
+                          name={protocol ? protocol.iconName : rewardCard?.iconName || 'HelpCircle'}
+                          className={`w-3 h-3 ${style.text}`}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Act-grouped roadmap */}
-      <div className="relative z-10 max-h-[45vh] overflow-y-auto pr-1 space-y-6">
+      <div className={`relative z-10 max-h-[45vh] overflow-y-auto pr-1 space-y-6 ${isPhone ? 'hidden' : ''}`}>
         {acts.map((act) => {
           const stagesInAct = CAMPAIGN_STAGES.filter((s) => s.act === act);
           return (
@@ -244,7 +305,7 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
       </div>
 
       {run.stage > CAMPAIGN_STAGES.length && (
-        <div className="relative z-10 mt-6 bg-panel-2 border-2 border-rarity-legendary/60 rounded-xl p-6 text-center shadow-[0_0_30px_var(--rarity-legendary)]/30">
+        <div className={`relative z-10 bg-panel-2 border-2 border-rarity-legendary/60 rounded-xl text-center shadow-[0_0_30px_var(--rarity-legendary)]/30 ${isPhone ? 'mt-2 p-2' : 'mt-6 p-6'}`}>
           <Trophy className="w-8 h-8 text-rarity-legendary mx-auto mb-2" />
           <h3 className="font-display text-xl font-black text-rarity-legendary uppercase tracking-wider">{t('runMap.campaignComplete')}</h3>
           <p className="text-text-muted text-sm mt-1">{t('runMap.campaignCompleteHint')}</p>
