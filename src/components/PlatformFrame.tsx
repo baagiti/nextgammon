@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GameSettings } from '../types';
 import { Tv, Volume2, VolumeX, Sparkles, Cpu, Layers, RotateCw, Home, Globe } from 'lucide-react';
 import { PortraitGuard } from './PortraitGuard';
 import { CyberSkyline, ViewStage } from './CyberSkyline';
 import { SUPPORTED_LANGUAGES, RTL_LANGUAGES, SupportedLanguage } from '../i18n/config';
+import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 interface PlatformFrameProps {
   settings: GameSettings;
@@ -16,6 +17,7 @@ interface PlatformFrameProps {
   screen?: 'menu' | 'game';
   // Only the live match board needs to sit off-center to leave the AR street scene visible on
   // its left; every other screen (menu, map, equip, etc.) should stay centered in the viewport.
+  // Ignored on phones (see useIsPhoneViewport) — there the board fills the full width instead.
   offsetForBoard?: boolean;
   bossProtocolActive?: boolean;
   children: React.ReactNode;
@@ -35,6 +37,22 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
 }) => {
   const { t, i18n } = useTranslation('ui');
   const currentLang = (i18n.resolvedLanguage || 'en') as SupportedLanguage;
+  // On phones there's no spare width to give the skyline — the board should use all of it.
+  const isPhone = useIsPhoneViewport();
+
+  // Phones reclaim the app header's height for the board: it slides away and comes back when the
+  // top edge is tapped, then hides itself again a few seconds later.
+  const [headerPeek, setHeaderPeek] = useState(false);
+  const peekTimer = useRef<number | null>(null);
+  const revealHeader = () => {
+    setHeaderPeek(true);
+    if (peekTimer.current) window.clearTimeout(peekTimer.current);
+    peekTimer.current = window.setTimeout(() => setHeaderPeek(false), 3500);
+  };
+  useEffect(() => () => {
+    if (peekTimer.current) window.clearTimeout(peekTimer.current);
+  }, []);
+  const headerHidden = isPhone && !headerPeek;
 
   // Flip document direction for RTL languages (Arabic) — affects the whole app shell, not just
   // this component, so it belongs on <html>/<body> rather than something scoped to this subtree.
@@ -55,8 +73,24 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
       {/* Cyber-Istanbul parallax backdrop — the whole app sits on a table inside this scene */}
       <CyberSkyline stage={viewStage} screen={screen} />
 
+      {/* Invisible tap strip along the very top edge — the only way back to the hidden header. */}
+      {isPhone && (
+        <button
+          onClick={revealHeader}
+          aria-label={t('common.returnToMenu')}
+          className="fixed top-0 inset-x-0 h-5 z-[45] bg-transparent"
+        />
+      )}
+
       {/* Top Application Header / Controls */}
-      <header className="relative overflow-hidden grain w-full bg-ink-2 border-b border-line px-2 sm:px-4 py-1 flex items-center justify-between gap-2 sm:gap-3 shadow-[0_0_20px_rgba(0,0,0,0.5)] z-40 shrink-0">
+      <header
+        onClick={isPhone ? revealHeader : undefined}
+        className={`overflow-hidden grain w-full bg-ink-2 border-b border-line px-2 sm:px-4 py-1 flex items-center justify-between gap-2 sm:gap-3 shadow-[0_0_20px_rgba(0,0,0,0.5)] z-40 shrink-0 ${
+          isPhone
+            ? `fixed top-0 inset-x-0 transition-transform duration-300 ${headerHidden ? '-translate-y-full' : 'translate-y-0'}`
+            : 'relative'
+        }`}
+      >
         {/* Game Title Logo */}
         <div className="relative flex items-center gap-1.5 sm:gap-2">
           <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-panel border border-player shadow-[0_0_10px_var(--player)]/30 flex items-center justify-center shrink-0">
@@ -140,13 +174,21 @@ export const PlatformFrame: React.FC<PlatformFrameProps> = ({
         </div>
       </header>
 
-      {/* Main Container Wrapper — always full-screen; the app targets iPad/desktop only, no
-          mobile frame mockup. Offset right only for the live board so the AR street scene stays
-          visible on its left; every other screen (including the menu) is centered. */}
+      {/* Main Container Wrapper — always full-screen. On tablet/desktop, offset right only for
+          the live board so the AR street scene stays visible on its left; every other screen
+          (including the menu) is centered in a 900px-capped column. On phones there's no width
+          to spare for that skyline gutter, so the board goes full-bleed instead (no offset, no
+          max-width cap) — see useIsPhoneViewport. */}
       <main className="flex-1 min-h-0 flex items-center justify-center py-1 sm:py-2 px-2 sm:px-4 relative overflow-hidden">
         <div
-          className={`w-full max-w-[900px] max-h-full flex flex-col justify-center overflow-hidden ${
-            offsetForBoard ? 'ml-[22%] mr-2 sm:ml-[26%] sm:mr-4' : 'mx-auto'
+          className={`max-h-full flex flex-col justify-center overflow-hidden ${
+            // h-full only while the board is up: the match column distributes leftover height to
+            // the board via flex-1, which needs a definite height here to have anything to give.
+            offsetForBoard ? 'h-full' : ''
+          } ${
+            isPhone
+              ? 'w-full max-w-none mx-auto'
+              : `w-full max-w-[900px] ${offsetForBoard ? 'ml-[22%] mr-2 sm:ml-[26%] sm:mr-4' : 'mx-auto'}`
           }`}
         >
           {children}

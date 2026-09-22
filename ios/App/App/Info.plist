@@ -57,9 +57,11 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<!-- iPhone is landscape-only: the phone board layout is built for a wide viewport and
+	     there is no portrait variant, so let iOS enforce the orientation rather than
+	     showing PortraitGuard's rotate prompt. iPad (below) keeps all four. -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>

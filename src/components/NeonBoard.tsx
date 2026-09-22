@@ -9,6 +9,7 @@ import { ViewStage } from './CyberSkyline';
 import { CardIcon } from './CardIcon';
 import { useTranslation } from 'react-i18next';
 import { useCardText, useProtocolText } from '../hooks/useLocalizedText';
+import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 interface NeonBoardProps {
   board: BoardState;
@@ -108,6 +109,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   onPaidDieReroll,
 }) => {
   const { t } = useTranslation('ui');
+  // Phone landscape has ~390px of height to spend; the status/card/log rows below eat most of it
+  // at desktop sizing, leaving the board nothing. On phones they get compacted or floated.
+  const isPhone = useIsPhoneViewport();
   const { name: playerActiveCardName, description: playerActiveCardDescription } = useCardText(
     playerActiveCard ?? { id: '', name: '', tagline: '', description: '' }
   );
@@ -274,14 +278,23 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.15, opacity: 0 }}
                 transition={{ type: 'spring', stiffness: 520, damping: 34, mass: 0.6 }}
-                className={`w-4 h-4 xs:w-5 xs:h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full border xs:border-2 flex items-center justify-center font-bold text-[8px] xs:text-[9px] sm:text-xs my-0.5 shadow-md relative ${
+                // Checker size must follow the *height* budget, not width: a phone held sideways
+                // is ~844px wide (so it clears the sm/md width breakpoints) but only ~390px tall,
+                // and five md-sized checkers per half-point overflow that twice over.
+                className={`rounded-full border xs:border-2 flex items-center justify-center font-bold my-0.5 shadow-md relative ${
+                  isPhone
+                    ? 'w-4 h-4 text-[8px]'
+                    : 'w-4 h-4 xs:w-5 xs:h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 text-[8px] xs:text-[9px] sm:text-xs'
+                } ${
                   isPlayer
                     ? 'bg-player/15 border-player text-player shadow-[0_0_8px_var(--player)]'
                     : 'bg-opponent/15 border-opponent text-opponent shadow-[0_0_8px_var(--opponent)]'
                 }`}
               >
                 <div
-                  className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border ${
+                  className={`rounded-full border ${
+                    isPhone ? 'w-2 h-2' : 'w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3.5 sm:h-3.5'
+                  } ${
                     isPlayer ? 'border-player bg-player/20' : 'border-opponent bg-opponent/20'
                   }`}
                 />
@@ -473,7 +486,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   return (
     <motion.div
       animate={shakeControls}
-      className="relative w-full max-w-[1300px] mx-auto select-none p-1.5 sm:p-3 flex-1 min-h-0 flex flex-col"
+      className={`relative w-full max-w-[1300px] mx-auto select-none flex-1 min-h-0 flex flex-col ${
+        isPhone ? 'p-1' : 'p-1.5 sm:p-3'
+      }`}
     >
       {/* MUTATION ACTIVATED: fires whenever an equipped card actually changed dice/movement this turn */}
       <AnimatePresence>
@@ -534,7 +549,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       {/* Direction & Status Bar */}
       {!isMatchOver && (
       <div className="relative z-20 mb-1.5 flex flex-wrap items-center justify-between gap-1 text-xs">
-        {onUpdateSettings && !isLookingAround && (
+        {/* Bear-off direction toggle is desktop/tablet only — it's a one-off setting, not a
+            per-turn control, and the row it sits in is needed for the board on phones. */}
+        {onUpdateSettings && !isLookingAround && !isPhone && (
           <button
             onClick={() =>
               onUpdateSettings({
@@ -655,22 +672,42 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           making that overlay transparent — with the board gone, the raw street scene shows through. */}
       {viewStage !== 'panorama' && !isMatchOver && (
       <div
-        className={`py-2 sm:py-4 flex-1 min-h-0 flex transition-all duration-700 ${
-          isPeek ? 'items-end justify-end pr-2 pb-2 sm:pr-4 sm:pb-4' : 'items-center justify-center'
+        className={`${isPhone ? 'py-0.5' : 'py-2 sm:py-4'} flex-1 min-h-0 flex transition-all duration-700 ${
+          // items-stretch (not center) so the board actually inherits this slot's height —
+          // with items-center the frame kept its content height and overflowed the slot.
+          isPeek ? 'items-end justify-end pr-2 pb-2 sm:pr-4 sm:pb-4' : 'items-stretch justify-center'
         }`}
       >
         <div
-          className="relative pointer-events-none transition-[max-width] duration-700"
+          className="relative pointer-events-none transition-[max-width] duration-700 h-full flex flex-col"
           style={{ width: '100%', maxWidth: isPeek ? '300px' : '1250px' }}
         >
           <div
-            className="relative z-10 frame-accent grain flex flex-col border-2 sm:border-[3px] border-line-strong rounded-xl overflow-hidden mx-auto pointer-events-auto transition-[height] duration-700"
+            className="relative z-10 frame-accent grain flex flex-col border-2 sm:border-[3px] border-line-strong rounded-xl overflow-hidden mx-auto pointer-events-auto transition-[max-height] duration-700 w-full flex-1 min-h-0"
             style={{
-              height: isPeek ? 'clamp(120px, 22vh, 190px)' : 'clamp(240px, calc(60vh - 40px), 480px)',
+              // Height comes from the flex parent's *actual* leftover space rather than raw vh:
+              // the status bar, card banners and event log share this column, and a vh-derived
+              // height ignored them entirely — on short (phone landscape) viewports that made the
+              // board overflow and render on top of those rows. maxHeight keeps the old ceiling.
+              maxHeight: isPeek ? '190px' : '480px',
               boxShadow:
                 'inset 0 2px 0 rgba(255,255,255,0.12), inset 0 -3px 8px rgba(0,0,0,0.5), 0 50px 80px -18px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6)',
             }}
           >
+            {/* ROLL lives on the board's empty centre bar on phones, so the bottom bar can stay
+                a thin status strip instead of a full button row. */}
+            {isPhone && canRoll && turn === 'player' && !isMatchOver && !isLookingAround && (
+              <button
+                onClick={() => {
+                  soundFx.playDiceRoll();
+                  onRollDice();
+                }}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 px-4 py-2 rounded-xl bg-gradient-to-r from-player to-success text-ink font-black text-xs uppercase tracking-wider shadow-[0_0_24px_var(--player)]/70 active:scale-95 transition-all flex items-center gap-1.5"
+              >
+                <Dices className="w-4 h-4" />
+                {t('neonBoard.roll')}
+              </button>
+            )}
             {/* Fill layer, separate from the content above it: in the flat TABLE view this fades
                 to transparent at the top/bottom edges so the ground photo bleeds through instead
                 of a hard-edged opaque card. PEEK keeps a solid fill (it's a tilted physical object).
@@ -778,8 +815,10 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       </div>
       )}
 
-      {/* Active Match Mutations Display */}
-      {(playerActiveCard || cpuActiveCard || bossProtocol) && !isLookingAround && !isMatchOver && (
+      {/* Active Match Mutations Display — hidden on phones: the same two cards are already shown
+          in the header (CPU) and are one tap away via the card inspector, and at phone heights
+          these two rows cost more than the board can afford. */}
+      {(playerActiveCard || cpuActiveCard || bossProtocol) && !isLookingAround && !isMatchOver && !isPhone && (
         <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {playerActiveCard && (
             <div
@@ -838,8 +877,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
         </div>
       )}
 
-      {/* Card Trigger & Event Notes Bar */}
-      {cardNotes.length > 0 && !isLookingAround && !isMatchOver && (
+      {/* Card Trigger & Event Notes Bar — phones render this inline in the status row instead
+          (see above), so this full-width row is tablet/desktop only. */}
+      {cardNotes.length > 0 && !isLookingAround && !isMatchOver && !isPhone && (
         <div className="mt-1.5 bg-panel/90 border border-player/40 rounded-lg p-1.5 px-2 flex items-center gap-1.5 text-[10px] sm:text-xs text-player shadow-md animate-pulse">
           <Sparkles className="w-3.5 h-3.5 text-player shrink-0" />
           <div className="flex-1 overflow-hidden line-clamp-1 font-mono">
@@ -850,18 +890,29 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
       {/* Bottom Controls Bar: Roll Dice, Undo, Pass Turn, Turn Indicator */}
       {!isLookingAround && !isMatchOver && (
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 bg-panel/90 border border-line rounded-xl p-2 sm:p-2.5">
+      <div className={`flex flex-wrap items-center justify-between bg-panel/90 border border-line rounded-xl ${
+        isPhone ? 'mt-0.5 gap-1 px-1.5 py-0.5' : 'mt-2 gap-2 p-2 sm:p-2.5'
+      }`}>
         {/* Turn Status */}
         <div className="flex items-center gap-1.5">
           <div
-            className={`w-2.5 h-2.5 rounded-full animate-ping ${
+            className={`rounded-full animate-ping ${isPhone ? 'w-1.5 h-1.5' : 'w-2.5 h-2.5'} ${
               turn === 'player' ? 'bg-player shadow-[0_0_10px_var(--player)]' : 'bg-opponent shadow-[0_0_10px_var(--opponent)]'
             }`}
           />
-          <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-text">
+          <span className={`font-black uppercase tracking-wider text-text ${isPhone ? 'text-[9px]' : 'text-[11px] sm:text-xs'}`}>
             {turn === 'player' ? t('neonBoard.yourTurn') : t('neonBoard.cpuTurnEllipsis')}
           </span>
         </div>
+
+        {/* Live commentary ("die boosted", card triggers…) — on phones this strip is the only
+            place with room left, so the event log rides here instead of claiming its own row. */}
+        {isPhone && cardNotes.length > 0 && (
+          <div className="flex-1 min-w-0 flex items-center gap-1 text-player font-mono text-[9px] px-1">
+            <Sparkles className="w-2.5 h-2.5 shrink-0 animate-pulse" />
+            <span className="truncate">{cardNotes[cardNotes.length - 1]}</span>
+          </div>
+        )}
 
         {/* Dice Visual Display */}
         <div className="flex items-center gap-1.5">
@@ -874,7 +925,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
                   animate={{ scale: 1, rotate: 0, opacity: 1 }}
                   exit={{ scale: 0.3, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 380, damping: 18, delay: idx * 0.05 }}
-                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-player/30 to-panel-2 border-2 border-player text-player font-black text-sm sm:text-lg flex items-center justify-center shadow-[0_0_15px_var(--player)]/40"
+                  className={`rounded-lg bg-gradient-to-br from-player/30 to-panel-2 border-2 border-player text-player font-black flex items-center justify-center shadow-[0_0_15px_var(--player)]/40 ${
+                    isPhone ? 'w-5 h-5 text-[10px]' : 'w-7 h-7 sm:w-9 sm:h-9 text-sm sm:text-lg'
+                  }`}
                 >
                   {d}
                 </motion.div>
@@ -919,7 +972,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
             </div>
           )}
 
-          {canRoll && turn === 'player' && (
+          {canRoll && turn === 'player' && !isPhone && (
             <button
               onClick={() => {
                 soundFx.playDiceRoll();

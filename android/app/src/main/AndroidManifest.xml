@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Tablet-only distribution: Play Store filters out devices with a smallest screen
-         width below 600dp (i.e. phones), so this app is only installable on tablets. -->
+    <!-- Phones and tablets both ship: the board has a dedicated landscape layout below the
+         600dp smallest-width cutoff (see useIsPhoneViewport) and the tablet layout above it. -->
     <supports-screens
-        android:smallScreens="false"
-        android:normalScreens="false"
+        android:smallScreens="true"
+        android:normalScreens="true"
         android:largeScreens="true"
         android:xlargeScreens="true"
-        android:requiresSmallestWidthDp="600"
     />
 
     <application
