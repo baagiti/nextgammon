@@ -133,7 +133,7 @@ export default function App() {
       });
   }, []);
 
-  // AdMob (iOS only — see src/ads/admob.ts). Deliberately gated on `runModeUnlocked === false`:
+  // AdMob (see src/ads/admob.ts). Deliberately gated on `runModeUnlocked === false`: on iOS,
   // initAds() triggers the App Tracking Transparency prompt, and a player who has already bought
   // Run Mode will never be shown a single ad, so asking them for tracking permission would be
   // requesting data we have no use for. Waits for the entitlement check to resolve (`null`) too,

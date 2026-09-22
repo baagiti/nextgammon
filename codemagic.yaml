@@ -102,7 +102,89 @@ workflows:
 
 
   # ────────────────────────────────────────────────────────────────────────────
-  #  2. Development Build (fast, no signing, just verify it builds)
+  #  2. Android — Google Play (tablet-only, production track)
+  # ────────────────────────────────────────────────────────────────────────────
+  android-play-store:
+    name: "NEXTGAMMON Android — Google Play"
+    max_build_duration: 60  # minutes
+    instance_type: linux_x2
+
+    environment:
+      node: "22"
+      java: 21
+      # ── "android_signing" variable group (Codemagic UI → this app → Environment
+      #    variables): ANDROID_KEYSTORE_BASE64 (the upload keystore, base64-encoded —
+      #    binaries can't be pasted as plain vars), ANDROID_KEYSTORE_PASSWORD,
+      #    ANDROID_KEY_ALIAS, and GCLOUD_SERVICE_ACCOUNT_CREDENTIALS (the Play
+      #    Developer API service account JSON, pasted as-is — used below to publish). ──
+      groups:
+        - android_signing
+
+    triggering:
+      events:
+        - tag        # auto-build when you push a git tag (e.g. v1.0.0) — same tags as iOS
+      tag_patterns:
+        - pattern: "v*"
+          include: true
+
+    scripts:
+      # 1. Install Node dependencies
+      - name: Install npm dependencies
+        script: npm ci
+
+      # 2. Build Vite web bundle
+      - name: Build web app
+        script: npm run build
+
+      # 3. Sync Capacitor web assets → Android native project
+      - name: Capacitor sync Android
+        script: npx cap sync android
+
+      # 4. Set app version from git tag (e.g. v1.2.3 → versionName 1.2.3), and
+      #    versionCode from the commit count (matches the iOS build-number scheme).
+      - name: Set version from git tag
+        script: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          echo "ANDROID_VERSION_NAME=${LATEST_TAG#v}" >> $CM_ENV
+          echo "ANDROID_VERSION_CODE=$(git rev-list --count HEAD)" >> $CM_ENV
+
+      # 5. Decode the base64 upload keystore to a file build.gradle can sign with
+      #    (see android/app/build.gradle's signingConfigs.release, which reads
+      #    ANDROID_KEYSTORE_PATH/ANDROID_KEYSTORE_PASSWORD/ANDROID_KEY_ALIAS).
+      - name: Decode signing keystore
+        script: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > $CM_BUILD_DIR/nextgammon-upload-key.jks
+          echo "ANDROID_KEYSTORE_PATH=$CM_BUILD_DIR/nextgammon-upload-key.jks" >> $CM_ENV
+
+      # 6. Build the signed release App Bundle
+      - name: Build AAB (Google Play)
+        script: |
+          cd android
+          ./gradlew bundleRelease
+
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/mapping.txt
+
+    publishing:
+      # Auto-publish straight to production (tablet-only distribution comes from
+      # AndroidManifest.xml's <supports-screens requiresSmallestWidthDp="600">,
+      # not from anything here — Google Play reads that from the AAB itself).
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: production
+        submit_as_draft: false
+
+      email:
+        recipients:
+          - burakakkayaa@gmail.com
+        notify:
+          success: true
+          failure: true
+
+
+  # ────────────────────────────────────────────────────────────────────────────
+  #  3. Development Build (fast, no signing, just verify it builds)
   # ────────────────────────────────────────────────────────────────────────────
   dev-build-check:
     name: "NEXTGAMMON — Dev Build Check"

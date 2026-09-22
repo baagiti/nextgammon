@@ -1,10 +1,12 @@
 import { Capacitor } from '@capacitor/core';
 import { Purchases, PURCHASES_ERROR_CODE } from '@revenuecat/purchases-capacitor';
 
-// RevenueCat public SDK key (safe to embed client-side — this is NOT a secret key).
-// Get this from the RevenueCat dashboard: Project Settings -> API Keys -> Apple App Store.
+// RevenueCat public SDK keys (safe to embed client-side — these are NOT secret keys), one per
+// platform since RevenueCat issues a separate key per store app even under the same project.
+// Get these from the RevenueCat dashboard: Project Settings -> API Keys.
 // See README-IAP.md at the project root for the full one-time setup checklist.
 const REVENUECAT_IOS_API_KEY = 'appl_pyRmFpNMkzWBggEBVSXUKvlIGhD';
+const REVENUECAT_ANDROID_API_KEY = 'goog_kpDHLXSAuoLEBjfsdJlttpZtebR';
 
 // The RevenueCat Entitlement identifier that gates Run Mode. Must match the entitlement
 // identifier created in the RevenueCat dashboard and attached to the $3 non-consumable product.
@@ -23,21 +25,30 @@ export const CHIPS_100K_AMOUNT = 100000;
 
 let configured = false;
 
-// RevenueCat/StoreKit only exists on a real native iOS build. In the Vite dev server / browser
-// preview there's no StoreKit to talk to, so every function below short-circuits to "unlocked"
-// on web rather than failing — Run Mode content stays fully testable without a device.
+// RevenueCat/StoreKit/Play Billing only exists on a real native build. In the Vite dev server /
+// browser preview there's no store to talk to, so every function below short-circuits to
+// "unlocked" on web rather than failing — Run Mode content stays fully testable without a device.
 function isNativeIOS(): boolean {
   return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
 }
 
+function isNativeAndroid(): boolean {
+  return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+}
+
+function isNativeMobile(): boolean {
+  return isNativeIOS() || isNativeAndroid();
+}
+
 export async function initPurchases(): Promise<void> {
-  if (!isNativeIOS() || configured) return;
-  await Purchases.configure({ apiKey: REVENUECAT_IOS_API_KEY });
+  if (!isNativeMobile() || configured) return;
+  const apiKey = isNativeAndroid() ? REVENUECAT_ANDROID_API_KEY : REVENUECAT_IOS_API_KEY;
+  await Purchases.configure({ apiKey });
   configured = true;
 }
 
 export async function hasRunModeEntitlement(): Promise<boolean> {
-  if (!isNativeIOS()) return true; // unlocked in browser/dev preview
+  if (!isNativeMobile()) return true; // unlocked in browser/dev preview
   try {
     const { customerInfo } = await Purchases.getCustomerInfo();
     return typeof customerInfo.entitlements.active[RUN_MODE_ENTITLEMENT_ID] !== 'undefined';
@@ -68,7 +79,7 @@ async function findPackage(packageId: string) {
 // yet (offerings still loading, or offline); callers fall back to a price-free label rather than
 // inventing a number.
 export async function getRunModePrice(): Promise<string | null> {
-  if (!isNativeIOS()) return null;
+  if (!isNativeMobile()) return null;
   try {
     return (await findPackage(RUN_MODE_PACKAGE_ID))?.product.priceString ?? null;
   } catch {
@@ -77,7 +88,7 @@ export async function getRunModePrice(): Promise<string | null> {
 }
 
 export async function getChips100kPrice(): Promise<string | null> {
-  if (!isNativeIOS()) return null;
+  if (!isNativeMobile()) return null;
   try {
     return (await findPackage(CHIPS_100K_PACKAGE_ID))?.product.priceString ?? null;
   } catch {
@@ -86,7 +97,7 @@ export async function getChips100kPrice(): Promise<string | null> {
 }
 
 export async function purchaseRunMode(): Promise<PurchaseOutcome> {
-  if (!isNativeIOS()) return { success: true }; // no store on web — treat as unlocked for dev
+  if (!isNativeMobile()) return { success: true }; // no store on web — treat as unlocked for dev
   try {
     const runModePackage = await findPackage(RUN_MODE_PACKAGE_ID);
     if (!runModePackage) {
@@ -103,7 +114,7 @@ export async function purchaseRunMode(): Promise<PurchaseOutcome> {
 }
 
 export async function restoreRunModePurchase(): Promise<PurchaseOutcome> {
-  if (!isNativeIOS()) return { success: true };
+  if (!isNativeMobile()) return { success: true };
   try {
     const { customerInfo } = await Purchases.restorePurchases();
     const unlocked = typeof customerInfo.entitlements.active[RUN_MODE_ENTITLEMENT_ID] !== 'undefined';
@@ -118,7 +129,7 @@ export async function restoreRunModePurchase(): Promise<PurchaseOutcome> {
 // completed and finished the transaction (RevenueCat's default `purchasesAreCompletedBy` mode) —
 // the caller grants CHIPS_100K_AMOUNT to meta.neonChips immediately on success, once, right here.
 export async function purchaseChips100k(): Promise<PurchaseOutcome> {
-  if (!isNativeIOS()) return { success: true }; // no store on web — grant instantly for dev testing
+  if (!isNativeMobile()) return { success: true }; // no store on web — grant instantly for dev testing
   try {
     const chipsPackage = await findPackage(CHIPS_100K_PACKAGE_ID);
     if (!chipsPackage) {

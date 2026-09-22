@@ -16,16 +16,35 @@ const ADS_TESTING_MODE = false;
 const TEST_BANNER_AD_UNIT_ID = 'ca-app-pub-3940256099942544/2934735716';
 const TEST_INTERSTITIAL_AD_UNIT_ID = 'ca-app-pub-3940256099942544/4411468910';
 
-// Real ad unit IDs — NEXTGAMMON (iOS) app in AdMob, App ID ca-app-pub-7842996095218621~9356547586
-// (that App ID itself lives in ios/App/App/Info.plist as GADApplicationIdentifier, not here).
-const REAL_BANNER_AD_UNIT_ID = 'ca-app-pub-7842996095218621/2248318955';
-const REAL_INTERSTITIAL_AD_UNIT_ID = 'ca-app-pub-7842996095218621/5995992276';
-
-const BANNER_AD_UNIT_ID = ADS_TESTING_MODE ? TEST_BANNER_AD_UNIT_ID : REAL_BANNER_AD_UNIT_ID;
-const INTERSTITIAL_AD_UNIT_ID = ADS_TESTING_MODE ? TEST_INTERSTITIAL_AD_UNIT_ID : REAL_INTERSTITIAL_AD_UNIT_ID;
+// Real ad unit IDs, one pair per platform — AdMob issues separate IDs per platform even under
+// the same publisher (ca-app-pub-7842996095218621). App IDs themselves live in the native
+// projects, not here: ios/App/App/Info.plist (GADApplicationIdentifier) and
+// android/app/src/main/AndroidManifest.xml (com.google.android.gms.ads.APPLICATION_ID).
+const REAL_BANNER_AD_UNIT_ID_IOS = 'ca-app-pub-7842996095218621/2248318955';
+const REAL_INTERSTITIAL_AD_UNIT_ID_IOS = 'ca-app-pub-7842996095218621/5995992276';
+const REAL_BANNER_AD_UNIT_ID_ANDROID = 'ca-app-pub-7842996095218621/1923477759';
+const REAL_INTERSTITIAL_AD_UNIT_ID_ANDROID = 'ca-app-pub-7842996095218621/1400733577';
 
 function isNativeIOS(): boolean {
   return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+}
+
+function isNativeAndroid(): boolean {
+  return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+}
+
+function isNativeMobile(): boolean {
+  return isNativeIOS() || isNativeAndroid();
+}
+
+function bannerAdUnitId(): string {
+  if (ADS_TESTING_MODE) return TEST_BANNER_AD_UNIT_ID;
+  return isNativeAndroid() ? REAL_BANNER_AD_UNIT_ID_ANDROID : REAL_BANNER_AD_UNIT_ID_IOS;
+}
+
+function interstitialAdUnitId(): string {
+  if (ADS_TESTING_MODE) return TEST_INTERSTITIAL_AD_UNIT_ID;
+  return isNativeAndroid() ? REAL_INTERSTITIAL_AD_UNIT_ID_ANDROID : REAL_INTERSTITIAL_AD_UNIT_ID_IOS;
 }
 
 // Ads are non-critical — unlike the IAP paywall, nothing here should ever block gameplay
@@ -33,11 +52,13 @@ function isNativeIOS(): boolean {
 
 let configured = false;
 export async function initAds(): Promise<void> {
-  if (!isNativeIOS() || configured) return;
+  if (!isNativeMobile() || configured) return;
   configured = true;
   try {
-    // Apple requires ATT authorization before an ad SDK may use IDFA.
-    await AdMob.requestTrackingAuthorization();
+    // Apple requires ATT authorization before an ad SDK may use IDFA — Android has no equivalent.
+    if (isNativeIOS()) {
+      await AdMob.requestTrackingAuthorization();
+    }
     await AdMob.initialize({ initializeForTesting: ADS_TESTING_MODE });
     // Keep an interstitial ready in the background for whenever the next match ends.
     AdMob.addListener(InterstitialAdPluginEvents.Dismissed, () => {
@@ -50,16 +71,16 @@ export async function initAds(): Promise<void> {
 }
 
 export async function preloadInterstitial(): Promise<void> {
-  if (!isNativeIOS()) return;
+  if (!isNativeMobile()) return;
   try {
-    await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_UNIT_ID, isTesting: ADS_TESTING_MODE });
+    await AdMob.prepareInterstitial({ adId: interstitialAdUnitId(), isTesting: ADS_TESTING_MODE });
   } catch {
     // No fill / network error — showInterstitial() below just no-ops next time it's called.
   }
 }
 
 export async function showInterstitial(): Promise<void> {
-  if (!isNativeIOS()) return;
+  if (!isNativeMobile()) return;
   try {
     await AdMob.showInterstitial();
   } catch {
@@ -68,10 +89,10 @@ export async function showInterstitial(): Promise<void> {
 }
 
 export async function showBanner(): Promise<void> {
-  if (!isNativeIOS()) return;
+  if (!isNativeMobile()) return;
   try {
     await AdMob.showBanner({
-      adId: BANNER_AD_UNIT_ID,
+      adId: bannerAdUnitId(),
       isTesting: ADS_TESTING_MODE,
       position: BannerAdPosition.BOTTOM_CENTER,
     });
@@ -81,7 +102,7 @@ export async function showBanner(): Promise<void> {
 }
 
 export async function hideBanner(): Promise<void> {
-  if (!isNativeIOS()) return;
+  if (!isNativeMobile()) return;
   try {
     await AdMob.removeBanner();
   } catch {
