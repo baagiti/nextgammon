@@ -6,8 +6,8 @@ import fs from 'fs';
 // landscape logical viewport whose *smaller* side stays under useIsPhoneViewport's 600px
 // cutoff — otherwise the tablet layout would render and the shots would be wrong.
 const PROFILES = [
-  // App Store 6.7"/6.9" iPhone, landscape: 2796 x 1290
-  { dir: 'ios', width: 932, height: 430, scale: 3 },
+  // App Store 6.5" iPhone slot, landscape: 2778 x 1284 (ASC's required iPhone size)
+  { dir: 'ios', width: 926, height: 428, scale: 3 },
   // Play Store phone, landscape 16:9: 1920 x 1080
   { dir: 'android', width: 960, height: 540, scale: 2 },
 ];

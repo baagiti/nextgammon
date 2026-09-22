@@ -1,0 +1,32 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/NeonBoard.tsx"
+        ],
+        "createdAt": "2026-09-22T21:10:04.445Z"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/NeonBoard.tsx"
+        ],
+        "createdAt": "2026-09-22T21:10:04.563Z"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-09-22T21:10:04.688Z"
+      }
+    ]
+  }
+}
