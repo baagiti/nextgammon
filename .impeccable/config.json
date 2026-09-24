@@ -26,6 +26,30 @@
           "src/index.css"
         ],
         "createdAt": "2026-09-22T21:10:04.688Z"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "animate-bounce",
+        "files": [
+          "src/components/NeonBoard.tsx"
+        ],
+        "createdAt": "2026-09-24T15:05:08.063Z"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/OpponentHeader.tsx"
+        ],
+        "createdAt": "2026-09-24T15:05:08.224Z"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/OpponentHeader.tsx"
+        ],
+        "createdAt": "2026-09-24T15:05:08.388Z"
       }
     ]
   }
