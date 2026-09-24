@@ -15,6 +15,7 @@ import {
   startNewRun,
   getOpponentForStage,
   generateCardDraftChoices,
+  withUnlockedCards,
 } from './game/runManager';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID, getOmegaPhase, OMEGA_TURNS_PER_PROTOCOL, OMEGA_PHASE_NOTES } from './game/campaignData';
 import { evaluateAchievements } from './game/achievements';
@@ -568,13 +569,11 @@ export default function App() {
     const newRun = startNewRun(meta);
     setRun(newRun);
 
-    // Save stats
-    const updatedMeta: MetaData = {
-      ...meta,
+    // Save stats — the starter card counts toward the lifetime collection from the first run.
+    applyMetaUpdate({
       totalGamesPlayed: meta.totalGamesPlayed + 1,
-    };
-    setMeta(updatedMeta);
-    saveMetaData(updatedMeta);
+      unlockedCards: withUnlockedCards(meta.unlockedCards, newRun.deck.map((c) => c.id)),
+    });
 
     setActiveScreen('MAP');
   };
@@ -1423,6 +1422,7 @@ export default function App() {
       applyMetaUpdate({
         neonChips: meta.neonChips + 1000,
         totalLifetimeChips: meta.totalLifetimeChips + 1000,
+        unlockedCards: withUnlockedCards(meta.unlockedCards, newDeck.map((c) => c.id)),
         highestStage: Math.max(meta.highestStage, run.stage),
         totalWins: meta.totalWins + 1,
         totalMatchesWon: meta.totalMatchesWon + 1,
@@ -1494,6 +1494,7 @@ export default function App() {
 
     applyMetaUpdate({
       neonChips: meta.neonChips - SKIP_STAGE_COST,
+      unlockedCards: withUnlockedCards(meta.unlockedCards, newDeck.map((c) => c.id)),
       highestStage: Math.max(meta.highestStage, run.stage),
     });
   };

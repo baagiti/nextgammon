@@ -1,6 +1,6 @@
 import { RunState, MetaData, Card, OpponentCard } from '../types';
 import { PLAYER_CARDS, OPPONENT_BOSSES } from './cardsData';
-import { STARTER_CARD_ID } from './campaignData';
+import { STARTER_CARD_ID, CAMPAIGN_STAGES } from './campaignData';
 
 const META_STORAGE_KEY = 'NEXTGAMMON_META_PROGRESSION_V1';
 
@@ -29,6 +29,28 @@ function defaultMetaData(): MetaData {
   };
 }
 
+// Adds card ids to the player's lifetime collection (`unlockedCards`), without duplicates. The
+// COLLECTOR / FULL DECK achievements count this list.
+export function withUnlockedCards(unlocked: string[], ids: string[]): string[] {
+  const set = new Set(unlocked);
+  ids.forEach((id) => set.add(id));
+  return [...set];
+}
+
+// Saves written before the collection was tracked have an empty `unlockedCards` even for players
+// deep into the campaign. Rebuild what they must have earned: the starter card once any run was
+// started, and the fixed reward of every stage up to the highest one cleared (stages are cleared
+// strictly in order, so highestStage N means stages 1..N are all cleared).
+function backfillUnlockedCards(meta: MetaData): MetaData {
+  const earned: string[] = [];
+  if (meta.totalGamesPlayed > 0) earned.push(STARTER_CARD_ID);
+  const clearedAny = meta.totalWins > 0 || meta.highestStage > 1;
+  if (clearedAny) {
+    CAMPAIGN_STAGES.filter((s) => s.stage <= meta.highestStage).forEach((s) => earned.push(s.rewardCardId));
+  }
+  return { ...meta, unlockedCards: withUnlockedCards(meta.unlockedCards, earned) };
+}
+
 export function loadMetaData(): MetaData {
   try {
     const dataStr = localStorage.getItem(META_STORAGE_KEY);
@@ -43,7 +65,7 @@ export function loadMetaData(): MetaData {
       // Merge onto the defaults so any field added after a player's save was written (e.g. the
       // whole achievements/lifetime-stats block) comes back as a safe zero/empty value instead
       // of undefined -> NaN or a missing array crashing achievement checks.
-      return { ...defaultMetaData(), ...parsed };
+      return backfillUnlockedCards({ ...defaultMetaData(), ...parsed });
     }
   } catch (e) {
     console.error('Failed to load meta data', e);

@@ -168,7 +168,7 @@
     "discardDie": "Descartar Dado",
     "matchVictory": "Victoria en la Partida",
     "systemDefeat": "Derrota del Sistema",
-    "victoryDescRun": "¡Desmantelaste la red del rival CPU! Elige una nueva mejora de carta y avanza al siguiente nodo.",
+    "victoryDescRun": "¡Etapa superada! La carta del boss ya está en tu colección: adelante con la siguiente etapa.",
     "victoryDescFinal": "OMEGA CORE está fuera de línea: has superado toda la campaña. TERMINATION PROTOCOL es tuyo y ahora aparece en los drafts de Partida Rápida 1v1.",
     "victoryDescQuick": "¡Desmantelaste la red del rival CPU! Juega otra ronda.",
     "defeatDescRun": "Tu núcleo de backgammon fue comprometido por el boss de IA. Reagrúpate e intenta la etapa de nuevo.",
