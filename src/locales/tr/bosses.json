@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "Boss, kuşandığın kartın canlı bir kopyasını sana karşı oynar.", "taunt": "Ne getirdiysen — ben de onu getirdim." },
     "siege": { "name": "SIEGE", "description": "Boss bar önceliğini yok sayar — kendi taşları bar'dayken bile tahtadaki taşlarını oynayabilir.", "taunt": "Bar bir kuşatmayı durdurmaz." },
     "null_sector": { "name": "NULL SECTOR", "description": "Kuşandığın kart maç boyunca devre dışı bırakılır.", "taunt": "Ne getirdiysen, zaten silindi." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED ve NULL SECTOR aynı anda aktif — boss'un açık taşları kırılamaz ve kartın hiçbir işe yaramaz.", "taunt": "BEN NEXTGAMMON'IM. KARTIN ÇOKTAN GİTTİ. TÜM YOLLAR BURADA SONA ERİYOR." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "Yendiğin tüm protokolleri sırayla çalıştırır — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — ve her 3 turda bir değiştirir. Sıradaki protokol başlamadan bir tur önce duyurulur.", "taunt": "BEN NEXTGAMMON'IM. YENDİĞİN HER BOSS HÂLÂ İÇİMDE ÇALIŞIYOR." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "Sıfırın Altında Haydut Yapay Zeka", "quote": "Kodun hatalarla dolu. Zarlarını bozmama izin ver." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "Kırılma Noktası", "quote": "Çiftte bana vur, bütün bir hamleyi kaybet." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "Ev Muhafızı", "quote": "Kendi evinde açık taş mı bıraktın? Çıkışı kilitlerim." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "Tam Sayı Makinesi", "quote": "Eve kestirme yok. Sadece tam sayılar." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "Son Siber Tanrı Yapay Zeka", "quote": "BEN NEXTGAMMON'IM. KARTIN ÇOKTAN GİTTİ. TÜM YOLLAR BURADA SONA ERİYOR." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "Son Siber Tanrı Yapay Zeka", "quote": "BEN NEXTGAMMON'IM. YENDİĞİN HER BOSS HÂLÂ İÇİMDE ÇALIŞIYOR." }
   }
 }

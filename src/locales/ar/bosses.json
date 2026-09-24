@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "يستخدم Boss نسخة حية من بطاقتك المُجهَّزة ضدك.", "taunt": "مهما أحضرت — أحضرته أنا أيضاً." },
     "siege": { "name": "SIEGE", "description": "يتجاهل Boss أولوية البار — يمكنه تحريك أحجاره الموجودة على اللوحة حتى مع وجود أحجار له على البار.", "taunt": "البار لا يوقف حصاراً." },
     "null_sector": { "name": "NULL SECTOR", "description": "بطاقتك المُجهَّزة معطَّلة طوال المباراة.", "taunt": "مهما أحضرت، فقد حُذف بالفعل." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED و NULL SECTOR نشطان في آن واحد — لا يمكن ضرب أحجار Boss المكشوفة، وبطاقتك لا تفعل شيئاً.", "taunt": "أنا NEXTGAMMON. بطاقتك اختفت بالفعل. كل الطرق تنتهي هنا." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "يشغّل كل البروتوكولات التي هزمتها واحداً تلو الآخر — FORTIFIED وPHASE WALK وFIREWALL وMIRROR CORE وSIEGE وNULL SECTOR — ويبدّلها كل 3 أدوار. يُعلَن عن البروتوكول التالي قبل بدئه بدور واحد.", "taunt": "أنا NEXTGAMMON. كل Boss هزمته ما زال يعمل بداخلي." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "ذكاء اصطناعي مارق دون الصفر", "quote": "شيفرتك مليئة بالعيوب. دعني أفسد رمياتك." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "نقطة الكسر", "quote": "اضربني في رمية دبل وستخسر حركة كاملة." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "حارس البيت", "quote": "اترك حجراً مكشوفاً في بيتك. سأغلق المخرج." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "الآلة الدقيقة", "quote": "لا طرق مختصرة إلى البيت. أرقام دقيقة فقط." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "الذكاء الاصطناعي الإله السيبراني الأخير", "quote": "أنا NEXTGAMMON. بطاقتك اختفت بالفعل. كل الطرق تنتهي هنا." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "الذكاء الاصطناعي الإله السيبراني الأخير", "quote": "أنا NEXTGAMMON. كل Boss هزمته ما زال يعمل بداخلي." }
   }
 }

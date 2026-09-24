@@ -50,7 +50,8 @@ interface NeonBoardProps {
   shakeToken?: number;
   mutationFlashToken?: number;
   mutationFlashText?: string;
-  mutationFlashVariant?: 'card' | 'protocol';
+  // 'protocolIncoming' = Omega's one-turn-ahead warning: same red styling, but it hasn't kicked in yet.
+  mutationFlashVariant?: 'card' | 'protocol' | 'protocolIncoming';
   viewStage?: ViewStage;
   onCycleViewStage?: () => void;
   isRunMatch?: boolean;
@@ -503,20 +504,24 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
           >
             <div
               className={`rounded-xl border-2 bg-ink-2/95 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 text-center ${
-                mutationFlashVariant === 'protocol'
+                mutationFlashVariant !== 'card'
                   ? 'border-danger shadow-[0_0_40px_var(--danger)]'
                   : 'border-player shadow-[0_0_40px_var(--player)]'
               }`}
             >
               <div
                 className={`flex items-center justify-center gap-1.5 font-display font-black text-[11px] sm:text-xs uppercase tracking-[0.15em] ${
-                  mutationFlashVariant === 'protocol'
+                  mutationFlashVariant !== 'card'
                     ? 'text-danger drop-shadow-[0_0_10px_var(--danger)]'
                     : 'text-player drop-shadow-[0_0_10px_var(--player)]'
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                {mutationFlashVariant === 'protocol' ? t('neonBoard.protocolActivated') : t('neonBoard.mutationActivated')}
+                {mutationFlashVariant === 'protocolIncoming'
+                  ? t('neonBoard.protocolIncoming')
+                  : mutationFlashVariant === 'protocol'
+                  ? t('neonBoard.protocolActivated')
+                  : t('neonBoard.mutationActivated')}
                 <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
               <div className="mt-1 text-[10px] sm:text-xs text-text font-mono leading-snug">

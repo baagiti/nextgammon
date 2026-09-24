@@ -131,6 +131,7 @@
     "ownerLabelPlayer": "بطاقة اللاعب",
     "ownerLabelCpu": "بطاقة CPU",
     "protocolActivated": "تم تفعيل البروتوكول",
+    "protocolIncoming": "بروتوكول قادم",
     "mutationActivated": "تم تفعيل الطفرة",
     "youGating": "أنت: {{label}}",
     "cpuGating": "CPU: {{label}}",
@@ -192,6 +193,8 @@
     "even": "تعادل",
     "pipRace": "سباق النقاط",
     "protocolActive": "البروتوكول نشط",
+    "omegaTurnsLeft": "Omega · الأدوار المتبقية: {{count}}",
+    "omegaNext": "التالي: {{name}}",
     "cpuCard": "بطاقة CPU",
     "mirrorSuffix": "انعكاس {{name}}:",
     "clickToExpand": "انقر لعرض تفاصيل البطاقة"

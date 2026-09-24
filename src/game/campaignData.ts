@@ -53,11 +53,40 @@ export const BOSS_PROTOCOLS: BossProtocol[] = [
     id: 'omega_protocol',
     name: 'OMEGA PROTOCOL',
     description:
-      "FORTIFIED and NULL SECTOR active at once — the boss's blots can't be hit, and your card does nothing.",
-    taunt: 'I AM NEXTGAMMON. YOUR CARD IS ALREADY GONE. ALL PATHS TERMINATE HERE.',
+      'Runs every protocol you have beaten, one after another — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — switching every 3 turns. The next one is announced a turn before it starts.',
+    taunt: 'I AM NEXTGAMMON. EVERY BOSS YOU BEAT STILL RUNS INSIDE ME.',
     iconName: 'Skull',
   },
 ];
+
+// OMEGA PROTOCOL: the final boss cycles through the six protocols in the order the campaign
+// introduced them. A "turn" is one full round — the player's move plus the boss's — counted from
+// the first player turn of the match (round 1). Each protocol holds for OMEGA_TURNS_PER_PROTOCOL
+// rounds, then the next takes over; after NULL SECTOR it wraps back to FORTIFIED.
+export const OMEGA_CYCLE = ['fortified', 'phase_walk', 'firewall', 'mirror_core', 'siege', 'null_sector'] as const;
+export const OMEGA_TURNS_PER_PROTOCOL = 3;
+
+export function getOmegaPhase(round: number) {
+  const r = Math.max(1, round) - 1;
+  const index = Math.floor(r / OMEGA_TURNS_PER_PROTOCOL) % OMEGA_CYCLE.length;
+  return {
+    index,
+    protocolId: OMEGA_CYCLE[index],
+    nextProtocolId: OMEGA_CYCLE[(index + 1) % OMEGA_CYCLE.length],
+    turnsLeft: OMEGA_TURNS_PER_PROTOCOL - (r % OMEGA_TURNS_PER_PROTOCOL),
+  };
+}
+
+// What each protocol does while Omega is running it — the protocols' own descriptions are written
+// for a whole-match boss ("disabled for the entire match"), which would be wrong for a 3-turn phase.
+export const OMEGA_PHASE_NOTES: Record<(typeof OMEGA_CYCLE)[number], string> = {
+  fortified: "the boss's blots cannot be hit.",
+  phase_walk: 'the boss re-enters from the Bar ignoring your blocked points.',
+  firewall: "you cannot land on the boss's home board (points 19-24).",
+  mirror_core: 'the boss plays a copy of your equipped card.',
+  siege: 'the boss can move on-board checkers while its own sit on the Bar.',
+  null_sector: 'your equipped card is disabled.',
+};
 
 const ACT_COLORS = ['#00f0ff', '#22d3ee', '#a855f7', '#22c55e', '#eab308', '#f97316', '#ef4444'];
 
@@ -174,7 +203,7 @@ export const CAMPAIGN_STAGES: CampaignStage[] = [
     'card_termination_protocol',
     'OMEGA CORE',
     'Final Cyber God AI',
-    'I AM NEXTGAMMON. YOUR CARD IS ALREADY GONE. ALL PATHS TERMINATE HERE.',
+    'I AM NEXTGAMMON. EVERY BOSS YOU BEAT STILL RUNS INSIDE ME.',
     'omegacore'
   ),
 ];

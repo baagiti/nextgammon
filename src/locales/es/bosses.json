@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "El boss juega una copia activa de tu propia carta equipada en tu contra.", "taunt": "Lo que sea que hayas traído — yo también lo traje." },
     "siege": { "name": "SIEGE", "description": "El boss ignora la prioridad de la barra — puede mover fichas en el tablero incluso mientras las suyas están en la barra.", "taunt": "La barra no detiene un asedio." },
     "null_sector": { "name": "NULL SECTOR", "description": "Tu carta equipada queda desactivada durante toda la partida.", "taunt": "Lo que sea que hayas traído, ya fue eliminado." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED y NULL SECTOR activos a la vez — las fichas sueltas del boss no pueden ser comidas, y tu carta no hace nada.", "taunt": "SOY NEXTGAMMON. TU CARTA YA DESAPARECIÓ. TODOS LOS CAMINOS TERMINAN AQUÍ." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "Ejecuta uno tras otro cada protocolo que has vencido — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — y cambia cada 3 turnos. El siguiente se anuncia un turno antes de empezar.", "taunt": "SOY NEXTGAMMON. CADA BOSS QUE VENCISTE SIGUE FUNCIONANDO DENTRO DE MÍ." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "IA Renegada Bajo Cero", "quote": "Tu código está lleno de fallos. Deja que corrompa tus tiradas." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "Punto de Ruptura", "quote": "Golpéame en dobles y pierdes un movimiento entero." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "Guardián de la Casa", "quote": "Deja una ficha suelta en tu propia casa. Cerraré la salida." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "La Máquina Exacta", "quote": "Sin atajos a casa. Solo números exactos." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "IA Dios Cibernético Final", "quote": "SOY NEXTGAMMON. TU CARTA YA DESAPARECIÓ. TODOS LOS CAMINOS TERMINAN AQUÍ." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "IA Dios Cibernético Final", "quote": "SOY NEXTGAMMON. CADA BOSS QUE VENCISTE SIGUE FUNCIONANDO DENTRO DE MÍ." }
   }
 }

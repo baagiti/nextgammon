@@ -131,6 +131,7 @@
     "ownerLabelPlayer": "Карта игрока",
     "ownerLabelCpu": "Карта CPU",
     "protocolActivated": "Протокол активирован",
+    "protocolIncoming": "Протокол на подходе",
     "mutationActivated": "Мутация активирована",
     "youGating": "Вы: {{label}}",
     "cpuGating": "CPU: {{label}}",
@@ -192,6 +193,8 @@
     "even": "Равно",
     "pipRace": "Гонка пипсов",
     "protocolActive": "Протокол активен",
+    "omegaTurnsLeft": "Omega · осталось ходов: {{count}}",
+    "omegaNext": "Далее: {{name}}",
     "cpuCard": "Карта CPU",
     "mirrorSuffix": "{{name}} — Зеркало:",
     "clickToExpand": "Нажмите, чтобы развернуть детали карты"

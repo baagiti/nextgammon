@@ -5,6 +5,7 @@ import { CardIcon } from './CardIcon';
 import { useTranslation } from 'react-i18next';
 import { useOpponentDisplayText, useProtocolText, useCardText } from '../hooks/useLocalizedText';
 import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
+import { BOSS_PROTOCOLS } from '../game/campaignData';
 
 interface OpponentHeaderProps {
   opponent: OpponentCard;
@@ -14,6 +15,9 @@ interface OpponentHeaderProps {
   maxStages: number;
   cpuCard?: Card;
   protocol?: BossProtocol | null;
+  // OMEGA PROTOCOL only: `protocol` is the phase currently in force; this adds the countdown to the
+  // next one so the player can plan for it.
+  omega?: { turnsLeft: number; nextProtocolId: string } | null;
   onCardClick?: (card: Card) => void;
 }
 
@@ -25,6 +29,7 @@ export const OpponentHeader: React.FC<OpponentHeaderProps> = ({
   maxStages,
   cpuCard,
   protocol,
+  omega,
   onCardClick,
 }) => {
   const { t } = useTranslation('ui');
@@ -35,6 +40,14 @@ export const OpponentHeader: React.FC<OpponentHeaderProps> = ({
   const { name: protocolName, taunt: protocolTaunt } = useProtocolText(
     protocol ?? { id: '', name: '', description: '', taunt: '' }
   );
+  const { name: omegaNextName } = useProtocolText(
+    BOSS_PROTOCOLS.find((p) => p.id === omega?.nextProtocolId) ?? { id: '', name: '', description: '', taunt: '' }
+  );
+  const protocolCaption = omega
+    ? omega.turnsLeft === 1
+      ? t('opponentHeader.omegaNext', { name: omegaNextName })
+      : t('opponentHeader.omegaTurnsLeft', { count: omega.turnsLeft })
+    : t('opponentHeader.protocolActive');
   const { name: cpuCardName } = useCardText(cpuCard ?? { id: '', name: '', tagline: '', description: '' });
 
   return (
@@ -139,13 +152,19 @@ export const OpponentHeader: React.FC<OpponentHeaderProps> = ({
 
       {/* Right: protocol badge (persistent speech bubble) for protocol bosses, or the CPU's card */}
       {protocol ? (
-        <div className="relative flex items-center gap-1.5 bg-danger/15 border border-danger/70 rounded-lg px-2 sm:px-2.5 py-1 shadow-[0_0_14px_var(--danger)]/40 shrink-0 max-w-[160px] sm:max-w-[220px]" title={protocolTaunt}>
-          <CardIcon name={protocol.iconName} className="w-3.5 h-3.5 text-danger shrink-0 animate-pulse" />
-          <div className="text-right min-w-0">
-            <span className="text-[8px] font-mono font-black text-danger block uppercase tracking-wider truncate">
-              {t('opponentHeader.protocolActive')}
+        <div
+          className={`relative flex items-center bg-danger/15 border border-danger/70 rounded-lg shadow-[0_0_14px_var(--danger)]/40 shrink-0 ${
+            isPhone ? 'gap-1 px-1.5 py-0 max-w-[190px]' : 'gap-1.5 px-2 sm:px-2.5 py-1 max-w-[160px] sm:max-w-[220px]'
+          } ${omega?.turnsLeft === 1 ? 'animate-pulse' : ''}`}
+          title={protocolTaunt}
+        >
+          <CardIcon name={protocol.iconName} className={`text-danger shrink-0 animate-pulse ${isPhone ? 'w-2.5 h-2.5' : 'w-3.5 h-3.5'}`} />
+          {/* Phones fit the caption and the name on one line; the header row is only ~16px tall there. */}
+          <div className={`min-w-0 ${isPhone ? 'flex items-baseline gap-1' : 'text-right'}`}>
+            <span className={`font-mono font-black text-danger uppercase tracking-wider truncate ${isPhone ? 'text-[7px]' : 'text-[8px] block'}`}>
+              {protocolCaption}
             </span>
-            <span className="text-[10px] sm:text-xs font-black text-text block truncate">
+            <span className={`font-black text-text truncate ${isPhone ? 'text-[9px]' : 'text-[10px] sm:text-xs block'}`}>
               {protocolName}
             </span>
           </div>

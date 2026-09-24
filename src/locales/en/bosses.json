@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "The boss plays a live copy of your own equipped card against you.", "taunt": "Whatever you brought — I brought it too." },
     "siege": { "name": "SIEGE", "description": "The boss ignores Bar priority — it can move on-board checkers even while its own sit on the Bar.", "taunt": "The Bar doesn't stop a siege." },
     "null_sector": { "name": "NULL SECTOR", "description": "Your equipped card is disabled for the entire match.", "taunt": "Whatever you brought, it's already deleted." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED and NULL SECTOR active at once — the boss's blots can't be hit, and your card does nothing.", "taunt": "I AM NEXTGAMMON. YOUR CARD IS ALREADY GONE. ALL PATHS TERMINATE HERE." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "Runs every protocol you have beaten, one after another — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — switching every 3 turns. The next one is announced a turn before it starts.", "taunt": "I AM NEXTGAMMON. EVERY BOSS YOU BEAT STILL RUNS INSIDE ME." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "Sub-Zero Rogue AI", "quote": "Your code is full of flaws. Let me corrupt your rolls." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "Break Point", "quote": "Hit me on doubles and lose a whole move." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "Home Warden", "quote": "Leave a blot in your own home. I'll lock the exit." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "The Exact Machine", "quote": "No shortcuts home. Exact numbers only." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "Final Cyber God AI", "quote": "I AM NEXTGAMMON. YOUR CARD IS ALREADY GONE. ALL PATHS TERMINATE HERE." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "Final Cyber God AI", "quote": "I AM NEXTGAMMON. EVERY BOSS YOU BEAT STILL RUNS INSIDE ME." }
   }
 }

@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "Der Boss spielt eine lebende Kopie deiner eigenen ausgerüsteten Karte gegen dich.", "taunt": "Was auch immer du mitgebracht hast — ich habe es auch." },
     "siege": { "name": "SIEGE", "description": "Der Boss ignoriert die Bar-Priorität — er kann Steine auf dem Brett bewegen, selbst während seine eigenen auf der Bar sitzen.", "taunt": "Die Bar hält keine Belagerung auf." },
     "null_sector": { "name": "NULL SECTOR", "description": "Deine ausgerüstete Karte ist für das gesamte Match deaktiviert.", "taunt": "Was auch immer du mitgebracht hast, es ist bereits gelöscht." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED und NULL SECTOR sind gleichzeitig aktiv — die einzelnen Steine des Bosses können nicht geschlagen werden, und deine Karte bewirkt nichts.", "taunt": "ICH BIN NEXTGAMMON. DEINE KARTE IST BEREITS VERLOREN. ALLE WEGE ENDEN HIER." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "Führt jedes Protokoll, das du besiegt hast, nacheinander aus — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — und wechselt alle 3 Züge. Das nächste wird einen Zug vorher angekündigt.", "taunt": "ICH BIN NEXTGAMMON. JEDER BOSS, DEN DU BESIEGT HAST, LÄUFT NOCH IN MIR." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "Sub-Zero-Schurken-KI", "quote": "Dein Code steckt voller Fehler. Lass mich deine Würfe korrumpieren." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "Bruchpunkt", "quote": "Schlag mich bei Pasch, und verlier einen ganzen Zug." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "Heimwächter", "quote": "Lass einen Stein in deinem eigenen Heimfeld offen. Ich verriegle den Ausgang." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "Die exakte Maschine", "quote": "Keine Abkürzungen nach Hause. Nur exakte Zahlen." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "Letzte kybernetische Gott-KI", "quote": "ICH BIN NEXTGAMMON. DEINE KARTE IST BEREITS VERLOREN. ALLE WEGE ENDEN HIER." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "Letzte kybernetische Gott-KI", "quote": "ICH BIN NEXTGAMMON. JEDER BOSS, DEN DU BESIEGT HAST, LÄUFT NOCH IN MIR." }
   }
 }

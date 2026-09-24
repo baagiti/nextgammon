@@ -16,7 +16,7 @@ import {
   getOpponentForStage,
   generateCardDraftChoices,
 } from './game/runManager';
-import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID } from './game/campaignData';
+import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID, getOmegaPhase, OMEGA_TURNS_PER_PROTOCOL, OMEGA_PHASE_NOTES } from './game/campaignData';
 import { evaluateAchievements } from './game/achievements';
 import { AchievementToast } from './components/AchievementToast';
 import {
@@ -292,8 +292,8 @@ export default function App() {
   // The 'protocol' variant (red) fires when a boss protocol is what actually bit this turn.
   const [mutationFlashToken, setMutationFlashToken] = useState<number>(0);
   const [mutationFlashText, setMutationFlashText] = useState<string>('');
-  const [mutationFlashVariant, setMutationFlashVariant] = useState<'card' | 'protocol'>('card');
-  const triggerMutationFlash = (notes: string[], variant: 'card' | 'protocol' = 'card') => {
+  const [mutationFlashVariant, setMutationFlashVariant] = useState<'card' | 'protocol' | 'protocolIncoming'>('card');
+  const triggerMutationFlash = (notes: string[], variant: 'card' | 'protocol' | 'protocolIncoming' = 'card') => {
     if (notes.length === 0) return;
     setMutationFlashText(notes[0]);
     setMutationFlashVariant(variant);
@@ -391,6 +391,80 @@ export default function App() {
   // Count of opponent checkers the player has hit this match, for the post-match Neon Chips
   // earned breakdown — reset at match start (handleConfirmCardSelection), incremented on each hit.
   const [matchHitCount, setMatchHitCount] = useState<number>(0);
+
+  // OMEGA PROTOCOL (final boss) doesn't have a rule of its own — it runs the six earlier protocols in
+  // turn (see getOmegaPhase). `activeBossProtocolId` stays 'omega_protocol' as the boss's identity
+  // (intro, equip screen, boss music); `ruleProtocolId` is the protocol actually in force right now,
+  // and is what every rules check and the in-match protocol badge read.
+  const [omegaRound, setOmegaRound] = useState<number>(1);
+  const isOmegaBoss = activeBossProtocolId === 'omega_protocol';
+  const omegaPhase = isOmegaBoss ? getOmegaPhase(omegaRound) : null;
+  const ruleProtocolId = omegaPhase ? omegaPhase.protocolId : activeBossProtocolId;
+  const ruleProtocol = BOSS_PROTOCOLS.find((p) => p.id === ruleProtocolId) || null;
+
+  // Marked-checker cards (Black Ice, Deadweight, Courier) need a point picked when the CPU starts
+  // holding one — at match start, or when Omega's MIRROR CORE phase hands it the player's card.
+  const initCpuMarkedCard = (cpuCard: Card | null): string[] => {
+    if (cpuCard?.id === 'card_black_ice') {
+      const cpuPick = [5, 6, 7, 11, 12, 17, 18, 23][Math.floor(Math.random() * 8)];
+      setCpuBlackIcePoint(cpuPick);
+      return [`❄️ CPU covered Point #${cpuPick + 1} with Black Ice!`];
+    }
+    if (cpuCard?.id === 'card_deadweight') {
+      const cpuPick = 23; // CPU marks player's back checker at 24th point (index 23)
+      setCpuDeadweightPoint(cpuPick);
+      return [`⚓ CPU applied Deadweight to your checker at Point #${cpuPick + 1} (-1 move distance penalty)!`];
+    }
+    if (cpuCard?.id === 'card_courier') {
+      const cpuPick = 0; // CPU marks CPU's checker at 1st point (index 0)
+      setCpuCourierPoint(cpuPick);
+      return [`🚀 CPU applied Courier to their checker at Point #${cpuPick + 1} (+1 speed boost)!`];
+    }
+    return [];
+  };
+
+  // One Omega round = the player's turn + the boss's, so the round ticks over each time play comes
+  // back to the player. Reset to 1 when a match starts (handleConfirmCardSelection).
+  const prevTurnRef = useRef<PlayerId>(turn);
+  useEffect(() => {
+    if (isOmegaBoss && activeScreen === 'MATCH' && !isMatchOver && prevTurnRef.current === 'cpu' && turn === 'player') {
+      setOmegaRound((r) => r + 1);
+    }
+    prevTurnRef.current = turn;
+  }, [turn]);
+
+  // Omega phase changes: MIRROR CORE is the one protocol that isn't a pure rules flag — it hands the
+  // boss a live copy of the player's card, so the copy is given when that phase starts and taken
+  // back (with any points it marked) when it ends.
+  useEffect(() => {
+    // Round 1 (FORTIFIED) is announced by handleConfirmCardSelection along with the match start.
+    if (!omegaPhase || activeScreen !== 'MATCH' || isMatchOver || omegaRound === 1) return;
+    const notes: string[] = [];
+    if (omegaPhase.protocolId === 'mirror_core') {
+      setActiveCpuCard(activePlayerCard);
+      notes.push(...initCpuMarkedCard(activePlayerCard));
+    } else if (activeCpuCard) {
+      setActiveCpuCard(null);
+      setCpuBlackIcePoint(null);
+      setCpuDeadweightPoint(null);
+      setCpuCourierPoint(null);
+    }
+    const protocol = BOSS_PROTOCOLS.find((p) => p.id === omegaPhase.protocolId);
+    if (!protocol) return;
+    const announce = `🔒 OMEGA → ${protocol.name} for ${OMEGA_TURNS_PER_PROTOCOL} turns: ${OMEGA_PHASE_NOTES[omegaPhase.protocolId]}`;
+    setCardNotes((prev) => [...prev, announce, ...notes]);
+    triggerMutationFlash([announce], 'protocol');
+  }, [omegaPhase?.index, isOmegaBoss]);
+
+  // Warn a turn ahead: on the last round of a phase, name the protocol that takes over next.
+  useEffect(() => {
+    if (!omegaPhase || activeScreen !== 'MATCH' || isMatchOver || omegaPhase.turnsLeft !== 1) return;
+    const next = BOSS_PROTOCOLS.find((p) => p.id === omegaPhase.nextProtocolId);
+    if (!next) return;
+    const warning = `⚠️ OMEGA: ${next.name} takes over next turn — ${OMEGA_PHASE_NOTES[omegaPhase.nextProtocolId]}`;
+    setCardNotes((prev) => [...prev, warning]);
+    triggerMutationFlash([warning], 'protocolIncoming');
+  }, [omegaRound]);
 
   // History stack for current player turn (enables Undo Move & Reset Turn). Marked-checker points
   // (Courier/Deadweight) follow whichever checker they're tagged to as it moves, same as the board
@@ -629,18 +703,18 @@ export default function App() {
     }
 
     // CPU Card Initialization
-    if (cpuCard?.id === 'card_black_ice') {
-      const cpuPick = [5, 6, 7, 11, 12, 17, 18, 23][Math.floor(Math.random() * 8)];
-      setCpuBlackIcePoint(cpuPick);
-      matchNotes.push(`❄️ CPU covered Point #${cpuPick + 1} with Black Ice!`);
-    } else if (cpuCard?.id === 'card_deadweight') {
-      const cpuPick = 23; // CPU marks player's back checker at 24th point (index 23)
-      setCpuDeadweightPoint(cpuPick);
-      matchNotes.push(`⚓ CPU applied Deadweight to your checker at Point #${cpuPick + 1} (-1 move distance penalty)!`);
-    } else if (cpuCard?.id === 'card_courier') {
-      const cpuPick = 0; // CPU marks CPU's checker at 1st point (index 0)
-      setCpuCourierPoint(cpuPick);
-      matchNotes.push(`🚀 CPU applied Courier to their checker at Point #${cpuPick + 1} (+1 speed boost)!`);
+    matchNotes.push(...initCpuMarkedCard(cpuCard));
+
+    // OMEGA PROTOCOL starts its cycle over at round 1 (FORTIFIED) every match.
+    setOmegaRound(1);
+    if (protocol?.id === 'omega_protocol') {
+      const first = getOmegaPhase(1);
+      const firstProtocol = BOSS_PROTOCOLS.find((p) => p.id === first.protocolId);
+      if (firstProtocol) {
+        const announce = `🔒 OMEGA → ${firstProtocol.name} for ${OMEGA_TURNS_PER_PROTOCOL} turns: ${OMEGA_PHASE_NOTES[first.protocolId]}`;
+        matchNotes.push(announce);
+        triggerMutationFlash([announce], 'protocol');
+      }
     }
 
     setCardNotes(matchNotes);
@@ -760,9 +834,10 @@ export default function App() {
   };
 
   // Get active valid moves for player
-  // NULL SECTOR / OMEGA PROTOCOL disable the player's equipped card for the whole match — it still
-  // shows in the UI (so the player can see what they brought), it just does nothing mechanically.
-  const isCardNulledByProtocol = activeBossProtocolId === 'null_sector' || activeBossProtocolId === 'omega_protocol';
+  // NULL SECTOR disables the player's equipped card — for the whole match against its own boss, or
+  // for its 3-turn phase under OMEGA PROTOCOL. The card still shows in the UI (so the player can see
+  // what they brought), it just does nothing mechanically.
+  const isCardNulledByProtocol = ruleProtocolId === 'null_sector';
   const equippedCards = activePlayerCard && !isCardNulledByProtocol ? [activePlayerCard] : [];
   const validPlayerMoves = turn === 'player' && dice.length > 0
     ? getValidMoves(board, 'player', dice, equippedCards, activeCpuCard || undefined, isDoubles, {
@@ -773,7 +848,7 @@ export default function App() {
         cpuCourierPoint,
         playerDeadweightPoint,
         cpuDeadweightPoint,
-        bossProtocolId: activeBossProtocolId || undefined,
+        bossProtocolId: ruleProtocolId || undefined,
       })
     : [];
 
@@ -795,7 +870,7 @@ export default function App() {
         cpuCourierPoint,
         playerDeadweightPoint,
         cpuDeadweightPoint,
-        bossProtocolId: activeBossProtocolId || undefined,
+        bossProtocolId: ruleProtocolId || undefined,
       });
       if (unfilteredMoves.length > validPlayerMoves.length) {
         triggerMutationFlash([FORCING_CARD_LABELS[activeCpuCard.id]]);
@@ -804,7 +879,7 @@ export default function App() {
 
     // FORTIFIED / FIREWALL silently narrow the player's own move options — same counterfactual
     // trick, toggling the protocol off instead of a card, flashed in the red PROTOCOL variant.
-    if (activeBossProtocolId === 'fortified' || activeBossProtocolId === 'firewall') {
+    if (ruleProtocolId === 'fortified' || ruleProtocolId === 'firewall') {
       const withoutProtocol = getValidMoves(board, 'player', dice, equippedCards, activeCpuCard || undefined, isDoubles, {
         turnMoveCount,
         lastMoveDest,
@@ -815,7 +890,7 @@ export default function App() {
         cpuDeadweightPoint,
       });
       if (withoutProtocol.length > validPlayerMoves.length) {
-        const protocol = BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId);
+        const protocol = ruleProtocol;
         if (protocol) triggerMutationFlash([`🔒 ${protocol.name}: ${protocol.description}`], 'protocol');
       }
     }
@@ -830,7 +905,7 @@ export default function App() {
         cpuCourierPoint,
         playerDeadweightPoint,
         cpuDeadweightPoint,
-        bossProtocolId: activeBossProtocolId || undefined,
+        bossProtocolId: ruleProtocolId || undefined,
       });
       if (withoutRedundancy.length === 0 && validPlayerMoves.length > 0) {
         triggerMutationFlash(['♻️ REDUNDANCY: Only one die was playable — reused it twice!']);
@@ -860,7 +935,7 @@ export default function App() {
       cpuCourierPoint,
       playerDeadweightPoint,
       cpuDeadweightPoint,
-      bossProtocolId: activeBossProtocolId || undefined,
+      bossProtocolId: ruleProtocolId || undefined,
     });
 
     setBoard(moveResult.newBoard);
@@ -1050,7 +1125,7 @@ export default function App() {
               cpuCourierPoint,
               playerDeadweightPoint,
               cpuDeadweightPoint,
-              bossProtocolId: activeBossProtocolId || undefined,
+              bossProtocolId: ruleProtocolId || undefined,
             }
           );
 
@@ -1111,7 +1186,7 @@ export default function App() {
       cpuCourierPoint,
       playerDeadweightPoint,
       cpuDeadweightPoint,
-      bossProtocolId: activeBossProtocolId || undefined,
+      bossProtocolId: ruleProtocolId || undefined,
     });
     if (cpuMoves.length === 0) {
       // No CPU moves possible -> pass turn back to player
@@ -1141,7 +1216,7 @@ export default function App() {
         cpuCourierPoint,
         playerDeadweightPoint,
         cpuDeadweightPoint,
-        bossProtocolId: activeBossProtocolId || undefined,
+        bossProtocolId: ruleProtocolId || undefined,
       });
       if (bestMove) {
         // FORCING sabotage cards (player's, against the CPU) silently narrow which moves the CPU
@@ -1155,7 +1230,7 @@ export default function App() {
             cpuCourierPoint,
             playerDeadweightPoint,
             cpuDeadweightPoint,
-            bossProtocolId: activeBossProtocolId || undefined,
+            bossProtocolId: ruleProtocolId || undefined,
           });
           if (unfilteredCpuMoves.length > cpuMoves.length) {
             triggerMutationFlash([FORCING_CARD_LABELS[activePlayerCard.id]]);
@@ -1164,7 +1239,7 @@ export default function App() {
 
         // PHASE WALK / SIEGE grant the CPU moves it wouldn't otherwise have (ignoring blocks /
         // bar priority) — same idea in reverse: protocol OFF should shrink the move set.
-        if (activeBossProtocolId === 'phase_walk' || activeBossProtocolId === 'siege') {
+        if (ruleProtocolId === 'phase_walk' || ruleProtocolId === 'siege') {
           const withoutProtocol = getValidMoves(board, 'cpu', dice, equippedCards, activeCpuCard || undefined, isDoubles, {
             turnMoveCount,
             lastMoveDest,
@@ -1175,7 +1250,7 @@ export default function App() {
             cpuDeadweightPoint,
           });
           if (withoutProtocol.length < cpuMoves.length) {
-            const protocol = BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId);
+            const protocol = ruleProtocol;
             if (protocol) triggerMutationFlash([`🔒 ${protocol.name}: ${protocol.description}`], 'protocol');
           }
         }
@@ -1189,7 +1264,7 @@ export default function App() {
             cpuCourierPoint,
             playerDeadweightPoint,
             cpuDeadweightPoint,
-            bossProtocolId: activeBossProtocolId || undefined,
+            bossProtocolId: ruleProtocolId || undefined,
           });
           if (withoutRedundancy.length === 0 && cpuMoves.length > 0) {
             triggerMutationFlash(['♻️ REDUNDANCY: CPU had only one playable die — reused it twice!']);
@@ -1213,7 +1288,7 @@ export default function App() {
           cpuCourierPoint,
           playerDeadweightPoint,
           cpuDeadweightPoint,
-          bossProtocolId: activeBossProtocolId || undefined,
+          bossProtocolId: ruleProtocolId || undefined,
         });
         setBoard(moveResult.newBoard);
 
@@ -1584,7 +1659,8 @@ export default function App() {
               stage={1}
               maxStages={1}
               cpuCard={activeCpuCard || undefined}
-              protocol={BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null}
+              protocol={ruleProtocol}
+              omega={omegaPhase ? { turnsLeft: omegaPhase.turnsLeft, nextProtocolId: omegaPhase.nextProtocolId } : null}
               onCardClick={(card) => setInspectedCard({ card, ownerLabel: t('neonBoard.ownerLabelCpu') })}
             />
           )}
@@ -1620,7 +1696,7 @@ export default function App() {
             onDiscardDie={handleDiscardDie}
             playerActiveCard={activePlayerCard || undefined}
             cpuActiveCard={activeCpuCard || undefined}
-            bossProtocol={BOSS_PROTOCOLS.find((p) => p.id === activeBossProtocolId) || null}
+            bossProtocol={ruleProtocol}
             onCardClick={(card, label) => setInspectedCard({ card, ownerLabel: label })}
             playerBlackIcePoint={playerBlackIcePoint}
             cpuBlackIcePoint={cpuBlackIcePoint}

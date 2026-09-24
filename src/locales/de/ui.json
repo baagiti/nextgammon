@@ -131,6 +131,7 @@
     "ownerLabelPlayer": "Spielerkarte",
     "ownerLabelCpu": "CPU-Karte",
     "protocolActivated": "Protokoll aktiviert",
+    "protocolIncoming": "Protokoll im Anmarsch",
     "mutationActivated": "Mutation aktiviert",
     "youGating": "Du: {{label}}",
     "cpuGating": "CPU: {{label}}",
@@ -192,6 +193,8 @@
     "even": "Ausgeglichen",
     "pipRace": "Pip-Rennen",
     "protocolActive": "Protokoll aktiv",
+    "omegaTurnsLeft": "Omega · Züge übrig: {{count}}",
+    "omegaNext": "Als Nächstes: {{name}}",
     "cpuCard": "CPU-Karte",
     "mirrorSuffix": "{{name}} Spiegel:",
     "clickToExpand": "Klicken, um Kartendetails anzuzeigen"

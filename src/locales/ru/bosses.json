@@ -6,7 +6,7 @@
     "mirror_core": { "name": "MIRROR CORE", "description": "Босс играет против вас живой копией вашей же экипированной карты.", "taunt": "Что бы ты ни принёс — я принёс то же самое." },
     "siege": { "name": "SIEGE", "description": "Босс игнорирует приоритет бара — он может ходить шашками на доске, даже когда его собственные шашки стоят на баре.", "taunt": "Бар не остановит осаду." },
     "null_sector": { "name": "NULL SECTOR", "description": "Ваша экипированная карта отключена на весь матч.", "taunt": "Что бы ты ни принёс, это уже удалено." },
-    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "FORTIFIED и NULL SECTOR активны одновременно — блоты босса нельзя бить, а ваша карта бесполезна.", "taunt": "Я — NEXTGAMMON. ТВОЯ КАРТА УЖЕ ИСЧЕЗЛА. ВСЕ ПУТИ ЗАКАНЧИВАЮТСЯ ЗДЕСЬ." }
+    "omega_protocol": { "name": "OMEGA PROTOCOL", "description": "Поочерёдно запускает все побеждённые вами протоколы — FORTIFIED, PHASE WALK, FIREWALL, MIRROR CORE, SIEGE, NULL SECTOR — сменяя их каждые 3 хода. О следующем объявляется за ход до его начала.", "taunt": "Я — NEXTGAMMON. КАЖДЫЙ ПОБЕЖДЁННЫЙ ТОБОЙ БОСС ВСЁ ЕЩЁ РАБОТАЕТ ВО МНЕ." }
   },
   "quickMatch": {
     "boss_glitch_bot": { "bossName": "GLITCH-9", "bossTitle": "Замороженный ИИ-изгой", "quote": "Твой код полон изъянов. Позволь мне испортить твои броски." },
@@ -60,6 +60,6 @@
     "41": { "bossName": "FRACTURE.SYS", "bossTitle": "Точка разлома", "quote": "Ударь меня на дубле — и потеряй целый ход." },
     "42": { "bossName": "GATEKEEPER", "bossTitle": "Страж дома", "quote": "Оставь блот в своём доме. Я запру выход." },
     "43": { "bossName": "PRECISION-0", "bossTitle": "Машина точности", "quote": "Домой без коротких путей. Только точные числа." },
-    "44": { "bossName": "OMEGA CORE", "bossTitle": "Финальный кибер-бог ИИ", "quote": "Я — NEXTGAMMON. ТВОЯ КАРТА УЖЕ ИСЧЕЗЛА. ВСЕ ПУТИ ЗАКАНЧИВАЮТСЯ ЗДЕСЬ." }
+    "44": { "bossName": "OMEGA CORE", "bossTitle": "Финальный кибер-бог ИИ", "quote": "Я — NEXTGAMMON. КАЖДЫЙ ПОБЕЖДЁННЫЙ ТОБОЙ БОСС ВСЁ ЕЩЁ РАБОТАЕТ ВО МНЕ." }
   }
 }

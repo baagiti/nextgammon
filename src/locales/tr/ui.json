@@ -131,6 +131,7 @@
     "ownerLabelPlayer": "Oyuncu Kartı",
     "ownerLabelCpu": "CPU Kartı",
     "protocolActivated": "Protokol Etkinleşti",
+    "protocolIncoming": "Protokol Geliyor",
     "mutationActivated": "Mutasyon Etkinleşti",
     "youGating": "Sen: {{label}}",
     "cpuGating": "CPU: {{label}}",
@@ -192,6 +193,8 @@
     "even": "Eşit",
     "pipRace": "Pip Yarışı",
     "protocolActive": "Protokol Aktif",
+    "omegaTurnsLeft": "Omega · kalan tur: {{count}}",
+    "omegaNext": "Sıradaki: {{name}}",
     "cpuCard": "CPU Kartı",
     "mirrorSuffix": "{{name}} Yansıma:",
     "clickToExpand": "Kart Detaylarını Göster"

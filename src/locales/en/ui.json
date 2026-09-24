@@ -131,6 +131,7 @@
     "ownerLabelPlayer": "Player Card",
     "ownerLabelCpu": "CPU Card",
     "protocolActivated": "Protocol Activated",
+    "protocolIncoming": "Protocol Incoming",
     "mutationActivated": "Mutation Activated",
     "youGating": "You: {{label}}",
     "cpuGating": "CPU: {{label}}",
@@ -192,6 +193,8 @@
     "even": "Even",
     "pipRace": "Pip Race",
     "protocolActive": "Protocol Active",
+    "omegaTurnsLeft": "Omega · turns left: {{count}}",
+    "omegaNext": "Next: {{name}}",
     "cpuCard": "CPU Card",
     "mirrorSuffix": "{{name}} Mirror:",
     "clickToExpand": "Click to Expand Card Details"
