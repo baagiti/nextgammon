@@ -62,7 +62,9 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
         <div className={isPhone ? 'flex items-baseline gap-2' : ''}>
           <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-player">{t('runMap.campaignLabel')}</span>
           <h2 className={`font-display font-black text-text tracking-wide uppercase ${isPhone ? 'text-sm' : 'text-xl sm:text-2xl'}`}>
-            {t('runMap.stageOf', { stage: run.stage, total: CAMPAIGN_STAGES.length })}
+            {run.stage > CAMPAIGN_STAGES.length
+              ? t('runMap.campaignComplete')
+              : t('runMap.stageOf', { stage: run.stage, total: CAMPAIGN_STAGES.length })}
           </h2>
         </div>
         <div className={`flex items-center gap-2 rounded-xl bg-panel-2 border border-rarity-legendary/50 text-rarity-legendary font-mono font-bold shadow-[0_0_15px_var(--rarity-legendary)]/20 uppercase ${isPhone ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1.5 text-xs'}`}>

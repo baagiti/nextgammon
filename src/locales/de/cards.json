@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Markierte Steine", "description": "Der zu Matchbeginn festgelegte gegnerische Deadweight-Stein verliert bei jeder Bewegung −1 Würfeldistanz (min. 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Gravitationsfeld", "description": "Jedes Mal, wenn der Gegner einen Stein auswürfelt, erhält der niedrigere Würfel seines nächsten Wurfs −1 (min. 1) — die Schwerkraft verstärkt sich, je näher er der Flucht kommt." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Vollständige Blockade", "description": "Die einzelnen Steine von OMEGA CORE können niemals geschlagen werden — seine offenen Steine können nicht gebrochen werden." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Vollständige Blockade", "description": "Deine einzelnen Steine können nie geschlagen werden — deine ungeschützten Steine sind unzerstörbar." }
 }

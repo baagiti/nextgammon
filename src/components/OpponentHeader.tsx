@@ -5,7 +5,7 @@ import { CardIcon } from './CardIcon';
 import { useTranslation } from 'react-i18next';
 import { useOpponentDisplayText, useProtocolText, useCardText } from '../hooks/useLocalizedText';
 import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
-import { BOSS_PROTOCOLS } from '../game/campaignData';
+import { BOSS_PROTOCOLS, OMEGA_TURNS_PER_PROTOCOL } from '../game/campaignData';
 
 interface OpponentHeaderProps {
   opponent: OpponentCard;
@@ -43,9 +43,15 @@ export const OpponentHeader: React.FC<OpponentHeaderProps> = ({
   const { name: omegaNextName } = useProtocolText(
     BOSS_PROTOCOLS.find((p) => p.id === omega?.nextProtocolId) ?? { id: '', name: '', description: '', taunt: '' }
   );
+  // Phones get a short, language-neutral caption ("OMEGA 2/3", "→ SIEGE"): the translated
+  // "turns left" phrasing runs past the slim header's badge in the longer languages.
   const protocolCaption = omega
     ? omega.turnsLeft === 1
-      ? t('opponentHeader.omegaNext', { name: omegaNextName })
+      ? isPhone
+        ? `→ ${omegaNextName}`
+        : t('opponentHeader.omegaNext', { name: omegaNextName })
+      : isPhone
+      ? `OMEGA ${omega.turnsLeft}/${OMEGA_TURNS_PER_PROTOCOL}`
       : t('opponentHeader.omegaTurnsLeft', { count: omega.turnsLeft })
     : t('opponentHeader.protocolActive');
   const { name: cpuCardName } = useCardText(cpuCard ?? { id: '', name: '', tagline: '', description: '' });
@@ -154,7 +160,7 @@ export const OpponentHeader: React.FC<OpponentHeaderProps> = ({
       {protocol ? (
         <div
           className={`relative flex items-center bg-danger/15 border border-danger/70 rounded-lg shadow-[0_0_14px_var(--danger)]/40 shrink-0 ${
-            isPhone ? 'gap-1 px-1.5 py-0 max-w-[190px]' : 'gap-1.5 px-2 sm:px-2.5 py-1 max-w-[160px] sm:max-w-[220px]'
+            isPhone ? 'gap-1 px-1.5 py-0 max-w-[230px]' : 'gap-1.5 px-2 sm:px-2.5 py-1 max-w-[160px] sm:max-w-[220px]'
           } ${omega?.turnsLeft === 1 ? 'animate-pulse' : ''}`}
           title={protocolTaunt}
         >

@@ -552,18 +552,27 @@ export const PLAYER_CARDS: Card[] = [
     id: 'card_termination_protocol',
     name: 'TERMINATION PROTOCOL',
     tagline: 'Full Lockdown',
-    description: 'OMEGA CORE\'s own blots can never be hit — its exposed checkers cannot be broken.',
+    description: 'Your blots can never be hit — your exposed checkers cannot be broken.',
     category: 'sabotage',
     rarity: 'legendary',
     type: 'bar',
     trigger: 'PASSIVE',
     iconName: 'Skull',
     effectKey: 'TERMINATION_PROTOCOL',
-    // OMEGA CORE's signature card — the final boss only. Never appears in the shared 1v1
-    // quick-match draft pool (see handleStartQuickMatch), so it can be this punishing.
+    // OMEGA CORE's signature card and the campaign's final reward. Kept out of run drafts, and out
+    // of the shared 1v1 quick-match pool until the player has beaten OMEGA CORE at least once
+    // (see isInQuickMatchPool).
     exclusiveToBoss: 'boss_omega_core',
   }
 ];
+
+// Which cards the 1v1 quick-match draft deals from. Boss-exclusive cards stay out — except OMEGA
+// CORE's TERMINATION PROTOCOL, which joins once the player has finished a campaign (beating OMEGA
+// CORE is the only thing that completes one), so the final reward is actually playable somewhere.
+export function isInQuickMatchPool(card: Card, runsCompleted: number): boolean {
+  if (!card.exclusiveToBoss) return true;
+  return card.exclusiveToBoss === 'boss_omega_core' && runsCompleted > 0;
+}
 
 export const OPPONENT_BOSSES: OpponentCard[] = [
   {

@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "الأحجار المُعلَّمة", "description": "يخسر حجر Deadweight الخاص بالخصم، المحدد في بداية المباراة، مسافة زهر قدرها −1 في كل مرة يتحرك فيها (بحد أدنى 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "بئر الجاذبية", "description": "في كل مرة يُخرج فيها الخصم حجراً، يحصل الزهر الأصغر في رميته التالية على −1 (بحد أدنى 1) — تشتد الجاذبية كلما اقترب من الهروب." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "الإغلاق التام", "description": "لا يمكن ضرب أحجار OMEGA CORE المكشوفة أبداً — لا يمكن كسر أحجاره المكشوفة." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "الإغلاق التام", "description": "لا يمكن ضرب أحجارك المكشوفة أبداً — أحجارك المعرّضة لا تُكسر." }
 }

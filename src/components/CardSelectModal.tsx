@@ -132,7 +132,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
               </div>
               <div className="min-w-0">
                 <div className="text-danger font-black text-xs uppercase tracking-wider">{protocolName}</div>
-                <div className={`text-text-muted leading-snug ${isPhone ? 'text-[10px] line-clamp-2' : 'text-[11px]'}`}>{protocolDescription}</div>
+                <div className={`text-text-muted leading-snug ${isPhone ? 'text-[10px] line-clamp-4' : 'text-[11px]'}`}>{protocolDescription}</div>
               </div>
             </div>
           ) : bossCard ? (
@@ -255,7 +255,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
                 </div>
 
                 <div className={isPhone ? 'min-w-0' : 'contents'}>
-                  <div className={`font-mono uppercase tracking-widest text-text-muted font-bold ${isPhone ? 'text-[8px] truncate' : 'text-xs mb-1'}`}>
+                  <div className={`font-mono uppercase tracking-widest text-text-muted font-bold ${isPhone ? 'text-[8px] leading-tight line-clamp-2' : 'text-xs mb-1'}`}>
                     {itemTagline || t('cardSelect.mutationCardFallback')}
                   </div>
                   <h3 className={`font-display font-black text-text uppercase tracking-wider ${isPhone ? 'text-xs leading-tight truncate' : 'text-2xl mb-3'}`}>
@@ -311,7 +311,7 @@ export const CardSelectModal: React.FC<CardSelectModalProps> = ({
             <ShieldPlus className={`text-player shrink-0 ${isPhone ? 'w-4 h-4' : 'w-5 h-5'}`} />
             <div className="min-w-0 flex-1">
               <div className="text-xs font-black text-text uppercase tracking-wide">{t('cardSelect.coldStorage')}</div>
-              <div className={`text-text-muted leading-snug ${isPhone ? 'text-[9px] line-clamp-1' : 'text-[11px]'}`}>
+              <div className={`text-text-muted leading-snug ${isPhone ? 'text-[9px] line-clamp-2' : 'text-[11px]'}`}>
                 {t('cardSelect.coldStorageHint')}
               </div>
             </div>

@@ -55,6 +55,8 @@ interface NeonBoardProps {
   viewStage?: ViewStage;
   onCycleViewStage?: () => void;
   isRunMatch?: boolean;
+  // Beating OMEGA CORE ends the campaign — no next stage to advance to.
+  isCampaignFinale?: boolean;
   matchHitCount?: number;
   canPaidReroll?: boolean;
   rerollDieCost?: number;
@@ -104,6 +106,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
   viewStage = 'table',
   onCycleViewStage,
   isRunMatch = false,
+  isCampaignFinale = false,
   matchHitCount = 0,
   canPaidReroll = false,
   rerollDieCost = 8000,
@@ -147,10 +150,6 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
     if (sabotageCard.id === 'card_home_security') {
       const hasOpenBlot = gatingHomeSlice(affectedSide).some((pt) => pt.filter((c) => c.color === affectedSide).length === 1);
       return hasOpenBlot ? 'HOME SECURITY: open blot in home — bear-off locked' : null;
-    }
-    if (sabotageCard.id === 'card_termination_protocol') {
-      const hasStacked = gatingHomeSlice(affectedSide).some((pt) => pt.filter((c) => c.color === affectedSide).length >= 2);
-      return hasStacked ? 'TERMINATION PROTOCOL: stacked home point — bear-off locked' : null;
     }
     if (sabotageCard.id === 'card_exact_lock') {
       return isHomeBoardReady(board, affectedSide) ? 'EXACT LOCK: overshoot bear-off disabled' : null;
@@ -554,6 +553,15 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       {/* Direction & Status Bar */}
       {!isMatchOver && (
       <div className="relative z-20 mb-1.5 flex flex-wrap items-center justify-between gap-1 text-xs">
+        {/* Phones show the bear-off notice as a see-through overlay on this row's empty right side
+            rather than as its own banner row — a new row there shrinks the board mid-turn. It never
+            takes clicks, so it can't block the row's own button. */}
+        {isPhone && isPlayerHomeReady && turn === 'player' && !isLookingAround && (
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-40 pointer-events-none px-2 py-0.5 rounded-lg bg-success/15 backdrop-blur-sm border border-success/60 text-success flex items-center gap-1 shadow-[0_0_12px_var(--success)]/30 animate-pulse">
+            <CheckCircle2 className="w-3 h-3 shrink-0" />
+            <span className="font-bold uppercase tracking-wider text-[9px] whitespace-nowrap">{t('neonBoard.bearOffModeActive')}</span>
+          </div>
+        )}
         {/* Bear-off direction toggle is desktop/tablet only — it's a one-off setting, not a
             per-turn control, and the row it sits in is needed for the board on phones. */}
         {onUpdateSettings && !isLookingAround && !isPhone && (
@@ -657,7 +665,7 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
       )}
 
       {/* Bear Off Active Notification Banner */}
-      {isPlayerHomeReady && turn === 'player' && !isMatchOver && !isLookingAround && (
+      {isPlayerHomeReady && turn === 'player' && !isMatchOver && !isLookingAround && !isPhone && (
         <div className="mb-2 bg-gradient-to-r from-success/25 via-panel to-success/25 border border-success rounded-xl p-1.5 flex items-center justify-between text-xs text-success shadow-[0_0_15px_var(--success)]/40 animate-pulse">
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
@@ -1067,7 +1075,9 @@ export const NeonBoard: React.FC<NeonBoardProps> = ({
 
             <p className={`text-text max-w-md drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${isPhone ? 'text-[11px] leading-snug' : 'text-xs sm:text-sm mb-3'}`}>
               {winner === 'player'
-                ? isRunMatch
+                ? isCampaignFinale
+                  ? t('neonBoard.victoryDescFinal')
+                  : isRunMatch
                   ? t('neonBoard.victoryDescRun')
                   : t('neonBoard.victoryDescQuick')
                 : isRunMatch

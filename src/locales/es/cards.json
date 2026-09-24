@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Fichas Marcadas", "description": "La ficha Deadweight del rival, designada al inicio de la partida, pierde −1 de distancia de dado cada vez que se mueve (Mín. 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Pozo de Gravedad", "description": "Cada vez que el rival saca una ficha, el dado menor de su próxima tirada recibe −1 (Mín. 1) — la gravedad se intensifica cuanto más cerca está de escapar." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Bloqueo Total", "description": "Las fichas sueltas de OMEGA CORE nunca pueden ser comidas — sus fichas expuestas no pueden ser capturadas." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Bloqueo Total", "description": "Tus fichas sueltas nunca pueden ser comidas — tus fichas expuestas no se pueden romper." }
 }

@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Помеченные шашки", "description": "Шашка Deadweight соперника, назначенная в начале матча, при каждом ходе получает −1 к дистанции кости (минимум 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Гравитационная яма", "description": "Каждый раз, когда соперник снимает шашку с доски, младшая кость его следующего броска получает −1 (минимум 1) — чем ближе к побегу, тем сильнее притяжение." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Полная блокировка", "description": "Блоты самого OMEGA CORE никогда нельзя бить — его открытые шашки неприкосновенны." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Полная блокировка", "description": "Ваши блоты никогда нельзя побить — ваши открытые шашки неуязвимы." }
 }

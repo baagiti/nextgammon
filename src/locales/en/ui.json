@@ -169,6 +169,7 @@
     "matchVictory": "Match Victory",
     "systemDefeat": "System Defeat",
     "victoryDescRun": "You dismantled the CPU opponent grid! Draft a new card perk and advance to the next node.",
+    "victoryDescFinal": "OMEGA CORE is offline — you beat the whole campaign. TERMINATION PROTOCOL is yours, and it now turns up in 1v1 Quick Match drafts.",
     "victoryDescQuick": "You dismantled the CPU opponent grid! Run it back for another round.",
     "defeatDescRun": "Your backgammon core was compromised by the AI boss. Regroup and retry the stage.",
     "defeatDescQuick": "Your backgammon core was compromised by the CPU. Run it back for a rematch.",

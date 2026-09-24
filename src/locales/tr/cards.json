@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "İşaretli Taşlar", "description": "Maç başında belirlenen rakip Deadweight taşı her hareket ettiğinde −1 zar mesafesi kaybeder (En az 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Kütle Çekim Kuyusu", "description": "Rakip her taş çıkardığında, bir sonraki atışının düşük zarı −1 olur (En az 1) — kaçışa yaklaştıkça yerçekimi güçlenir." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Tam Kilitlenme", "description": "OMEGA CORE'un kendi açık taşları asla kırılamaz — açıktaki taşları asla bozulamaz." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Tam Kilitlenme", "description": "Açık taşların asla kırılamaz — açıktaki taşların bozulamaz." }
 }

@@ -52,5 +52,5 @@
   "card_deadweight": { "name": "DEADWEIGHT", "tagline": "Marked Checkers", "description": "The opponent Deadweight checker designated at match start gets −1 die distance every time it moves (Min 1)." },
 
   "card_event_horizon": { "name": "EVENT HORIZON", "tagline": "Gravity Well", "description": "Every time the opponent bears off a checker, their next roll's lower die gets −1 (Min 1) — gravity intensifies the closer they get to escaping." },
-  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Full Lockdown", "description": "OMEGA CORE's own blots can never be hit — its exposed checkers cannot be broken." }
+  "card_termination_protocol": { "name": "TERMINATION PROTOCOL", "tagline": "Full Lockdown", "description": "Your blots can never be hit — your exposed checkers cannot be broken." }
 }

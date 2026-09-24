@@ -54,7 +54,7 @@ import { CardSelectModal, COLD_STORAGE_COST } from './components/CardSelectModal
 import { BossIntroOverlay } from './components/BossIntroOverlay';
 import { CardDetailModal } from './components/CardDetailModal';
 import { MarkedCheckerModal, SelectionType } from './components/MarkedCheckerModal';
-import { PLAYER_CARDS } from './game/cardsData';
+import { PLAYER_CARDS, isInQuickMatchPool } from './game/cardsData';
 import { useOpponentDisplayText } from './hooks/useLocalizedText';
 import { useTranslation } from 'react-i18next';
 import { PaywallModal } from './components/PaywallModal';
@@ -630,7 +630,7 @@ export default function App() {
     setCurrentOpponent(opponent);
     setActiveBossProtocolId(null);
 
-    const shuffled = [...PLAYER_CARDS].filter((c) => !c.exclusiveToBoss).sort(() => Math.random() - 0.5);
+    const shuffled = [...PLAYER_CARDS].filter((c) => isInQuickMatchPool(c, meta.totalRunsCompleted)).sort(() => Math.random() - 0.5);
     const pool = shuffled.slice(0, 3);
     const cChoice = pool[Math.floor(Math.random() * pool.length)];
 
@@ -1689,6 +1689,7 @@ export default function App() {
             isMatchOver={isMatchOver}
             winner={matchWinner}
             isRunMatch={!!run}
+            isCampaignFinale={activeBossProtocolId === 'omega_protocol'}
             matchHitCount={matchHitCount}
             onNextMatch={handleContinueAfterMatch}
             onPassTurn={handlePassTurn}
