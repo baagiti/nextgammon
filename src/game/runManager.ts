@@ -3,6 +3,7 @@ import { PLAYER_CARDS, OPPONENT_BOSSES } from './cardsData';
 import { STARTER_CARD_ID, CAMPAIGN_STAGES } from './campaignData';
 
 const META_STORAGE_KEY = 'NEXTGAMMON_META_PROGRESSION_V1';
+const RUN_STORAGE_KEY = 'NEXTGAMMON_RUN_V1';
 
 function defaultMetaData(): MetaData {
   return {
@@ -79,6 +80,66 @@ export function saveMetaData(meta: MetaData): void {
     localStorage.setItem(META_STORAGE_KEY, JSON.stringify(meta));
   } catch (e) {
     console.error('Failed to save meta data', e);
+  }
+}
+
+// --- Campaign run persistence ---------------------------------------------------------------
+// The run (stage, won cards, captured cards, counters) is saved on every change so closing the app
+// — or the OS killing it in the background — doesn't throw away a 44-stage campaign. Only the run
+// is saved, not a match in progress: reopening puts the player back on the map at the same stage,
+// and the interrupted match is simply played again (it isn't counted as a loss).
+//
+// Cards are stored by id and rebuilt from PLAYER_CARDS on load, so a later update that changes a
+// card's text or numbers applies to saved runs too, and an id that no longer exists is dropped.
+interface SavedRun extends Omit<RunState, 'deck'> {
+  version: 1;
+  deck: string[];
+  coldStorageActive: boolean; // paid-for protection for the current stage, charged before the match
+}
+
+export function saveRun(run: RunState | null, coldStorageActive: boolean): void {
+  try {
+    if (!run) {
+      localStorage.removeItem(RUN_STORAGE_KEY);
+      return;
+    }
+    const saved: SavedRun = { ...run, version: 1, deck: run.deck.map((c) => c.id), coldStorageActive };
+    localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(saved));
+  } catch (e) {
+    console.error('Failed to save run', e);
+  }
+}
+
+export function loadRun(): { run: RunState | null; coldStorageActive: boolean } {
+  const none = { run: null, coldStorageActive: false };
+  try {
+    const dataStr = localStorage.getItem(RUN_STORAGE_KEY);
+    if (!dataStr) return none;
+    const saved = JSON.parse(dataStr) as Partial<SavedRun>;
+    if (saved.version !== 1 || typeof saved.stage !== 'number' || !Array.isArray(saved.deck)) return none;
+
+    const deck = saved.deck
+      .map((id) => PLAYER_CARDS.find((c) => c.id === id))
+      .filter((c): c is Card => !!c);
+    const starter = PLAYER_CARDS.find((c) => c.id === STARTER_CARD_ID);
+    if (deck.length === 0 && starter) deck.push(starter);
+    const known = (ids: unknown) => (Array.isArray(ids) ? ids.filter((id) => deck.some((c) => c.id === id)) : []);
+
+    const { version: _v, coldStorageActive, deck: _d, ...rest } = saved;
+    const run: RunState = {
+      // Defaults for any field added to RunState after this save was written.
+      ...startNewRun(defaultMetaData()),
+      ...rest,
+      stage: Math.min(Math.max(1, Math.floor(saved.stage)), CAMPAIGN_STAGES.length + 1),
+      deck,
+      capturedCardIds: known(saved.capturedCardIds),
+      equippedCardIds: known(saved.equippedCardIds),
+      lastEquippedCardId: saved.lastEquippedCardId && deck.some((c) => c.id === saved.lastEquippedCardId) ? saved.lastEquippedCardId : null,
+    };
+    return { run, coldStorageActive: !!coldStorageActive };
+  } catch (e) {
+    console.error('Failed to load run', e);
+    return none;
   }
 }
 

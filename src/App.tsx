@@ -16,6 +16,8 @@ import {
   getOpponentForStage,
   generateCardDraftChoices,
   withUnlockedCards,
+  saveRun,
+  loadRun,
 } from './game/runManager';
 import { CAMPAIGN_STAGES, BOSS_PROTOCOLS, STARTER_CARD_ID, getOmegaPhase, OMEGA_TURNS_PER_PROTOCOL, OMEGA_PHASE_NOTES } from './game/campaignData';
 import { evaluateAchievements } from './game/achievements';
@@ -98,7 +100,9 @@ export default function App() {
   });
 
   const [meta, setMeta] = useState<MetaData>(loadMetaData);
-  const [run, setRun] = useState<RunState | null>(null);
+  // Restored from the device on launch (see saveRun/loadRun) — a campaign survives the app closing.
+  const [savedRun] = useState(loadRun);
+  const [run, setRun] = useState<RunState | null>(savedRun.run);
 
   // Run Mode paywall (iOS only — see src/iap/purchases.ts). `null` = entitlement check still in
   // flight; treat as locked until it resolves so the paywall can't be bypassed by a race on load.
@@ -350,7 +354,16 @@ export default function App() {
   const [hasPaidRerollThisTurn, setHasPaidRerollThisTurn] = useState<boolean>(false);
   // Cold Storage: paid for on the equip screen (see handleActivateColdStorage), consumed by
   // handleMatchEnd's loss branch to skip mars-capture — cleared after any match end either way.
-  const [coldStorageActive, setColdStorageActive] = useState<boolean>(false);
+  const [coldStorageActive, setColdStorageActive] = useState<boolean>(savedRun.coldStorageActive);
+
+  // A finished campaign (stage past the last one) is saved too, so the map can show it — but it's
+  // not something to resume: the menu offers a fresh run instead.
+  const runInProgress = !!run && run.stage <= CAMPAIGN_STAGES.length;
+
+  // Persist the campaign run on every change (stage, cards won/captured, counters, Cold Storage).
+  useEffect(() => {
+    saveRun(run, coldStorageActive);
+  }, [run, coldStorageActive]);
 
   const [showMarkedModal, setShowMarkedModal] = useState<boolean>(false);
   const [markedModalType, setMarkedModalType] = useState<SelectionType>('black_ice');
@@ -1619,11 +1632,11 @@ export default function App() {
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <button
-              onClick={() => handleRunModeEntry(run ? () => setActiveScreen('MAP') : handleStartRun)}
+              onClick={() => handleRunModeEntry(runInProgress ? () => setActiveScreen('MAP') : handleStartRun)}
               className="w-full py-4 rounded-xl bg-gradient-to-r from-opponent via-point-b to-player text-ink font-black text-base uppercase tracking-wider shadow-[0_0_30px_var(--opponent)]/70 hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               {runModeUnlocked ? <Swords className="w-5 h-5" /> : <Lock className="w-4 h-4" />}
-              {run ? t('mainMenu.resumeRun') : t('mainMenu.startRun')}
+              {runInProgress ? t('mainMenu.resumeRun') : t('mainMenu.startRun')}
             </button>
             <button
               onClick={handleStartQuickMatch}
@@ -1645,6 +1658,7 @@ export default function App() {
             neonChips={meta.neonChips}
             onBuyBackCard={handleBuyBackCard}
             onSkipStage={handleSkipStage}
+            onBackToMenu={() => setActiveScreen('MAIN_MENU')}
           />
         </div>
       )}

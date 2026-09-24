@@ -5,7 +5,7 @@ import { CAMPAIGN_STAGES, BOSS_PROTOCOLS } from '../game/campaignData';
 import { PLAYER_CARDS } from '../game/cardsData';
 import { CardIcon } from './CardIcon';
 import { getCardText, getCampaignStageText, getProtocolText } from '../hooks/useLocalizedText';
-import { Swords, Lock, CheckCircle2, Trophy, AlertTriangle, Bot, Coins, FastForward } from 'lucide-react';
+import { Swords, Lock, CheckCircle2, Trophy, AlertTriangle, Bot, Coins, FastForward, Home } from 'lucide-react';
 import { useIsPhoneViewport } from '../hooks/useIsPhoneViewport';
 
 export const BUYBACK_CARD_COST = 10000;
@@ -18,6 +18,9 @@ interface RunMapModalProps {
   neonChips: number;
   onBuyBackCard: (cardId: string) => void;
   onSkipStage: () => void;
+  // Shown on the "Campaign Complete" panel — the finished run is saved, so this is the way out
+  // (a fresh run is started from the main menu).
+  onBackToMenu?: () => void;
 }
 
 const ACT_NAMES: Record<number, string> = {
@@ -37,7 +40,7 @@ const RARITY_STYLE: Record<string, { border: string; bg: string; text: string }>
   legendary: { border: 'border-rarity-legendary/80', bg: 'bg-rarity-legendary/10', text: 'text-rarity-legendary' },
 };
 
-export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neonChips, onBuyBackCard, onSkipStage }) => {
+export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neonChips, onBuyBackCard, onSkipStage, onBackToMenu }) => {
   const { t: tCards } = useTranslation('cards');
   const { t: tBosses } = useTranslation('bosses');
   const { t } = useTranslation('ui');
@@ -307,10 +310,21 @@ export const RunMapModal: React.FC<RunMapModalProps> = ({ run, onEnterMatch, neo
       </div>
 
       {run.stage > CAMPAIGN_STAGES.length && (
-        <div className={`relative z-10 bg-panel-2 border-2 border-rarity-legendary/60 rounded-xl text-center shadow-[0_0_30px_var(--rarity-legendary)]/30 ${isPhone ? 'mt-2 p-2' : 'mt-6 p-6'}`}>
-          <Trophy className="w-8 h-8 text-rarity-legendary mx-auto mb-2" />
-          <h3 className="font-display text-xl font-black text-rarity-legendary uppercase tracking-wider">{t('runMap.campaignComplete')}</h3>
-          <p className="text-text-muted text-sm mt-1">{t('runMap.campaignCompleteHint')}</p>
+        <div className={`relative z-10 bg-panel-2 border-2 border-rarity-legendary/60 rounded-xl text-center shadow-[0_0_30px_var(--rarity-legendary)]/30 ${isPhone ? 'mt-1.5 p-1.5 shrink-0' : 'mt-6 p-6'}`}>
+          <Trophy className={`text-rarity-legendary mx-auto ${isPhone ? 'w-5 h-5 mb-0.5' : 'w-8 h-8 mb-2'}`} />
+          <h3 className={`font-display font-black text-rarity-legendary uppercase tracking-wider ${isPhone ? 'text-sm' : 'text-xl'}`}>{t('runMap.campaignComplete')}</h3>
+          <p className={`text-text-muted ${isPhone ? 'text-[10px]' : 'text-sm mt-1'}`}>{t('runMap.campaignCompleteHint')}</p>
+          {onBackToMenu && (
+            <button
+              onClick={onBackToMenu}
+              className={`mx-auto rounded-xl bg-player text-ink font-display font-black uppercase tracking-wider shadow-[0_0_25px_var(--player)]/60 hover:scale-105 hover:brightness-110 transition-all flex items-center justify-center gap-2 ${
+                isPhone ? 'mt-1.5 py-1 px-4 text-[11px]' : 'mt-4 py-3 px-6 text-sm'
+              }`}
+            >
+              <Home className="w-4 h-4" />
+              {t('common.returnToMenu')}
+            </button>
+          )}
         </div>
       )}
     </div>
